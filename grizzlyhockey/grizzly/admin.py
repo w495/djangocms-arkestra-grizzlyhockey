@@ -55,9 +55,14 @@ class TrainerAdmin(admin.ModelAdmin):
     search_fields = [ 'second_name', 'first_name', 'patronymic']
 
 class RinkAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description', 'town', 'street', 'house', 'building')
+    list_display = ('name', 'town', 'street', 'house', 'building')
     list_filter = ['town', 'street']
-    search_fields = ['name', 'description', 'town', 'street', 'house', 'building']
+    search_fields = ['name','town', 'street', 'house', 'building']
+
+    #description_fieldsets = (('', {
+        #'fields': ('description',),
+        #'classes': ('plugin-holder', 'plugin-holder-nopage'),
+        #}),)
 
 class TeamAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')

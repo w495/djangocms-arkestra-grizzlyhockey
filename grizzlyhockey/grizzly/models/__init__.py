@@ -8,6 +8,7 @@ from filer.fields.image import FilerImageField
 
 from grizzly.pyadmin import verbose_name_cases, verbose_name_field_cases
 
+from cms.models.fields import PlaceholderField
 
 class GrizzlyPlugin(CMSPlugin):
     player          = models.ForeignKey('Player',           related_name='plugins')
@@ -137,7 +138,7 @@ class Trainer(models.Model):
 
 class Rink(models.Model):
     name        = models.CharField(max_length=200, verbose_name=u"название")
-    description = models.TextField(blank=True, null=True, verbose_name=u"описание")
+    description = models.PlaceholderField(blank=True, null=True, verbose_name=u"описание")
     image       = FilerImageField(blank=True, null=True, verbose_name=u"картинка")
     birthday    = models.DateTimeField(verbose_name=u"дата открытия")
     town        = models.CharField(max_length=200,verbose_name=u"город")
@@ -190,4 +191,13 @@ class Training(models.Model):
         verbose_name        = "тренировку"
         verbose_name_plural = "тренировки"
 
+
+class GameSeason (models.Model):
+    name        = models.CharField(max_length=200, blank=True, null=True, verbose_name=u"название")
+    description = models.TextField(blank=True, null=True, verbose_name=u"описание")
+
+    class Meta:
+        ordering = ('date',)
+        verbose_name        = "тренировку"
+        verbose_name_plural = "тренировки"
 
