@@ -1,0 +1,44 @@
+{% load sekizai_tags %}
+{% addtoblock "js" %}
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#{{ instance.domid }}").carousel({interval: {{ instance.interval }}});
+});
+
+$(window).load(function() {
+    var carousel_items = $("#{{ instance.domid }}");
+    var height = 0;
+    carousel_items.each(function () {
+        height = Math.max(height, $(this).height());
+    });
+    carousel_items.height(height);
+});
+</script>
+{% endaddtoblock %}
+<div id="{{ instance.domid }}" class="carousel slide">
+    <ol class="carousel-indicators">
+        {% for item in instance.carouselitem_set.all %}
+            <li data-target="#{{ instance.domid }}" data-slide-to="{{forloop.counter0}}"  class="{% if forloop.first %}active {% endif %}" ></li>
+        {% endfor %}
+    </ol>
+
+    <div class="carousel-inner">
+        {% for item in instance.carouselitem_set.all %}
+            <div class="item {% if forloop.last %}active {% endif %}">
+                {% if item.image %}
+                    <a class="carousel-inner-image" href="{{ item.caption_link }}" style="background-image:url('{{ item.image.url }}')"></a>
+                {% endif %}
+                <div class="carousel-caption">
+                    <h4>{{ item.caption_title }}</h4>
+                    <p>{{ item.caption_content }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <a class="left carousel-control" href="#{{ instance.domid }}" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+    </a>
+    <a class="right carousel-control" href="#{{ instance.domid }}" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+    </a>
+</div>

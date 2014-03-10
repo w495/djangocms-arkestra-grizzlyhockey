@@ -1,0 +1,25 @@
+{% load i18n filermedia %}{{video.height}}
+{% if not video.unready_versions %}
+    <video width="{{ video.width }}" controls>
+    	{% for codec in video.formats.HTML5 %}
+    	    <source src='{{ codec.url }}' type='{{ codec.type|safe }}' />
+    	{% endfor %}
+    	{% if video.formats.FLASH %}
+    	    <object width="{{video.width}}" height="{{ video.dumb_height }}" type="application/x-shockwave-flash" data="{{ STATIC_URL }}swf/player.swf">
+        		<param name="movie" value="{{ STATIC_URL }}swf/player.swf" />
+                <param name="allowfullscreen" value="true" /> 
+        		{% for codec in video.formats.FLASH %}
+                    <param name="flashvars" value="movie={{ codec.url }}" />            	
+                {% endfor %}
+            </object>
+        {% endif %}
+    </video>
+
+{% else %}
+	<div style="background: #bbb; border-radius: 10px; width: {{video.width}}px; height:{{video.height}}px;">
+		<div style="text-align: center; padding: 15%">
+			<p>The video <em>{{ video }}</em> is being encoded.</p>
+			<p>Please try again in a few minutes.</p>
+		</div>
+	</div>
+{% endif %}

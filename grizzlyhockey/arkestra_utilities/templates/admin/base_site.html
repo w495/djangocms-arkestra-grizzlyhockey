@@ -1,0 +1,48 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+{% block extrastyle %}
+<style>
+#header {
+	background: #6b96b4 url('{{ STATIC_URL }}arkestra/admin/images/arkestra_admin_banner_logo.png') 20px 0 no-repeat;
+	min-height: 70px;
+	}
+#branding h1 {position: absolute; left: -10000px;}
+.login #header {background: none ;}	
+
+body.login div#container {
+	background: #6b96b4  url('{{ STATIC_URL }}arkestra/admin/images/arkestra_login_logo_new.png') 50% 20px no-repeat;
+	min-height: 200px;
+	padding-top: 120px;
+	border-radius: 10px;	
+	}
+
+body.login div#container .form-row label {color: white;}
+</style>
+<!--[if IE]>
+<style>
+#branding h2.ie {color: black; font-weight: bold; padding-left: 0;}
+body.login div#container {background: red; padding: 0;}
+body.login div#container div#branding  {margin: 20px; padding: 20px; background: white; color: black;}
+div#branding  {margin: 80px 20px 20px; padding: 20px 20px 10px; background: white; color: black;}
+</style>
+<![endif]--> 
+{% endblock %}
+
+{% block title %}{{ title }} | {% trans 'Arkestra administration' %}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">{% trans 'Arkestra administration' %}</h1>
+<!--[if IE]>
+<h2 class="ie">Microsoft Internet Explorer</h2>
+<p>You appear to be using <em>Internet Explorer</em>.</p>
+<p>Internet Explorer fails to comply with important standards, and lacks support for a number of key web technologies.</p>
+<p>Please use a modern standards-compliant browser such as Safari, Firefox or Chrome.</p>
+<![endif]--> 
+{% endblock %}
+
+
+{% block nav-global %}{% endblock %}
+
+{% block extrahead %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+{% endblock %}

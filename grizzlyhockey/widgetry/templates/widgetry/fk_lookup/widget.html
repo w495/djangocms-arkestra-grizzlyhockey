@@ -1,0 +1,22 @@
+<span class="fkautocomplete_widget">
+<input type="text" id="id_{{ name }}" value="{{ value }}" name="{{ name }}" />
+
+<script type="text/javascript">
+	jQuery("#id_{{ name }}").fkAutocomplete({
+		search_url: '{{ search_url }}',
+		initialLabel:'{{ label }}',
+		content_type_id:'{{ content_type_id }}',
+		admin_media_prefix:'{{ admin_media_prefix }}'{% if is_generic_lookup %},
+		is_generic_lookup: true,
+		add_urls: {{ content_type_info_json|safe }}{% endif %}
+	});
+</script>
+
+<style type="text/css" media="screen">
+	#lookup_{{ name }} {
+		padding-right:16px;
+		background: url({{ admin_media_prefix }}img/selector-search.gif) no-repeat right;
+	};
+	#del_{{ name }} {};
+</style>
+</span>

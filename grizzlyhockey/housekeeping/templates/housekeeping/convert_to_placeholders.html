@@ -1,0 +1,51 @@
+{% extends "housekeeping/housekeeping.html" %}
+{% block operations %}
+{% block title %}
+    <title>Convert text fields to plugins</title>
+{% endblock title %}
+
+<h3>Summary</h3>
+<ul>
+    {% for model, fields in report.converted.messages.items %}
+        <li>{{ model }}
+            <ul>
+                {% for field, issues in fields.items %}
+                    <li>Field <em>{{field }}</em>
+                        <ul>
+                            {% for issue, message in issues.items %}
+                                <li>{{ issue }}: {{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+        </li>            
+    {% endfor %}
+</ul>    
+<h3>Report</h3>
+<ul>
+    {% for module in report.converted.modules.values %}
+    <li>
+        {{ module.application }}
+		<ul>
+            {% for model in module.models.values %}
+            <li>{{ model.model }}
+                <ul>{% for action, items in model.actions.items %}
+					<li>{{ action }} ({{ items|length}} items)
+						<ul>
+						{% for item in items %}
+							<li>{{ item.status }}: <a href="{{ item.get_absolute_url }}">{{ item }}</a></li>
+						{% endfor %}
+						</ul>	
+					</li>
+					{% endfor %}
+                </ul>
+            </li>
+            {% endfor %}
+        </ul>
+
+    </li>
+    {% endfor %}
+</ul>                
+
+{% endblock operations %}

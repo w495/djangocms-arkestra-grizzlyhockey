@@ -1,0 +1,7 @@
+{% load news_and_events_tags %}
+----
+<ul class="b-news">
+	{% regroup index_items by indexer as indexlist %}
+	{{ indexlist }}
+</ul>
+---	
