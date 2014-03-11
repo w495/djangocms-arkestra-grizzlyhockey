@@ -279,8 +279,46 @@ class GameTournamentRegularAdmin(PlaceholderAdmin, ButtonableModelAdmin):
         ('build_matrix', "Посчитать матрицу игр")
     ]
 
-    def build_matrix(self, request, obj):
-        print ("obj =  %s" %(obj) )
+    def build_matrix(self, request, tournament):
+        '''
+            Генерации матрицы игр
+        '''
+        teams_list = [team for team in tournament.teams.all()];
+        teams_len = len(teams_list)
+
+        games_len = teams_len
+
+
+
+
+        print
+        print
+        print
+        print
+
+        if (teams_len % 2):
+            games_len += 1
+
+        for i in xrange(games_len):
+
+            xteams_list = []
+            for j in xrange(teams_len):
+                xteams_list += [teams_list[(j + i) % teams_len]]
+
+            if (teams_len % 2):
+                xteams_list.append(None)
+
+            print xteams_list
+            for t1 in xrange(0, games_len, 2):
+                print i + 1, xteams_list[t1], xteams_list[t1 + 1]
+
+
+        print
+        print
+        print
+        print
+
+
 
 
 admin.site.register(JudgeType, JudgeTypeAdmin)
