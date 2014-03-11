@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.contrib import admin
 
 
@@ -25,10 +27,59 @@ from grizzly.models import GameSeason
 from grizzly.models import GameDivision
 from grizzly.models import GameTournamentFormat
 from grizzly.models import GameTournamentSystem
+
 from grizzly.models import GameTournament
 
+from grizzly.models import GameTournamentRegular
+from django.http import HttpResponseRedirect, HttpResponse
 from widgetry.tabs.placeholderadmin import ModelAdminWithTabsAndCMSPlaceholder
 from cms.admin.placeholderadmin import PlaceholderAdmin
+
+
+class ButtonableModelAdmin(admin.ModelAdmin):
+    '''
+        Миксин, добавляет новые действия (кнопки)
+        к стандартным действиям админки.
+        После выполнения действия переходит на предыдущую ссылку.
+        В наследуемом классе должен быть определен атрибут
+            buttons = [
+                ('<action1>', <action1 description>)
+                ('<action2>', <action2 description>)
+                ...
+            ]
+        И соответствующие функции:
+        def <action1>(self, request, obj):
+            ...
+        def <action2>(self, request, obj):
+            ...
+    '''
+
+    def change_view(self, request, object_id, extra_context={}):
+        extra_context['buttons'] = self.buttons
+        return super(ButtonableModelAdmin, self).change_view(
+                request=request, object_id=object_id, extra_context=extra_context)
+
+    def button_view_dispatcher(self, request, object_id, command):
+        obj = self.model._default_manager.get(pk=object_id)
+        return getattr(self, command)(request, obj) \
+                or HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+    def get_urls(self):
+        from django.conf.urls.defaults import patterns, url
+        from django.utils.functional import update_wrapper
+        def wrap(view):
+            def wrapper(*args, **kwargs):
+                return self.admin_site.admin_view(view)(*args, **kwargs)
+            return update_wrapper(wrapper, view)
+
+        info = self.model._meta.app_label, self.model._meta.module_name
+
+        return patterns('',
+            *(url(r'^(\d+)/(%s)/$' % but[0], wrap(self.button_view_dispatcher)) for but in self.buttons)
+        ) + super(ButtonableModelAdmin, self).get_urls()
+
+
+
 
 class JudgeTypeAdmin(PlaceholderAdmin):
     list_display = ('name', 'description')
@@ -123,26 +174,34 @@ class TrainingAdmin(PlaceholderAdmin):
 
 
 
+class GameDivisionInline(admin.TabularInline):
+    model = GameDivision
+    fk_name = "gameseason"
+    fields = (
+        'name',
+        'start_date', 'stop_date',
+        'start_time', 'stop_time'
+    )
 
 class GameSeasonAdmin(PlaceholderAdmin):
     list_display = (
         'name',
-        'description',
         'start_date', 'stop_date',
         'start_time', 'stop_time'
     )
     list_filter = []
     search_fields = (
         'name',
-        'description',
         'start_date', 'stop_date',
         'start_time', 'stop_time'
     )
+    inlines = [
+        GameDivisionInline,
+    ]
 
 class GameDivisionAdmin(PlaceholderAdmin):
     list_display = (
         'name',
-        'description',
         'start_date', 'stop_date',
         'start_time', 'stop_time',
         'gameseason'
@@ -150,7 +209,6 @@ class GameDivisionAdmin(PlaceholderAdmin):
     list_filter = ('gameseason',)
     search_fields = (
         'name',
-        'description',
         'start_date', 'stop_date',
         'start_time', 'stop_time'
     )
@@ -175,7 +233,7 @@ class GameTournamentAdmin(PlaceholderAdmin):
         'gametournamentformat',
         'gametournamentsystem',
     )
-    
+
     list_filter = (
         'gametournamentformat',
         'gametournamentsystem'
@@ -189,11 +247,49 @@ class GameTournamentAdmin(PlaceholderAdmin):
     )
     filter_horizontal = ('teams',)
 
+
+
+def make_publishedx(modeladmin, request, queryset):
+    print ("x")
+
+make_publishedx.short_description = "X"
+
+
+class GameTournamentRegularAdmin(PlaceholderAdmin, ButtonableModelAdmin):
+    list_display = (
+        'name',
+        'description',
+        'start_date', 'stop_date',
+        'start_time', 'stop_time',
+    )
+
+    list_filter = []
+
+    search_fields = (
+        'name',
+        'description',
+        'start_date', 'stop_date',
+        'start_time', 'stop_time'
+    )
+    filter_horizontal = ('teams',)
+
+    actions = [make_publishedx]
+
+    buttons = [
+        ('build_matrix', "Посчитать матрицу игр")
+    ]
+
+    def build_matrix(self, request, obj):
+        print ("obj =  %s" %(obj) )
+
+
 admin.site.register(JudgeType, JudgeTypeAdmin)
 admin.site.register(Judge, JudgeAdmin)
-
 admin.site.register(InsuranceType, InsuranceTypeAdmin)
 
+##
+## Игроки
+##
 admin.site.register(PlayerType,     PlayerTypeAdmin)
 admin.site.register(PlayerStatus,   PlayerStatusAdmin)
 admin.site.register(Player,         PlayerAdmin)
@@ -203,14 +299,22 @@ admin.site.register(Trainer, TrainerAdmin)
 admin.site.register(Rink,           RinkAdmin)
 admin.site.register(RinkSchedule,   RinkScheduleAdmin)
 
+##
+## Команды
+##
 admin.site.register(Team,           TeamAdmin)
 admin.site.register(TeamSchedule,   TeamScheduleAdmin)
 
 admin.site.register(Training, TrainingAdmin)
 
+##
+## Игровая логика
+##
 admin.site.register(GameSeason,             GameSeasonAdmin)
 admin.site.register(GameDivision,           GameDivisionAdmin)
 admin.site.register(GameTournament,         GameTournamentAdmin)
+admin.site.register(GameTournamentRegular,  GameTournamentRegularAdmin)
+
 admin.site.register(GameTournamentSystem,   GameTournamentSystemAdmin)
 admin.site.register(GameTournamentFormat,   GameTournamentFormatAdmin)
 
