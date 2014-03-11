@@ -8,6 +8,7 @@ from filer.fields.image import FilerImageField
 
 from grizzly.pyadmin import verbose_name_cases, verbose_name_field_cases
 
+from cms.models import Page, CMSPlugin
 from cms.models.fields import PlaceholderField
 
 class GrizzlyPlugin(CMSPlugin):
@@ -21,15 +22,29 @@ class GrizzlyPlugin(CMSPlugin):
     team            = models.ForeignKey('Team',             related_name='plugins')
     training        = models.ForeignKey('Training',         related_name='plugins')
 
+
+    class Meta:
+        verbose_name        = "тренировку"
+        verbose_name_plural = "тренировки"
+
+
     def __unicode__(self):
-      return "GrizzlyPlugin"
+      return u"Grizzly"
+
 
 
 
 class InsuranceType(models.Model):
-    name        = models.CharField(max_length=200, verbose_name=u"название")
-    description = models.TextField(max_length=200, blank=True, null=True, verbose_name=u"описание")
-    image       = FilerImageField(blank=True, null=True, verbose_name=u"картинка")
+    name   = models.CharField(max_length=200, verbose_name=u"название")
+    detail = models.TextField(max_length=200, blank=True, null=True, verbose_name=u"детали")
+    image  = FilerImageField(blank=True, null=True, verbose_name=u"картинка")
+
+    ## Подробное с возможностью вставлять расширенный текст.
+    description = PlaceholderField(
+        'body',
+
+        help_text="описание"
+    )
 
     def __unicode__(self):  # Python 3: def __str__(self):
         return self.name
@@ -39,9 +54,20 @@ class InsuranceType(models.Model):
         verbose_name_plural = "игроки: типы страховок"
 
 class PlayerStatus(models.Model):
-    name        = models.CharField(max_length=200, verbose_name=u"название")
-    description = models.TextField(max_length=200, blank=True, null=True, verbose_name=u"описание")
-    image       = FilerImageField(blank=True, null=True, verbose_name=u"картинка")
+    ctime   = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
+
+    name   = models.CharField(max_length=200, verbose_name=u"название")
+    detail = models.TextField(max_length=200, blank=True, null=True, verbose_name=u"детали")
+    image  = FilerImageField(blank=True, null=True, verbose_name=u"картинка")
+
+
+    ## Подробное с возможностью вставлять расширенный текст.
+    description = PlaceholderField(
+        'body',
+
+        help_text="описание"
+    )
+
 
     def __unicode__(self):  # Python 3: def __str__(self):
         return self.name
@@ -52,9 +78,20 @@ class PlayerStatus(models.Model):
 
 
 class PlayerType(models.Model):
-    name        = models.CharField(max_length=200, verbose_name=u"название")
-    description = models.TextField(max_length=200, blank=True, null=True, verbose_name=u"описание")
-    image       = FilerImageField(blank=True, null=True, verbose_name=u"картинка")
+    ctime   = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
+
+    name   = models.CharField(max_length=200, verbose_name=u"название")
+    detail = models.TextField(max_length=200, blank=True, null=True, verbose_name=u"детали")
+    image  = FilerImageField(blank=True, null=True, verbose_name=u"картинка")
+
+
+    ## Подробное с возможностью вставлять расширенный текст.
+    description = PlaceholderField(
+        'body',
+
+        help_text="описание"
+    )
+
 
     def __unicode__(self):  # Python 3: def __str__(self):
         return self.name
@@ -63,7 +100,10 @@ class PlayerType(models.Model):
         verbose_name        = "категорию игрока"
         verbose_name_plural = "игроки: категории игроков"
 
+
 class Player(models.Model):
+    ctime   = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
+
     first_name  = models.CharField(max_length=200, verbose_name=u"имя")
     patronymic  = models.CharField(max_length=200, verbose_name=u"отчество")
     second_name = models.CharField(max_length=200, verbose_name=u"фамилия")
@@ -71,7 +111,15 @@ class Player(models.Model):
     image       = FilerImageField(blank=True, null=True, verbose_name=u"фотография")
 
     insurance_type = models.ForeignKey('InsuranceType', blank=True, null=True, verbose_name=u"тип страховки")
-    description = models.TextField(blank=True, null=True, verbose_name=u"описание")
+
+    detail = models.TextField(blank=True, null=True, verbose_name=u"детали")
+
+    ## Подробное с возможностью вставлять расширенный текст.
+    description = PlaceholderField(
+        'body',
+
+        help_text="описание"
+    )
 
     height = models.IntegerField(verbose_name=u"рост");
     weight = models.IntegerField(verbose_name=u"вес");
@@ -90,9 +138,18 @@ class Player(models.Model):
         verbose_name_plural = "игроки"
 
 class JudgeType(models.Model):
+    ctime   = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
+
     name        = models.CharField(max_length=200, verbose_name=u"название")
-    description = models.TextField(max_length=200, blank=True, null=True, verbose_name=u"описание")
+    detail = models.TextField(max_length=200, blank=True, null=True, verbose_name=u"детали")
     image       = FilerImageField(blank=True, null=True)
+
+    ## Подробное с возможностью вставлять расширенный текст.
+    description = PlaceholderField(
+        'body',
+
+        help_text="описание"
+    )
 
     def __unicode__(self):  # Python 3: def __str__(self):
         return self.name
@@ -102,13 +159,23 @@ class JudgeType(models.Model):
         verbose_name_plural = "судьи: типы судейства"
 
 class Judge(models.Model):
+    ctime   = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
+
     first_name  = models.CharField(max_length=200, verbose_name=u"имя")
     patronymic  = models.CharField(max_length=200, verbose_name=u"отчество")
     second_name = models.CharField(max_length=200, verbose_name=u"фамилия")
     birthday    = models.DateField(verbose_name=u"дата рождения")
     image       = FilerImageField(blank=True, null=True, verbose_name=u"фотография")
-    description = models.TextField(blank=True, null=True, verbose_name=u"описание")
+    detail = models.TextField(blank=True, null=True, verbose_name=u"детали")
     types       = models.ManyToManyField(JudgeType, blank=True, null=True, verbose_name=u"что судит")
+
+    ## Подробное с возможностью вставлять расширенный текст.
+    description = PlaceholderField(
+        'body',
+
+        help_text="описание"
+    )
+
 
     def __unicode__(self):
         return u"%s %s %s"%(self.second_name, self.first_name, self.patronymic)
@@ -118,12 +185,21 @@ class Judge(models.Model):
         verbose_name_plural = "судьи"
 
 class Trainer(models.Model):
+    ctime   = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
+
     first_name  = models.CharField(max_length=200, verbose_name=u"имя")
     patronymic  = models.CharField(max_length=200, verbose_name=u"отчество")
     second_name = models.CharField(max_length=200, verbose_name=u"фамилия")
     birthday    = models.DateField(verbose_name=u"дата рождения")
     image       = FilerImageField(blank=True, null=True, verbose_name=u"фотография")
-    description = models.TextField(blank=True, null=True, verbose_name=u"описание")
+    detail = models.TextField(blank=True, null=True, verbose_name=u"детали")
+
+    ## Подробное с возможностью вставлять расширенный текст.
+    description = PlaceholderField(
+        'body',
+
+        help_text="описание"
+    )
 
 
     def __unicode__(self):
@@ -136,16 +212,71 @@ class Trainer(models.Model):
 
 
 
+class RinkSchedule(models.Model):
+    ctime   = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
+
+    name        = models.CharField(max_length=200, blank=True, null=True, verbose_name=u"название")
+    detail      = models.TextField(blank=True, null=True, verbose_name=u"детали")
+    ## Подробное с возможностью вставлять расширенный текст.
+    description = PlaceholderField(
+        'body',
+
+        help_text="описание"
+    )
+    start_date = models.DateField(verbose_name=u"дата начала")
+    stop_date  = models.DateField(verbose_name=u"дата конца")
+    start_time = models.TimeField(verbose_name=u"время начала")
+    stop_time  = models.TimeField(verbose_name=u"время конца")
+
+    rinks   = models.ManyToManyField('Rink', blank=True, null=True,  verbose_name=u"катки")
+
+    def __unicode__(self):  # Python 3: def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering            = ('name',)
+        verbose_name        = "каток: раcписание"
+        verbose_name_plural = "катки: раcписания"
+
+
 class Rink(models.Model):
-    name        = models.CharField(max_length=200, verbose_name=u"название")
-    description = models.PlaceholderField(blank=True, null=True, verbose_name=u"описание")
-    image       = FilerImageField(blank=True, null=True, verbose_name=u"картинка")
-    birthday    = models.DateTimeField(verbose_name=u"дата открытия")
+    '''
+        Каток
+    '''
+    ctime   = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
+
+    name        = models.CharField(
+        max_length=200,
+        verbose_name=u"название"
+    )
+
+    ## Краткое описание простым текстом
+    detail      = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=u"детали"
+    )
+    ## Подробное с возможностью вставлять расширенный текст.
+    description = PlaceholderField(
+        'body',
+
+        help_text="описание"
+    )
+    image       = FilerImageField(
+        blank=True,
+        null=True,
+        verbose_name=u"картинка"
+    )
+
+    rinkschedules   = models.ManyToManyField('RinkSchedule', blank=True, null=True,  verbose_name=u"расписания")
+
+    birthday    = models.DateField(verbose_name=u"дата открытия")
     town        = models.CharField(max_length=200,verbose_name=u"город")
     street      = models.CharField(max_length=200,verbose_name=u"улица")
     house       = models.CharField(max_length=200,verbose_name=u"дом")
     building    = models.CharField(max_length=200,verbose_name=u"строение")
 
+    players     = models.ManyToManyField(Player, verbose_name=u"Игроки")
 
     def __unicode__(self):
         return self.name
@@ -155,13 +286,48 @@ class Rink(models.Model):
         verbose_name        = "каток"
         verbose_name_plural = "катки"
 
+class TeamSchedule(models.Model):
+    ctime   = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
+
+    name        = models.CharField(max_length=200, blank=True, null=True, verbose_name=u"название")
+    detail      = models.TextField(blank=True, null=True, verbose_name=u"детали")
+    ## Подробное с возможностью вставлять расширенный текст.
+    description = PlaceholderField(
+        'body',
+        help_text="описание"
+    )
+    start_date = models.DateField(verbose_name=u"дата начала")
+    stop_date  = models.DateField(verbose_name=u"дата конца")
+    start_time = models.TimeField(verbose_name=u"время начала")
+    stop_time  = models.TimeField(verbose_name=u"время конца")
+
+    teams   = models.ManyToManyField('Team', blank=True, null=True,  verbose_name=u"команды")
+
+    def __unicode__(self):  # Python 3: def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering            = ('name',)
+        verbose_name        = "команда: раcписание"
+        verbose_name_plural = "команды: раcписания"
+
 
 class Team(models.Model):
+    ctime       = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
     name        = models.CharField(max_length=200, verbose_name=u"название")
-    description = models.TextField(blank=True, null=True, verbose_name=u"описание")
+    detail      = models.TextField(blank=True, null=True, verbose_name=u"детали")
     image       = FilerImageField(blank=True, null=True, verbose_name=u"картинка")
-    birthday    = models.DateField(auto_now_add=True, verbose_name=u"дата создания")
+    birthday    = models.DateField(verbose_name=u"дата создания")
     players     = models.ManyToManyField(Player, verbose_name=u"Игроки")
+
+    ## Подробное с возможностью вставлять расширенный текст.
+    description = PlaceholderField(
+        'body',
+        help_text="описание"
+    )
+
+    teamschedules   = models.ManyToManyField('TeamSchedule', blank=True, null=True,  verbose_name=u"расписания")
+
 
     def __unicode__(self):
         return self.name
@@ -171,33 +337,261 @@ class Team(models.Model):
         verbose_name        = "команду"
         verbose_name_plural = "команды"
 
+
+class TeamPlugin(CMSPlugin):
+    '''
+        Плагин для отображения команды в поле расширенного текста
+    '''
+
+    ctime       = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
+    name        = models.CharField(max_length=200, blank=True, null=True, verbose_name=u"подпись")
+    team        = models.ForeignKey(Team, verbose_name=u"команда")
+    class Meta:
+        verbose_name        = "Гризли плагин: команда"
+        verbose_name_plural = "Гризли плагин: команды"
+
+    def __unicode__(self):
+      return self.team
+
+
+
 class Training(models.Model):
-    name        = models.CharField(max_length=200, blank=True, null=True, verbose_name=u"название")
-    description = models.TextField(blank=True, null=True, verbose_name=u"описание")
-    image       = FilerImageField(blank=True, null=True, verbose_name=u"картинка")
+    ctime   = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
+
+    name   = models.CharField(max_length=200, blank=True, null=True, verbose_name=u"название")
+    detail = models.TextField(blank=True, null=True, verbose_name=u"детали")
+    image  = FilerImageField(blank=True, null=True, verbose_name=u"картинка")
 
     team    = models.ForeignKey('Team', blank=True, null=True, verbose_name=u"команда")
     rink    = models.ForeignKey('Rink', blank=True, null=True, verbose_name=u"каток")
     trainer = models.ForeignKey('Trainer', blank=True, null=True, verbose_name=u"тренер")
 
-    date       = models.DateField(auto_now_add=True, verbose_name=u"дата")
-    start_time = models.TimeField(auto_now_add=True, verbose_name=u"время начала")
-    stop_time  = models.TimeField(auto_now_add=True, verbose_name=u"время конца")
+    date       = models.DateField(verbose_name=u"дата")
+    start_time = models.TimeField(verbose_name=u"время начала")
+    stop_time  = models.TimeField(verbose_name=u"время конца")
     price      = models.IntegerField(verbose_name=u"Цена одного посещения")
     loan       = models.IntegerField(verbose_name=u"Абонемента")
 
+
+    ## Подробное с возможностью вставлять расширенный текст.
+    description = PlaceholderField(
+        'body',
+        help_text="описание"
+    )
+
+    def __unicode__(self):  # Python 3: def __str__(self):
+        return self.name
+
     class Meta:
         ordering = ('date',)
         verbose_name        = "тренировку"
         verbose_name_plural = "тренировки"
+
 
 
 class GameSeason (models.Model):
-    name        = models.CharField(max_length=200, blank=True, null=True, verbose_name=u"название")
-    description = models.TextField(blank=True, null=True, verbose_name=u"описание")
+    ctime   = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
+    name   = models.CharField(max_length=200, blank=True, null=True, verbose_name=u"название")
+    detail = models.TextField(blank=True, null=True, verbose_name=u"детали")
+    image  = FilerImageField(blank=True, null=True, verbose_name=u"картинка")
+
+    start_date = models.DateField(verbose_name=u"дата начала")
+    stop_date  = models.DateField(verbose_name=u"дата конца")
+    start_time = models.TimeField(verbose_name=u"время начала")
+    stop_time  = models.TimeField(verbose_name=u"время конца")
+    ## Подробное с возможностью вставлять расширенный текст.
+    description = PlaceholderField(
+        'body',
+        help_text="описание"
+    )
+
+    def __unicode__(self):  # Python 3: def __str__(self):
+        return self.name
 
     class Meta:
-        ordering = ('date',)
-        verbose_name        = "тренировку"
-        verbose_name_plural = "тренировки"
+        verbose_name        = "Игры: сезон"
+        verbose_name_plural = "Игры: сезоны"
+
+class GameSeasonPlugin(CMSPlugin):
+    '''
+        Плагин для отображения в поле расширенного текста
+    '''
+    ctime       = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
+    name        = models.CharField(max_length=200, blank=True, null=True, verbose_name=u"подпись")
+    gameseason = models.ForeignKey(GameSeason, verbose_name=u"игровой сезон")
+    def __unicode__(self):
+      return self.gameseason
+
+
+
+
+class GameDivision(models.Model):
+    ctime   = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
+    name   = models.CharField(max_length=200, blank=True, null=True, verbose_name=u"название")
+    detail = models.TextField(blank=True, null=True, verbose_name=u"детали")
+    image  = FilerImageField(blank=True, null=True, verbose_name=u"картинка")
+
+    start_date = models.DateField(verbose_name=u"дата начала")
+    stop_date  = models.DateField(verbose_name=u"дата конца")
+    start_time = models.TimeField(verbose_name=u"время начала")
+    stop_time  = models.TimeField(verbose_name=u"время конца")
+
+    gameseason    = models.ForeignKey('GameSeason', blank=True, null=True, verbose_name=u"сезон")
+
+    ## Подробное с возможностью вставлять расширенный текст.
+    description = PlaceholderField(
+        'body',
+        help_text="описание"
+    )
+
+    def __unicode__(self):  # Python 3: def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ('ctime',)
+        verbose_name        = "Игры: дивизион"
+        verbose_name_plural = "Игры: дивизионы"
+
+
+class GameDivisionPlugin(CMSPlugin):
+    '''
+        Плагин для отображения в поле расширенного текста
+    '''
+    ctime        = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
+    name         = models.CharField(max_length=200, blank=True, null=True, verbose_name=u"подпись")
+    gamedivision = models.ForeignKey(GameDivision, verbose_name=u"игровой дивизион")
+    def __unicode__(self):
+      return self.gamedivision
+
+
+class GameTournamentFormat (models.Model):
+    '''
+        формат соревнования: сезон или кубок
+    '''
+    ctime = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=u"ctime"
+    )
+
+    name = models.CharField(
+        max_length=200,
+        verbose_name=u"название"
+    )
+    detail = models.TextField(
+        max_length=200,
+        blank=True,
+        null=True,
+        verbose_name=u"детали"
+    )
+    image  = FilerImageField(
+        blank=True,
+        null=True,
+        verbose_name=u"картинка"
+    )
+
+    ## Подробное с возможностью вставлять расширенный текст.
+    description = PlaceholderField(
+        'body',
+        help_text="описание"
+    )
+
+    def __unicode__(self):  # Python 3: def __str__(self):
+        return self.name
+    class Meta:
+        verbose_name        = "Игры: турниры: формат соревнования"
+        verbose_name_plural = "Игры: турниры: форматы соревнования"
+
+
+
+class GameTournamentSystem (models.Model):
+    '''
+        система соревнования:
+            1. Регулярный чемпионат
+            2. Регулярный чемпионат  + плей-оф
+            3. Регулярный чемпионат + плей-оф+малый кубок-
+                команды проигравшие на первой стадии плей-оф играют малый кубок
+                в формате кубок или по круговой
+            4. Регулярный чемпионат + плей-оф + кубок надежды
+            5. Регулярный чемпионат+ плей-оф + малый кубок +кубок надежды
+    '''
+    ctime = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=u"ctime"
+    )
+
+    name = models.CharField(
+        max_length=200,
+        verbose_name=u"название"
+    )
+    detail = models.TextField(
+        max_length=200,
+        blank=True,
+        null=True,
+        verbose_name=u"детали"
+    )
+    image  = FilerImageField(
+        blank=True,
+        null=True,
+        verbose_name=u"картинка"
+    )
+
+    ## Подробное с возможностью вставлять расширенный текст.
+    description = PlaceholderField(
+        'body',
+        help_text="описание"
+    )
+
+    def __unicode__(self):  # Python 3: def __str__(self):
+        return self.name
+    class Meta:
+        verbose_name        = "Игры: турниры: система соревнования"
+        verbose_name_plural = "Игры: турниры: системы соревнования"
+
+class GameTournament (models.Model):
+    ctime   = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
+    name   = models.CharField(max_length=200, blank=True, null=True, verbose_name=u"название")
+    detail = models.TextField(blank=True, null=True, verbose_name=u"детали")
+    image  = FilerImageField(blank=True, null=True, verbose_name=u"картинка")
+
+    start_date = models.DateField(verbose_name=u"дата начала")
+    stop_date  = models.DateField(verbose_name=u"дата конца")
+    start_time = models.TimeField(verbose_name=u"время начала")
+    stop_time  = models.TimeField(verbose_name=u"время конца")
+
+    ## Подробное с возможностью вставлять расширенный текст.
+    description = PlaceholderField(
+        'body',
+        help_text="описание"
+    )
+
+
+    gametournamentformat = models.ForeignKey(
+        'GameTournamentFormat',
+        blank=True,
+        null=True,
+        verbose_name=u"формат соревнования"
+    )
+
+    gametournamentsystem = models.ForeignKey(
+        'GameTournamentSystem',
+        blank=True,
+        null=True,
+        verbose_name=u"система соревнования"
+    )
+
+    teams = models.ManyToManyField(
+        'Team',
+        blank=True,
+        null=True,
+        verbose_name=u"команды"
+    )
+
+
+    def __unicode__(self):  # Python 3: def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ('ctime',)
+        verbose_name        = "Игры: турнир"
+        verbose_name_plural = "Игры: турниры"
 

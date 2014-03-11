@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.utils.translation import ugettext_lazy as _
 from datetime import datetime
 from datetime import date as pythondate
@@ -15,6 +17,8 @@ from cms.models.fields import PlaceholderField
 from contacts_and_people.models import Entity, Person, Building
 
 from links.models import ExternalLink
+
+
 
 from arkestra_utilities.output_libraries.dates import nice_date
 from arkestra_utilities.generic_models import ArkestraGenericPluginOptions, ArkestraGenericModel
@@ -57,6 +61,8 @@ class NewsArticle(NewsAndEvents):
 
     class Meta:
         ordering = ['-date']
+        verbose_name = u"Новость"
+        verbose_name_plural = u"Новости"
 
     @property
     def has_expired(self):
@@ -136,6 +142,9 @@ class Event(NewsAndEvents, LocationModelMixin):
 
     class Meta:
         ordering = ['date', 'start_time']
+        verbose_name = u"событие"
+        verbose_name_plural = u"события"
+
 
     @property
     def informative_url(self):
@@ -350,6 +359,8 @@ class EventType(models.Model):
 
     class Meta:
         ordering = ['event_type']
+        verbose_name = u"тип события"
+        verbose_name_plural = u"События: типы"
 
     def __unicode__(self):
         return self.event_type
@@ -361,6 +372,9 @@ class NewsSource(models.Model):
     def __unicode__(self):
         return self.external_news_source
 
+    class Meta:
+        verbose_name = u"Новостной источник"
+        verbose_name_plural = u"Новостные источники"
 
 def receiver_function(sender, **kwargs):
     event = kwargs['instance']

@@ -13,6 +13,7 @@ from django.utils.translation import ugettext_lazy as _
 from treeadmin.admin import TreeAdmin
 
 from arkestra_utilities.widgets.combobox import ComboboxField
+
 from widgetry.tabs.placeholderadmin import ModelAdminWithTabsAndCMSPlaceholder
 
 from contacts_and_people import models
@@ -512,11 +513,12 @@ try:
 except admin.sites.AlreadyRegistered:
     pass
 
-
 admin.site.register(models.Building,BuildingAdmin)
-admin.site.register(models.Entity,EntityAdmin)
 admin.site.register(models.Site,SiteAdmin)
 admin.site.register(models.Title)
+
+admin.site.register(models.Entity,EntityAdmin)
+
 
 # ------------------------- admin hacks -------------------------
 # Allows us to create Users who don't have passwords - because their

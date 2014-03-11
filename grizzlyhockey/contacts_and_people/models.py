@@ -117,6 +117,8 @@ class Building(models.Model):
 
     class Meta:
         ordering = ('site', 'street', 'number', 'name',)
+        verbose_name = u"Строение"
+        verbose_name_plural = u"Строения"
 
     def identifier(self):
         """
@@ -379,8 +381,10 @@ class Entity(MPTTModel, EntityLite, CommonFields):
             )
 
     class Meta:
-        verbose_name_plural = "Entities"
         ordering = ['tree_id', 'lft']
+        verbose_name = u"Сущность"
+        verbose_name_plural = u"Сущности"
+
 
     # def natural_key(self):
     #     return (self.slug)
@@ -645,6 +649,9 @@ class Title(models.Model):
 
     class Meta:
         ordering = ['title']
+        verbose_name = u"Обращение"
+        verbose_name_plural = u"Обращения"
+
 
     def __unicode__(self):
         return self.abbreviation
@@ -737,7 +744,8 @@ class Person(PersonLite, CommonFields):
 
     class Meta:
         ordering = ['surname', 'given_name', 'user']
-        verbose_name_plural = "People"
+        verbose_name = u"Человека"
+        verbose_name_plural = u"Люди"
 
     def __unicode__(self):
         title = self.title or ""

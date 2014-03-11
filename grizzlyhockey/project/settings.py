@@ -14,9 +14,12 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@project.com'),
+    ('root', 'root@root.com'),
 )
 
+#$ python manage.py schemamigration appname --auto
+
+#$ python manage.py migrate appname
 
 import os
 import sys
@@ -193,23 +196,22 @@ INSTALLED_APPS = (
     'arkestra_utilities',
     'cms',
     'menus',
-    # 'appmedia',
     'cms.plugins.text',
     'cms.plugins.snippet',
     'sekizai',
-    # 'djcelery',     # will need to be enabled for celery processing
 
     # Arkestra applications
 
-    'contacts_and_people',
-    'vacancies_and_studentships',
+    'contacts_and_people', # нужна для news_and_events
+    'links', # нужна для news_and_events
+
+    #'vacancies_and_studentships',
     'news_and_events',
-    'links',
+
     'arkestra_utilities.widgets.combobox',
     'arkestra_image_plugin',
     'video',
     'housekeeping',
-    'polls',
 
     'grizzly',
 
@@ -218,7 +220,7 @@ INSTALLED_APPS = (
 
     'cmsplugin_bootstrap_carousel',
     'polymorphic',
-    'semanticeditor',
+    #'semanticeditor', # я не до конца понял зачем он был нужен
     'mptt',
     'easy_thumbnails',
     'typogrify',

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from urlparse import urlparse
 
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
@@ -176,7 +178,9 @@ class ExternalLink(models.Model):
     
     class Meta:
         ordering = ['title',]
-        
+        verbose_name = u"Внешнюю ссылку"
+        verbose_name_plural = u"Внешние ссылки"
+
     def __unicode__(self):
         return self.title or self.url
 
@@ -224,6 +228,10 @@ class LinkType(models.Model):
     def __unicode__(self):
         return self.scheme
 
+    class Meta:
+        verbose_name = u"Тип ссылки"
+        verbose_name_plural = u"Типы ссылок"
+
 
 class ExternalSite(models.Model):
     
@@ -247,8 +255,9 @@ class ExternalSite(models.Model):
         )
     
     class Meta:
-        verbose_name = "domain"
         ordering = ['domain',]
+        verbose_name = u"Внешний сайт"
+        verbose_name_plural = u"Внешние сайты"
     
     def __unicode__(self):
         # if this site is unnamed, let's see if it has a named ancestor
