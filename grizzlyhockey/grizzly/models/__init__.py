@@ -130,6 +130,13 @@ class Player(models.Model):
     status  = models.ForeignKey(PlayerStatus, blank=True, null=True, verbose_name=u"статус")
     type    = models.ForeignKey(PlayerType, blank=True, null=True, verbose_name=u"тип")
 
+    teams   = models.ManyToManyField(
+        'Team',
+        blank=True,
+        null=True,
+        verbose_name=u"команды"
+    )
+
     def __unicode__(self):
         return u"%s %s %s"%(self.second_name, self.first_name, self.patronymic)
 
@@ -214,7 +221,7 @@ class Trainer(models.Model):
     second_name = models.CharField(max_length=200, verbose_name=u"фамилия")
     birthday    = models.DateField(blank=True,null=True,verbose_name=u"дата рождения")
     image       = FilerImageField(blank=True, null=True, verbose_name=u"фотография")
-    detail = models.TextField(blank=True, null=True, verbose_name=u"детали")
+    detail      = models.TextField(blank=True, null=True, verbose_name=u"детали")
 
     ## Подробное с возможностью вставлять расширенный текст.
     description = PlaceholderField(
@@ -479,6 +486,13 @@ class GameSeason (models.Model):
         help_text="описание"
     )
 
+    gamedivisions   = models.ManyToManyField(
+        'GameDivision',
+        blank=True,
+        null=True,
+        verbose_name=u"дивизионы"
+    )
+
     def __unicode__(self):  # Python 3: def __str__(self):
         return self.name
 
@@ -510,12 +524,17 @@ class GameDivision(models.Model):
     start_time = models.TimeField(blank=True,null=True,verbose_name=u"время начала")
     stop_time  = models.TimeField(blank=True,null=True,verbose_name=u"время конца")
 
-    gameseason    = models.ForeignKey('GameSeason', blank=True, null=True, verbose_name=u"сезон")
-
     ## Подробное с возможностью вставлять расширенный текст.
     description = PlaceholderField(
         'body',
         help_text="описание"
+    )
+
+    gameseasons   = models.ManyToManyField(
+        'GameSeason',
+        blank=True,
+        null=True,
+        verbose_name=u"сезоны"
     )
 
     teams   = models.ManyToManyField(
@@ -742,12 +761,14 @@ class GameTournamentRegular (models.Model):
         help_text="описание"
     )
 
-    gamedivision    = models.ForeignKey(
+
+    gamedivisions = models.ManyToManyField(
         'GameDivision',
         blank=True,
         null=True,
-        verbose_name=u"дивизион"
+        verbose_name=u"дивизионы"
     )
+
 
     teams = models.ManyToManyField(
         'Team',

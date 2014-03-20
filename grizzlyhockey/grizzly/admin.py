@@ -112,7 +112,7 @@ class PlayerAdmin(PlaceholderAdmin):
     list_display = ( 'second_name', 'first_name', 'patronymic', 'game_number', 'role')
     list_filter = ('role', 'game_number', 'status')
     search_fields = ( 'second_name', 'first_name', 'patronymic', 'game_number', 'role')
-
+    filter_horizontal = ('teams',)
 
 class TrainerAdmin(PlaceholderAdmin):
     list_display = ( 'second_name', 'first_name', 'patronymic')
@@ -173,16 +173,6 @@ class TrainingAdmin(PlaceholderAdmin):
     search_fields = ('name', 'description')
 
 
-
-class GameDivisionInline(admin.TabularInline):
-    model = GameDivision
-    fk_name = "gameseason"
-    fields = (
-        'name',
-        'start_date', 'stop_date',
-        'start_time', 'stop_time'
-    )
-
 class GameSeasonAdmin(PlaceholderAdmin):
     list_display = (
         'name',
@@ -195,23 +185,21 @@ class GameSeasonAdmin(PlaceholderAdmin):
         'start_date', 'stop_date',
         'start_time', 'stop_time'
     )
-    inlines = [
-        GameDivisionInline,
-    ]
+    filter_horizontal = ('gamedivisions', )
+
 
 class GameDivisionAdmin(PlaceholderAdmin):
     list_display = (
         'name',
         'start_date', 'stop_date',
         'start_time', 'stop_time',
-        'gameseason'
     )
-    list_filter = ('gameseason', 'teams')
     search_fields = (
         'name',
         'start_date', 'stop_date',
         'start_time', 'stop_time'
     )
+    filter_horizontal = ('gameseasons', 'teams')
 
 class GameTournamentFormatAdmin(PlaceholderAdmin):
     list_display = ('name', 'description')
