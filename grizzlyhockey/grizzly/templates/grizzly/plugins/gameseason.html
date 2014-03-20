@@ -1,0 +1,40 @@
+{% load thumbnail %}
+
+<div>
+    <div>
+        <span>Сезон: </span><span>{{ instance.gameseason.name }}</span>
+    </div>
+    <div>
+        <img src="{% thumbnail instance.gameseason.image 150x150 %}"
+            {% if picture.alt %}
+                alt="{{ instance.gameseason.image.alt }}"
+            {% endif %}
+        />
+    </div>
+
+    {% if instance.gameseason.gamedivision_set %}
+        <div>
+            <span>Дивизионы: </span>
+            <ul>
+                {% for gamedivision in instance.gameseason.gamedivision_set.all %}
+                <li>
+                    <div>
+                        <span>{{gamedivision.name}}</span>
+                        <div>
+                            <img src="{% thumbnail gamedivision.image 150x150 %}"
+                                {% if picture.alt %}
+                                    alt="{{ gamedivision.image.alt }}"
+                                {% endif %}
+                            />
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+</div>
+
+
+

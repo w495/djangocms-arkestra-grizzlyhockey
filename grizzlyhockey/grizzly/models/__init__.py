@@ -104,9 +104,9 @@ class PlayerType(models.Model):
 class Player(models.Model):
     ctime   = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
 
-    first_name  = models.CharField(max_length=200, verbose_name=u"имя")
-    patronymic  = models.CharField(max_length=200, verbose_name=u"отчество")
-    second_name = models.CharField(max_length=200, verbose_name=u"фамилия")
+    first_name  = models.CharField(blank=True, null=True, max_length=200, verbose_name=u"имя")
+    patronymic  = models.CharField(blank=True, null=True, max_length=200, verbose_name=u"отчество")
+    second_name = models.CharField(blank=True, null=True, max_length=200, verbose_name=u"фамилия")
     birthday    = models.DateField(blank=True,null=True,verbose_name=u"дата рождения")
     image       = FilerImageField(blank=True, null=True, verbose_name=u"фотография")
 
@@ -121,11 +121,11 @@ class Player(models.Model):
         help_text="описание"
     )
 
-    height = models.IntegerField(verbose_name=u"рост");
-    weight = models.IntegerField(verbose_name=u"вес");
-    game_number = models.CharField(max_length=200, verbose_name=u"игровой номер")
-    role          = models.CharField(max_length=200, verbose_name=u"амплуа")
-    qualification = models.TextField(verbose_name=u"квалификация")
+    height = models.IntegerField(blank=True, null=True, verbose_name=u"рост");
+    weight = models.IntegerField(blank=True, null=True, verbose_name=u"вес");
+    game_number = models.CharField(blank=True, null=True, max_length=200, verbose_name=u"игровой номер")
+    role          = models.CharField(blank=True, null=True, max_length=200, verbose_name=u"амплуа")
+    qualification = models.TextField(blank=True, null=True, verbose_name=u"квалификация")
 
     status  = models.ForeignKey(PlayerStatus, blank=True, null=True, verbose_name=u"статус")
     type    = models.ForeignKey(PlayerType, blank=True, null=True, verbose_name=u"тип")
@@ -136,6 +136,23 @@ class Player(models.Model):
     class Meta:
         verbose_name        = "игрока"
         verbose_name_plural = "игроки"
+
+class PlayerPlugin(CMSPlugin):
+    '''
+        Плагин для отображения игрок в поле расширенного текста
+    '''
+
+    ctime       = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
+    name        = models.CharField(max_length=200, blank=True, null=True, verbose_name=u"подпись")
+    player      = models.ForeignKey(Player, verbose_name=u"игрок")
+    class Meta:
+        verbose_name        = "Гризли плагин: игрок"
+        verbose_name_plural = "Гризли плагин: игрок"
+
+    def __unicode__(self):
+      return self.player
+
+
 
 class JudgeType(models.Model):
     ctime   = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
@@ -390,6 +407,27 @@ class TeamPlugin(CMSPlugin):
       return self.team
 
 
+class TeamManyPlugin(CMSPlugin):
+    '''
+        Плагин для отображения команды в поле расширенного текста
+    '''
+
+    ctime       = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
+    name        = models.CharField(max_length=200, blank=True, null=True, verbose_name=u"подпись")
+    teams       = models.ManyToManyField(
+        Team,
+        blank=True,
+        null=True,
+        verbose_name=u"команды"
+    )
+
+    class Meta:
+        verbose_name        = "Гризли плагин: команды"
+        verbose_name_plural = "Гризли плагин: команды"
+
+    def __unicode__(self):
+      return self.teams
+
 
 class Training(models.Model):
     ctime   = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
@@ -456,7 +494,7 @@ class GameSeasonPlugin(CMSPlugin):
     name        = models.CharField(max_length=200, blank=True, null=True, verbose_name=u"подпись")
     gameseason = models.ForeignKey(GameSeason, verbose_name=u"игровой сезон")
     def __unicode__(self):
-      return self.gameseason
+      return self.name
 
 
 
@@ -495,6 +533,27 @@ class GameDivision(models.Model):
         verbose_name        = "Игры: дивизион"
         verbose_name_plural = "Игры: дивизионы"
 
+class GameDivisionManyPlugin(CMSPlugin):
+    '''
+        Плагин для отображения команды в поле расширенного текста
+    '''
+
+    ctime       = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
+    name        = models.CharField(max_length=200, blank=True, null=True, verbose_name=u"подпись")
+    teams       = models.ManyToManyField(
+        Team,
+        blank=True,
+        null=True,
+        verbose_name=u"дивизионы"
+    )
+
+    class Meta:
+        verbose_name        = "Гризли плагин: дивизионы"
+        verbose_name_plural = "Гризли плагин: дивизионы"
+
+    def __unicode__(self):
+      return self.teams
+
 
 class GameDivisionPlugin(CMSPlugin):
     '''
@@ -505,6 +564,8 @@ class GameDivisionPlugin(CMSPlugin):
     gamedivision = models.ForeignKey(GameDivision, verbose_name=u"игровой дивизион")
     def __unicode__(self):
       return self.gamedivision
+
+
 
 
 class GameTournamentFormat (models.Model):
@@ -602,6 +663,7 @@ class GameTournamentSystem (models.Model):
         verbose_name        = "Игры: турниры: система соревнования"
         verbose_name_plural = "Игры: турниры: системы соревнования"
 
+
 class GameTournament (models.Model):
     ctime   = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
     name   = models.CharField(max_length=200, blank=True, null=True, verbose_name=u"название")
@@ -652,6 +714,17 @@ class GameTournament (models.Model):
         verbose_name_plural = "Игры: турниры"
 
 
+class GameTournamentPlugin(CMSPlugin):
+    '''
+        Плагин для отображения в поле расширенного текста
+    '''
+    ctime        = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
+    name         = models.CharField(max_length=200, blank=True, null=True, verbose_name=u"подпись")
+    gametournament = models.ForeignKey(GameDivision, verbose_name=u"GameTournament")
+    def __unicode__(self):
+      return self.gametournament
+
+
 class GameTournamentRegular (models.Model):
     ctime   = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
     name   = models.CharField(max_length=200, blank=True, null=True, verbose_name=u"название")
@@ -692,3 +765,13 @@ class GameTournamentRegular (models.Model):
         verbose_name        = "Игры: турнир регулярный"
         verbose_name_plural = "Игры: турниры регулярные"
 
+
+class GameTournamentRegularPlugin(CMSPlugin):
+    '''
+        Плагин для отображения в поле расширенного текста
+    '''
+    ctime        = models.DateTimeField(auto_now_add=True, verbose_name=u"ctime")
+    name         = models.CharField(max_length=200, blank=True, null=True, verbose_name=u"подпись")
+    gametournamentregular = models.ForeignKey(GameDivision, verbose_name=u"GameTournamentRegular")
+    def __unicode__(self):
+      return self.gametournamentregular
