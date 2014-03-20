@@ -17,6 +17,7 @@
 ===============================================================================
 
 ::
+
     virtualenv arkestra
     cd arkestra/
     source bin/activate
@@ -27,4 +28,5 @@
 ===============================================================================
 
 ::
+    
     pip install -e git+https://github.com/evildmp/Arkestra.git@develop#egg=Arkestra
