@@ -3,7 +3,6 @@
 PROGNAME=$0;
 
 VIRTUALENV_NAME="arkestra";
-
 VIRTUALENV_PATH="/home/w495/work/projects/ghl/arkestra/arkestra/";
 
 ##
@@ -21,9 +20,9 @@ ADDRESS="${IP}:${PORT}";
 ## Узел
 ##
 
-HTTP_WORKERS="10"
+HTTP_WORKERS="100"
 
-PROCESSES="10"
+PROCESSES="100"
 
 XUID="1000"
 
@@ -120,13 +119,14 @@ noticeall() {
 usage () {
 cat <<CPUSAGE
 Grizzlyhockey node managment utility for changing it state.
-$PROGNAME [-h]|[[-m]|[-M]|[-a] [-v]]
+$PROGNAME [-h]|[[-s]|[-S]|[-r] [-v] [-e <virtualenv directory>]]
 
     -h | --help     shows this test.
     -s | --start    starts or restarts the node.
     -S | --stop     stops node.
     -r | --reload   reloads node.
     -v | --verbose  uses verbose mode. It tells about really actions.
+    -e | --env=     sets virtualenv directory.
 
 CPUSAGE
 }
@@ -148,7 +148,7 @@ wrong_usage(){
 do_start () {
     mkdir -p "${LOG_DIR}"
     notice "uwsgi <PARAMS ... >";
-    pushd "${VIRTUALENV_PATH}";
+    #pushd "${VIRTUALENV_PATH}";
     uwsgi                                                           \
         --plugins python                                            \
         --http="${ADDRESS}"                                         \
@@ -164,22 +164,22 @@ do_start () {
         --max-requests="${MAX_REQUESTS}"                            \
         --static-map "${STATIC_URL}/=${STATIC_DIR}/"                \
         --vacuum
-    popd;
+    #popd;
 }
 
 do_reload(){
     notice "uwsgi --reload ${PID_FILE}";
-    pushd "${VIRTUALENV_PATH}";
+    #pushd "${VIRTUALENV_PATH}";
     uwsgi --reload "${PID_FILE}";
-    popd;
+    #popd;
 }
 
 
 do_stop(){
     notice "uwsgi --stop ${PID_FILE}";
-    pushd "${VIRTUALENV_PATH}";
+    #pushd "${VIRTUALENV_PATH}";
     uwsgi --stop "${PID_FILE}"; 
-    popd;
+    #popd;
     notice "rm -rf ${PID_FILE}";
     rm -rf "${PID_FILE}";
 }
@@ -225,7 +225,7 @@ modestart () {
 ## --------------------------------------------------------------------------
 ## 
 
-_ARGS=$(getopt -o hsSrv -l "help,start,stop,reload,verbose" -n $0 --  "$@");
+_ARGS=$(getopt -o hsSrve: -l "help,start,stop,reload,verbose,env:" -n $0 --  "$@");
 set -- $_ARGS;
 
 MODE="start";
@@ -235,17 +235,23 @@ while [[ -n $_ARGS ]] ;
 do
     case $1 in
         -h|--help)      show_usage;;
-        -s|--start)     MODE="start";   shift;;
-        -S|--stop)      MODE="stop";    shift;;
-        -r|--reload)    MODE="reload";  shift;;
-        -v|--verbose)   VERBOSE="yes";  shift;;
-        '--')                           break;;
+        -s|--start)     MODE="start";               shift;;
+        -S|--stop)      MODE="stop";                shift;;
+        -r|--reload)    MODE="reload";              shift;;
+        -v|--verbose)   VERBOSE="yes";              shift;;
+        -e|--env)       VENVPATH="$2"               shift 2;;
+        '--')                                       break;;
         *)              wrong_usage "Unknown parameter '$1'.";;
     esac;
 done;
 
 notice "VERBOSE = ${VERBOSE}";
 notice "MODE    = ${MODE}";
+
+if [[ "x${VENVPATH}"  != "x" ]] ; then
+    VIRTUALENV_PATH="${VENVPATH//\'}"
+fi;
+
 
 case "${MODE}" in
     "start"  )  modestart ;;
