@@ -2,15 +2,19 @@
 
 PROGNAME=$0;
 
+VIRTUALENV_NAME="arkestra";
+
+VIRTUALENV_PATH="/home/w495/work/projects/ghl/arkestra/arkestra/";
+
 ##
 ## Адресс
 ##
 
-IP="127.0.0.1"
+IP="127.0.0.1";
 
-PORT="9000"
+PORT="9000";
 
-ADDRESS="${IP}:${PORT}"
+ADDRESS="${IP}:${PORT}";
 
 
 ##
@@ -106,6 +110,8 @@ noticeall() {
     notice "MAX_REQUESTS    =   ${MAX_REQUESTS}";
     notice "STATIC_URL      =   ${STATIC_URL}";
     notice "STATIC_DIR      =   ${STATIC_DIR}";
+    notice "VIRTUALENV_NAME =   ${VIRTUALENV_NAME}"
+    notice "VIRTUALENV_PATH =   ${VIRTUALENV_PATH}"
     notice ""
     notice "    MODE: ${MODE}";
     notice ""
@@ -141,10 +147,12 @@ wrong_usage(){
 
 do_start () {
     mkdir -p "${LOG_DIR}"
-    notice "uwsgi <PARAMS ... >"
+    notice "uwsgi <PARAMS ... >";
+    pushd "${VIRTUALENV_PATH}";
     uwsgi                                                           \
         --plugins python                                            \
         --http="${ADDRESS}"                                         \
+        -H  "${VIRTUALENV_PATH}"                                    \
         --chdir="${PROJECT_DIR}"                                    \
         --daemonize="${LOG_FILE}"                                   \
         --module="${PROJECT_NAME}.wsgi:application"                 \
@@ -156,17 +164,22 @@ do_start () {
         --max-requests="${MAX_REQUESTS}"                            \
         --static-map "${STATIC_URL}/=${STATIC_DIR}/"                \
         --vacuum
+    popd;
 }
 
 do_reload(){
     notice "uwsgi --reload ${PID_FILE}";
+    pushd "${VIRTUALENV_PATH}";
     uwsgi --reload "${PID_FILE}";
+    popd;
 }
 
 
 do_stop(){
     notice "uwsgi --stop ${PID_FILE}";
+    pushd "${VIRTUALENV_PATH}";
     uwsgi --stop "${PID_FILE}"; 
+    popd;
     notice "rm -rf ${PID_FILE}";
     rm -rf "${PID_FILE}";
 }
