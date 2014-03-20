@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 PROGNAME=$0;
 
@@ -228,8 +228,10 @@ modestart () {
 ## 
 
 _ARGS=$(getopt -o hsSrve:i:p: -l \
-    "help,start,stop,reload,verbose,env:ip:port:" -n $0 --  "$@");
+    "help,start,stop,reload,verbose,env:,ip:,port:" -n $0 --  "$@");
 set -- $_ARGS;
+
+echo $_ARGS
 
 MODE="start";
 VERBOSE="no";
@@ -238,7 +240,7 @@ while [[ -n $_ARGS ]] ;
 do
     case $1 in
         -i|--ip)        CONFIP="$2";                shift 2;;
-        -e|--env)       CONFPATH="$2"               shift 2;;
+        -e|--env)       CONFPATH="$2";              shift 2;;
         -h|--help)      show_usage;;
         -S|--stop)      MODE="stop";                shift;;
         -p|--port)      CONFPORT="$2";              shift 2;;
@@ -253,6 +255,8 @@ done;
 notice "VERBOSE = ${VERBOSE}";
 notice "MODE    = ${MODE}";
 
+
+
 ##
 ## --------------------------------------------------------------------------
 ##
@@ -266,13 +270,22 @@ if [[ "x${CONFIP}"  != "x" ]] ; then
 fi;
 
 if [[ "x${CONFPORT}"  != "x" ]] ; then
+    CONFPORT="${CONFPORT//\'}"
     PORT="${CONFPORT//\'}"
     NUMBER_REGEXP='^[0-9]+$';
-    if ! [[ ${PORT} =~ ${NUMBER_REGEXP} ]] ; then
-        error "\`${PORT}' wrong post ";
+    if ! [[ ${CONFPORT} =~ ${NUMBER_REGEXP} ]] ; then
+        error "\`${CONFPORT}' wrong post ";
         exit 1;
     fi;
 fi;
+
+
+notice "CONFIP      = ${CONFIP} -> ${IP}";
+notice "CONFPORT    = ${CONFPORT} -> ${PORT}";
+notice "CONFPATH    = ${CONFPATH} -> ${VIRTUALENV_PATH}";
+
+
+ADDRESS="${IP}:${PORT}";
 
 ##
 ## --------------------------------------------------------------------------

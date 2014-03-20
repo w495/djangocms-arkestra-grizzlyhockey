@@ -51,6 +51,11 @@
 Настроить базу данных
 ===================================
 
+::
+    create database ghl
+        default character set utf8
+        default collate utf8_general_ci;
+
 Всего скорее вам сначала придется отредактировать файл ``project/settings.py``.
 Затем запустить:
 
