@@ -1,0 +1,26 @@
+Source: grizzlyhockey
+Section: www
+Priority: extra
+Maintainer: Ilya w495 Nikitin <w@w-495.ru>
+Build-Depends: 
+    debhelper (>= 5),
+Standards-Version: 1.0
+
+Package:grizzlyhockey
+Architecture: all
+Depends:
+    mysql-server,
+    mysql-common,
+    python-mysqldb,
+    python-six,
+    python-markdown,
+    python-yaml,
+    python-django-1.5,
+    django-filter,
+    python-django-rest-framework,
+    uwsgi,
+    uwsgi-plugin-python,
+    nginx,
+    ${misc:Depends}
+Conflicts: grizzlyhockey
+Description: grizzlyhockey.ru

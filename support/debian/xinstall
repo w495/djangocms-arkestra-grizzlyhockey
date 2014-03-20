@@ -1,0 +1,2 @@
+root:root   755 grizzlyhockey                     /var/www
+root:root   644 grizzlyhockey/priv/support/nginx  /etc

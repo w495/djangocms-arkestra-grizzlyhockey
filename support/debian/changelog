@@ -1,0 +1,6 @@
+grizzlyhockey (0.1) unstable; urgency=low
+
+  * Added meta-package with dependencies for grizzlyhockey interface
+
+ -- Ilya Niktin <w@w-495.ru>  Thu, 16 Jan 2014 20:04:01 +0400
+ 

@@ -1,0 +1,39 @@
+#!/usr/bin/make -f
+
+export DH_VERBOSE=0
+
+build:
+	dh_testdir
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_xinstalldirs
+	dh_xinstall -X.svn/ -X.git/
+
+binary-indep: build install
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_perl
+	dh_installdeb
+	dh_saferm
+	dh_installdebconf
+	dh_saferm_conffiles
+	dh_installlogrotate
+	dh_installinit -n
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install
