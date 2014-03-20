@@ -234,12 +234,12 @@ VERBOSE="no";
 while [[ -n $_ARGS ]] ;
 do
     case $1 in
+        -e|--env)       VENVPATH="$2"               shift 2;;
         -h|--help)      show_usage;;
-        -s|--start)     MODE="start";               shift;;
         -S|--stop)      MODE="stop";                shift;;
+        -s|--start)     MODE="start";               shift;;
         -r|--reload)    MODE="reload";              shift;;
         -v|--verbose)   VERBOSE="yes";              shift;;
-        -e|--env)       VENVPATH="$2"               shift 2;;
         '--')                                       break;;
         *)              wrong_usage "Unknown parameter '$1'.";;
     esac;
