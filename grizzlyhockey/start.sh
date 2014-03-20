@@ -119,14 +119,16 @@ noticeall() {
 usage () {
 cat <<CPUSAGE
 Grizzlyhockey node managment utility for changing it state.
-$PROGNAME [-h]|[[-s]|[-S]|[-r] [-v] [-e <virtualenv directory>]]
+$PROGNAME [-h]|[[-s]|[-S]|[-r] [-v] [-e <path>] [-i <IP>] [-p <port>]]
 
-    -h | --help     shows this test.
-    -s | --start    starts or restarts the node.
-    -S | --stop     stops node.
-    -r | --reload   reloads node.
-    -v | --verbose  uses verbose mode. It tells about really actions.
-    -e | --env=     sets virtualenv directory.
+    -h        | --help          shows this test.
+    -s        | --start         starts or restarts the node.
+    -S        | --stop          stops node.
+    -r        | --reload        reloads node.
+    -v        | --verbose       uses verbose mode.
+    -e <path> | --env=<path>    sets virtualenv directory.
+    -p <port> | --port=<port>   sets port (default is 9000).
+    -i <host> | --ip=<host>     sets host (default is 127.0.0.1)
 
 CPUSAGE
 }
@@ -225,7 +227,8 @@ modestart () {
 ## --------------------------------------------------------------------------
 ## 
 
-_ARGS=$(getopt -o hsSrve: -l "help,start,stop,reload,verbose,env:" -n $0 --  "$@");
+_ARGS=$(getopt -o hsSrve:i:p: -l \
+    "help,start,stop,reload,verbose,env:ip:port:" -n $0 --  "$@");
 set -- $_ARGS;
 
 MODE="start";
@@ -234,9 +237,11 @@ VERBOSE="no";
 while [[ -n $_ARGS ]] ;
 do
     case $1 in
-        -e|--env)       VENVPATH="$2"               shift 2;;
+        -i|--ip)        CONFIP="$2";                shift 2;;
+        -e|--env)       CONFPATH="$2"               shift 2;;
         -h|--help)      show_usage;;
         -S|--stop)      MODE="stop";                shift;;
+        -p|--port)      CONFPORT="$2";              shift 2;;
         -s|--start)     MODE="start";               shift;;
         -r|--reload)    MODE="reload";              shift;;
         -v|--verbose)   VERBOSE="yes";              shift;;
@@ -248,10 +253,30 @@ done;
 notice "VERBOSE = ${VERBOSE}";
 notice "MODE    = ${MODE}";
 
-if [[ "x${VENVPATH}"  != "x" ]] ; then
-    VIRTUALENV_PATH="${VENVPATH//\'}"
+##
+## --------------------------------------------------------------------------
+##
+
+if [[ "x${CONFPATH}"  != "x" ]] ; then
+    VIRTUALENV_PATH="${CONFPATH//\'}"
 fi;
 
+if [[ "x${CONFIP}"  != "x" ]] ; then
+    IP="${CONFIP//\'}"
+fi;
+
+if [[ "x${CONFPORT}"  != "x" ]] ; then
+    PORT="${CONFPORT//\'}"
+    NUMBER_REGEXP='^[0-9]+$';
+    if ! [[ ${PORT} =~ ${NUMBER_REGEXP} ]] ; then
+        error "\`${PORT}' wrong post ";
+        exit 1;
+    fi;
+fi;
+
+##
+## --------------------------------------------------------------------------
+##
 
 case "${MODE}" in
     "start"  )  modestart ;;
