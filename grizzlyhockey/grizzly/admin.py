@@ -162,7 +162,7 @@ class TeamAdmin(PlaceholderAdmin):
     list_display = ('name', 'description')
     list_filter = []
     search_fields = ('name', 'description')
-    filter_horizontal = ('players', 'teamschedules')
+    filter_horizontal = ('players', 'teamschedules', 'gamedivisions')
 
 class TeamPluginAdmin(PlaceholderAdmin):
     pass
@@ -206,7 +206,7 @@ class GameDivisionAdmin(PlaceholderAdmin):
         'start_time', 'stop_time',
         'gameseason'
     )
-    list_filter = ('gameseason',)
+    list_filter = ('gameseason', 'teams')
     search_fields = (
         'name',
         'start_date', 'stop_date',

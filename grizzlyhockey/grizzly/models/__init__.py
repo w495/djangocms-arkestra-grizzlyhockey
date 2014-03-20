@@ -357,6 +357,13 @@ class Team(models.Model):
         verbose_name=u"расписания"
     )
 
+    gamedivisions   = models.ManyToManyField(
+        'GameDivision',
+        blank=True,
+        null=True,
+        verbose_name=u"дивизионы"
+    )
+
 
     def __unicode__(self):
         return self.name
@@ -471,6 +478,13 @@ class GameDivision(models.Model):
     description = PlaceholderField(
         'body',
         help_text="описание"
+    )
+
+    teams   = models.ManyToManyField(
+        'Team',
+        blank=True,
+        null=True,
+        verbose_name=u"команды"
     )
 
     def __unicode__(self):  # Python 3: def __str__(self):
