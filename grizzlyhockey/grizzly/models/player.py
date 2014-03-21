@@ -1,25 +1,72 @@
+# -*- coding: utf-8 -*-
+
 from django.db import models
-  
+from abspers import AbsPers
 
-class PlayerStatus(models.Model):
-    name = models.CharField(max_length=200)
-    description = models.CharField(max_length=200)
+class Player(AbsPers):
 
-    def __unicode__(self):  # Python 3: def __str__(self):
-        return self.name
+    insurance_type = models.ForeignKey(
+        'InsuranceType',
+        blank = True,
+        null = True,
+        verbose_name = u"тип страховки"
+    )
 
-class Player(models.Model):
-    first_name  = models.CharField(max_length=200)
-    patronymic  = models.CharField(max_length=200)
-    second_name = models.CharField(max_length=200)
-    birthday    = models.DateTimeField('date published')
-    height = models.IntegerField();
-    weight = models.IntegerField();
-    game_number = models.CharField(max_length=200)
-    role          = models.CharField(max_length=200)
-    qualification = models.CharField(max_length=200)
+    height = models.IntegerField(
+        blank = True,
+        null = True,
+        verbose_name = u"рост"
+    )
 
-    status = models.ForeignKey(PlayerStatus)
+    weight = models.IntegerField(
+        blank = True,
+        null = True,
+        verbose_name = u"вес"
+    )
 
-    def __unicode__(self):  # Python 3: def __str__(self):
-        return self.question
+    game_number = models.CharField(
+        blank = True,
+        null = True,
+        max_length = 200,
+        verbose_name = u"игровой номер"
+    )
+
+    role = models.CharField(
+        blank = True,
+        null = True,
+        max_length = 200,
+        verbose_name = u"амплуа"
+    )
+
+    qualification = models.TextField(
+        blank = True,
+        null = True,
+        verbose_name = u"квалификация"
+    )
+
+    status = models.ForeignKey(
+        'PlayerStatus',
+        blank = True,
+        null = True,
+        verbose_name = u"статус"
+    )
+
+    type = models.ForeignKey(
+        'PlayerType',
+        blank = True,
+        null = True,
+        verbose_name = u"тип"
+    )
+
+    teams = models.ManyToManyField(
+        'Team',
+        blank = True,
+        null = True,
+        verbose_name = u"команды"
+    )
+
+
+    class Meta:
+        app_label = "grizzly"
+        verbose_name = "игрока"
+        verbose_name_plural = "игроки"

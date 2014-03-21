@@ -28,7 +28,6 @@ from grizzly.models import GameDivision
 from grizzly.models import GameTournamentFormat
 from grizzly.models import GameTournamentSystem
 
-from grizzly.models import GameTournament
 
 from grizzly.models import GameTournamentRegular
 from django.http import HttpResponseRedirect, HttpResponse
@@ -338,7 +337,7 @@ admin.site.register(Training, TrainingAdmin)
 ##
 admin.site.register(GameSeason,             GameSeasonAdmin)
 admin.site.register(GameDivision,           GameDivisionAdmin)
-admin.site.register(GameTournament,         GameTournamentAdmin)
+
 admin.site.register(GameTournamentRegular,  GameTournamentRegularAdmin)
 
 admin.site.register(GameTournamentSystem,   GameTournamentSystemAdmin)
