@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+bash /var/ghl/start.sh -se "/var/grizzlyhockey/arkestra/"
+
