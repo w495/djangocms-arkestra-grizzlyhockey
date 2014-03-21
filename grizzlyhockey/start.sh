@@ -74,7 +74,7 @@ PID_FILE="${PID_DIR}/${PID_NAME}"
 ## Log проекта
 ##
 
-LOG_DIR="/var/log/grizzlyhockey"
+LOG_DIR="/var/log/${NODE}"
 
 LOG_NAME="${NODE}.log"
 
