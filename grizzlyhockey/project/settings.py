@@ -205,7 +205,7 @@ INSTALLED_APPS = (
     'contacts_and_people', # нужна для news_and_events
     'links', # нужна для news_and_events
 
-    #'vacancies_and_studentships',
+    'vacancies_and_studentships',
     'news_and_events',
 
     'arkestra_utilities.widgets.combobox',
@@ -229,7 +229,7 @@ INSTALLED_APPS = (
     'south', # don't leave this disabled
     'treeadmin',
     'pagination',
-
+    'polls',
     # core Django applications
     # these should be last, so we can override their templates
 
