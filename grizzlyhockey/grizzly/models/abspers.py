@@ -7,7 +7,8 @@ class AbsPers(AbsObj):
     '''
         Абстрактный человек
     '''
-    
+    name = None
+
     first_name = models.CharField(
         blank = True,
         null = True,

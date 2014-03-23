@@ -2,6 +2,7 @@
 
 from django.db import models
 from absplugin import AbsPlugin
+from cms.models import CMSPlugin
 
 
 class GameDivisionPlugin(AbsPlugin):
@@ -15,8 +16,8 @@ class GameDivisionPlugin(AbsPlugin):
     )
 
     class Meta:
-        ordering = ('ctime',)
+        ordering = ('name',)
         app_label = "grizzly"
-        verbose_name = "Гризли плагин: дивизион"
-        verbose_name_plural = "Гризли плагин: дивизион"
+        verbose_name = u"Гризли плагин: дивизион"
+        verbose_name_plural = u"Гризли плагин: дивизион"
 

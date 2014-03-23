@@ -9,7 +9,6 @@ class AbsObj(models.Model):
     '''
         Абстрактный объект
     '''
-
     ctime = models.DateTimeField(
         auto_now_add = True,
         verbose_name = u"ctime"

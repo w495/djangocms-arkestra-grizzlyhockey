@@ -69,14 +69,8 @@ class GameDivisionPlugin(CMSPluginBase):
 
 
 plugin_pool.register_plugin(TeamPluginMany)
-
 plugin_pool.register_plugin(TeamPlugin)
-
 plugin_pool.register_plugin(PlayerPlugin)
-
 plugin_pool.register_plugin(GameSeasonPlugin)
-
-
 plugin_pool.register_plugin(GameDivisionPluginMany)
-
 plugin_pool.register_plugin(GameDivisionPlugin)

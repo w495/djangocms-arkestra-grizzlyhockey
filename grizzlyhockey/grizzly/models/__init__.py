@@ -23,15 +23,15 @@ from playerstatus import PlayerStatus
 ##
 ## Категория игрока
 ##
-from playertype import PlayerType
+from playertype     import PlayerType
 
-from player import Player
-from playerplugin import PlayerPlugin
-from judgetype import JudgeType
-from judge import Judge
-from trainer import Trainer
-from rink import Rink
-from team import Team
+from player         import Player
+from playerplugin   import PlayerPlugin
+from judgetype      import JudgeType
+from judge          import Judge
+from trainer        import Trainer
+from rink           import Rink
+from team           import Team
 
 from rinkschedule   import RinkSchedule
 from teamschedule   import TeamSchedule
@@ -45,12 +45,18 @@ from gamedivision           import GameDivision
 from gamedivisionplugin     import GameDivisionPlugin
 
 from gamedivisionpluginmany import GameDivisionPluginMany
+from gametournamentformat   import GameTournamentFormat
+from gametournamentsystem   import GameTournamentSystem
+from gametournamentregular  import GameTournamentRegular
 
-from gametournamentformat import GameTournamentFormat
+from gamematch              import GameMatch
+from gamematchgoal          import GameMatchGoal
+from gamefinetype           import GameFineType
+from gamematchfine          import GameMatchFine
+from gamematchgtime         import GameMatchGTime
+from gamematchpenalty       import GameMatchPenalty
 
-from gametournamentsystem import GameTournamentSystem
 
-from gametournamentregular import GameTournamentRegular
 
 from gametournamentregularplugin import GameTournamentRegularPlugin
 
