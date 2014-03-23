@@ -13,6 +13,11 @@ class Team(AbsObj):
         verbose_name=u"дата создания"
     )
 
+    ##
+    ## хак, для создания двусторонней многие-ко-многим.
+    ## http://stackoverflow.com/questions/660260/django-admin-form-for-many-to-many-relationship
+    ##
+
     players = models.ManyToManyField(
         'Player',
         blank=True,
