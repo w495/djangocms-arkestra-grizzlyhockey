@@ -66,6 +66,14 @@ class Player(AbsPers):
     )
 
 
+
+    def __str__(self):
+        return u"%s, %s %s %s"%(self.game_number, self.second_name, self.first_name, self.patronymic)
+
+    def __unicode__(self):
+        return u"%s, %s %s %s"%(self.game_number, self.second_name, self.first_name, self.patronymic)
+
+
     class Meta:
         app_label = "grizzly"
         verbose_name = "игрока"

@@ -20,6 +20,12 @@ class AbsPlugin(CMSPlugin):
         verbose_name = u"название"
     )
 
+    def __str__(self):
+        return u"%s"%self.name
+
+    def __unicode__(self):
+        return u"%s"%self.name
+    
     class Meta:
         ordering = ('name',)
         abstract = True

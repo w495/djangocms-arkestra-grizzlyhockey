@@ -6,7 +6,7 @@ from abspers import AbsPers
 class Trainer(AbsPers):
 
     class Meta:
-        ordering = ('name',)
+        ordering = ('ctime',)
         app_label = "grizzly"
         verbose_name = "тренера"
         verbose_name_plural = "тренеры"

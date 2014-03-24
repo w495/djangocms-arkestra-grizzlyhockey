@@ -191,6 +191,8 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
 
+    'autocomplete',
+    
      # Django CMS applications
 
     'arkestra_utilities',

@@ -12,7 +12,7 @@ class GameMatchGoal (AbsObj):
         null=True,
         verbose_name=u"Матч"
     )
-
+    
     team = models.ForeignKey(
         'Team',
         blank=True,

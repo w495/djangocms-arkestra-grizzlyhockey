@@ -2,6 +2,8 @@
 
 from django.contrib import admin
 
+from django.db.models import Q
+
 
 from grizzly.models import JudgeType
 from grizzly.models import Judge
@@ -36,6 +38,9 @@ from absbuttonablemodeladmin import AbsButtonableModelAdmin
 
 from absobjadmin import AbsObjAdmin
 from abspersadmin import AbsPersAdmin
+
+
+from absobjadmin import AbsObjTabularInline
 
 
 class JudgeTypeAdmin(AbsObjAdmin):
@@ -204,6 +209,105 @@ class GameTournamentSystemAdmin(AbsObjAdmin):
         'name',
     )
 
+class GameMatchGoalAdminInline(AbsObjTabularInline):
+    model = GameMatchGoal
+    exclude = ('description', 'detail', 'image', 'name')
+
+    related_search_fields = {
+        'team': ('name',),
+        'gamematch': {
+            'fields': ('name', 'rink__name', 'team_a__name', 'team_b__name'),
+            'format': u"%s (%s): «%s» × «%s»"
+        },
+        'goal_player': {
+            'fields': ('game_number', 'second_name', 'first_name', 'patronymic',),
+            'format': u"%s, %s %s %s"
+        },
+        'trans_players': {
+            'fields': ('game_number', 'second_name', 'first_name', 'patronymic',),
+            'format': u"%s, %s %s %s"
+        }
+    }
+
+    def formfield_for_foreignkey(self, db_field, request=None, **kwargs):
+        field = super(GameMatchGoalAdminInline, self).formfield_for_foreignkey(
+            db_field,
+            request,
+            **kwargs
+        )
+        if request._obj_ and request._obj_.team_a and request._obj_.team_b:
+            if db_field.name == 'team':
+                field.queryset = field.queryset.filter(
+                    id__in = (request._obj_.team_a.id, request._obj_.team_b.id)
+                )
+            if db_field.name == 'goal_player':
+                field.queryset = field.queryset.filter(
+                    teams__in = (request._obj_.team_a, request._obj_.team_b)
+                )
+        return field
+
+
+    def formfield_for_manytomany(self, db_field, request, **kwargs):
+        field = super(GameMatchGoalAdminInline, self).formfield_for_foreignkey(
+            db_field,
+            request,
+            **kwargs
+        )
+        if request._obj_ and request._obj_.team_a and request._obj_.team_b:
+            if db_field.name == 'trans_players':
+                field.queryset = field.queryset.filter(
+                    teams__in = (request._obj_.team_a, request._obj_.team_b)
+                )
+
+        return field
+
+
+
+class GameMatchFineAdminInline(AbsObjTabularInline):
+    model = GameMatchFine
+    exclude = ('description', 'detail', 'image', 'name')
+
+    related_search_fields = {
+        'team': ('name',),
+        'gamematch': {
+            'fields': ('name', 'rink__name', 'team_a__name', 'team_b__name'),
+            'format': u"%s (%s): «%s» × «%s»"
+        },
+        'fine_player': {
+            'fields': ('game_number', 'second_name', 'first_name', 'patronymic',),
+            'format': u"%s, %s %s %s"
+        }
+    }
+
+    def formfield_for_foreignkey(self, db_field, request=None, **kwargs):
+        field = super(GameMatchFineAdminInline, self).formfield_for_foreignkey(
+            db_field,
+            request,
+            **kwargs
+        )
+
+        if request._obj_ and request._obj_.team_a and request._obj_.team_b:
+            if db_field.name == 'team':
+                field.queryset = field.queryset.filter(
+                    id__in = (request._obj_.team_a.id, request._obj_.team_b.id)
+                )
+            if db_field.name == 'fine_player':
+                field.queryset = field.queryset.filter(
+                    teams__in = (request._obj_.team_a, request._obj_.team_b)
+                )
+        return field
+
+
+class GameMatchGTimeAdminInline(AbsObjTabularInline):
+    model = GameMatchGTime
+    exclude = ('description', 'detail', 'image', 'name')
+
+
+class GameMatchPenaltyAdminInline(AbsObjTabularInline):
+    model = GameMatchPenalty
+    exclude = ('description', 'detail', 'image', 'name')
+
+
 
 class GameMatchAdmin(AbsObjAdmin):
     list_display = (
@@ -223,8 +327,39 @@ class GameMatchAdmin(AbsObjAdmin):
         'judges',
     )
 
+    inlines = [
+        GameMatchGoalAdminInline,
+        GameMatchFineAdminInline,
+        GameMatchGTimeAdminInline,
+        GameMatchPenaltyAdminInline
+    ]
+
+
+    def get_form(self, request, obj=None, **kwargs):
+        # just save obj reference for future processing in Inline
+        request._obj_ = obj
+        return super(GameMatchAdmin, self).get_form(request, obj, **kwargs)
 
 class GameMatchGoalAdmin(AbsObjAdmin):
+
+
+    related_search_fields = {
+        'team': ('name',),
+        'gamematch': {
+            'fields': ('name', 'rink__name', 'team_a__name', 'team_b__name'),
+            'format': u"%s (%s): «%s» × «%s»"
+        },
+        'goal_player': {
+            'fields': ('game_number', 'second_name', 'first_name', 'patronymic',),
+            'format': u"%s, %s %s %s"
+        }
+    }
+
+
+    filter_horizontal = (
+        'trans_players',
+    )
+
     list_display = (
         'team',
         'time',
@@ -248,14 +383,19 @@ class GameMatchGoalAdmin(AbsObjAdmin):
     )
 
 
+
+
+
 class GameMatchGTimeAdmin(AbsObjAdmin):
     list_display = (
+        'gamematch',
         'a',
         'b',
         'time'
     )
     list_filter = tuple()
     search_fields = (
+        'gamematch'
         'a',
         'b',
         'time'
@@ -263,6 +403,7 @@ class GameMatchGTimeAdmin(AbsObjAdmin):
 
 class GameMatchPenaltyAdmin(AbsObjAdmin):
     list_display = (
+        'gamematch',
         'a',
         'b',
         'gla',
@@ -271,6 +412,7 @@ class GameMatchPenaltyAdmin(AbsObjAdmin):
     )
     list_filter = tuple()
     search_fields = (
+        'gamematch'
         'a',
         'b',
         'gla',
@@ -322,6 +464,7 @@ class GameTournamentRegularAdmin(AbsObjAdmin, AbsButtonableModelAdmin):
     )
     filter_horizontal = (
         'teams',
+        'gamedivisions',
     )
 
     buttons = [

@@ -48,6 +48,22 @@ class GameMatch (AbsGameObj):
         verbose_name=u"судьи"
     )
 
+    def __str__(self):
+        rink = ""
+        if(self.rink):
+            rink = "(%s)"%self.rink
+        team_a = ""
+        if(self.team_a):
+            team_a = "«%s»"%self.team_a.name
+
+        team_b = ""
+        if(self.team_b):
+            team_b = "«%s»"%self.team_b.name
+
+        return u"%s (%s): «%s» × «%s»"%(self.name, rink, team_a, team_b)
+
+    def __unicode__(self):
+        return self.__str__()
 
 
     class Meta:

@@ -6,11 +6,19 @@ from absobj import AbsObj
 
 class GameMatchPenalty (AbsObj):
 
+
+    gamematch = models.ForeignKey(
+        'GameMatch',
+        blank=True,
+        null=True,
+        verbose_name=u"Матч"
+    )
+
     a = models.CharField(
         blank = True,
         null = True,
         max_length = 200,
-        verbose_name = u"игровой номер"
+        verbose_name = u"А"
     )
 
 
@@ -18,21 +26,21 @@ class GameMatchPenalty (AbsObj):
         blank = True,
         null = True,
         max_length = 200,
-        verbose_name = u"игровой номер"
+        verbose_name = u"Б"
     )
 
     gla = models.CharField(
         blank = True,
         null = True,
         max_length = 200,
-        verbose_name = u"игровой номер"
+        verbose_name = u"Вр А"
     )
 
     glb = models.CharField(
         blank = True,
         null = True,
         max_length = 200,
-        verbose_name = u"игровой номер"
+        verbose_name = u"Вр Б"
     )
 
 
@@ -40,7 +48,7 @@ class GameMatchPenalty (AbsObj):
         blank = True,
         null = True,
         max_length = 200,
-        verbose_name = u"игровой номер"
+        verbose_name = u"Результат"
     )
 
 

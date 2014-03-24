@@ -5,7 +5,9 @@ from cms.admin.placeholderadmin import PlaceholderAdmin
 
 
 class AbsPersAdmin(PlaceholderAdmin):
-    exclude         = ('name', 'detail')
+
+    save_on_top = True
+
     list_display    = ('second_name', 'first_name', 'patronymic')
     list_filter     = tuple()
     search_fields   = ( 'second_name', 'first_name', 'patronymic')

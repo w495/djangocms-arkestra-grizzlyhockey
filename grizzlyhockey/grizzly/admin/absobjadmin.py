@@ -3,8 +3,17 @@
 from widgetry.tabs.placeholderadmin import ModelAdminWithTabsAndCMSPlaceholder
 from cms.admin.placeholderadmin import PlaceholderAdmin
 
+from autocomplete.widgets import *
 
-class AbsObjAdmin(PlaceholderAdmin):
+class AbsObjTabularInline(admin.TabularInline):
+    related_search_fields = {}
+
+
+class AbsObjAdmin(PlaceholderAdmin, AutocompleteModelAdmin):
+    save_on_top = True
+
+    related_search_fields = {}
+
     list_display = ('name',)
     list_filter = tuple()
     search_fields = ('name',)

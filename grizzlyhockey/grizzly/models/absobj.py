@@ -14,6 +14,12 @@ class AbsObj(models.Model):
         verbose_name = u"ctime"
     )
 
+    image = FilerImageField(
+        blank = True,
+        null = True,
+        verbose_name = u"картинка"
+    )
+
     name = models.CharField(
         max_length = 200,
         verbose_name = u"название"
@@ -24,12 +30,6 @@ class AbsObj(models.Model):
         null = True,
         max_length = 200,
         verbose_name = u"детали"
-    )
-
-    image = FilerImageField(
-        blank = True,
-        null = True,
-        verbose_name = u"картинка"
     )
 
     ## Подробное с возможностью вставлять расширенный текст.

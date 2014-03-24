@@ -6,18 +6,25 @@ from absobj import AbsObj
 
 class GameMatchGTime (AbsObj):
 
+
+    gamematch = models.ForeignKey(
+        'GameMatch',
+        blank=True,
+        null=True,
+        verbose_name=u"Матч"
+    )
+
     time = models.TimeField(
         blank=True,
         null=True,
         verbose_name=u"время"
     )
 
-
     a = models.CharField(
         blank = True,
         null = True,
         max_length = 200,
-        verbose_name = u"игровой номер"
+        verbose_name = u"А"
     )
 
 
@@ -25,7 +32,7 @@ class GameMatchGTime (AbsObj):
         blank = True,
         null = True,
         max_length = 200,
-        verbose_name = u"игровой номер"
+        verbose_name = u"Б"
     )
 
 

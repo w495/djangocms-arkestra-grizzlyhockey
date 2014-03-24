@@ -27,7 +27,7 @@ class GameMatchFine (AbsObj):
     start_time = models.TimeField(
         blank=True,
         null=True,
-        verbose_name=u"время"
+        verbose_name=u"время начала"
     )
 
     ##
@@ -36,7 +36,7 @@ class GameMatchFine (AbsObj):
     stop_time = models.TimeField(
         blank=True,
         null=True,
-        verbose_name=u"время"
+        verbose_name=u"время конца"
     )
 
     ##
@@ -46,7 +46,7 @@ class GameMatchFine (AbsObj):
         'Player',
         blank=True,
         null=True,
-        verbose_name=u"тренер"
+        verbose_name=u"игрок"
     )
 
     ##
