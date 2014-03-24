@@ -5,8 +5,11 @@ from cms.admin.placeholderadmin import PlaceholderAdmin
 
 
 class AbsPersAdmin(PlaceholderAdmin):
-
     save_on_top = True
+    readonly_fields  = (
+        'id',
+        'ctime'
+    )
 
     list_display    = ('second_name', 'first_name', 'patronymic')
     list_filter     = tuple()

@@ -11,7 +11,7 @@ class AbsGameObj(models.Model):
 
     ctime = models.DateTimeField(
         auto_now_add = True,
-        verbose_name = u"ctime"
+        verbose_name = u"дата создания",
     )
 
     image = FilerImageField(
@@ -25,29 +25,18 @@ class AbsGameObj(models.Model):
         verbose_name = u"название"
     )
 
-    start_date = models.DateField(
+    start_datetime = models.DateTimeField(
         blank=True,
         null=True,
         verbose_name=u"дата начала"
     )
 
-    stop_date = models.DateField(
+    stop_datetime = models.DateTimeField(
         blank=True,
         null=True,
         verbose_name=u"дата конца"
     )
 
-    start_time = models.TimeField(
-        blank=True,
-        null=True,
-        verbose_name=u"время начала"
-    )
-
-    stop_time = models.TimeField(
-        blank=True,
-        null=True,
-        verbose_name=u"время конца"
-    )
 
     detail = models.TextField(
         blank = True,

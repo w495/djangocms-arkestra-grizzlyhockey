@@ -79,6 +79,7 @@ class RinkScheduleAdmin(AbsObjAdmin):
 
 class RinkAdmin(AbsObjAdmin):
     list_display = (
+        'id',
         'name',
         'town',
         'street',
@@ -100,6 +101,7 @@ class RinkAdmin(AbsObjAdmin):
 
 class TeamScheduleAdmin(AbsObjAdmin):
     list_display = (
+        'id',
         'name',
         'start_date',
         'stop_date',
@@ -120,6 +122,7 @@ class TeamScheduleAdmin(AbsObjAdmin):
 
 class TeamAdmin(AbsObjAdmin):
     list_display = (
+        'id',
         'name',
     )
     list_filter = tuple()
@@ -137,6 +140,7 @@ class TeamPluginAdmin(AbsObjAdmin):
 
 class TrainingAdmin(AbsObjAdmin):
     list_display = (
+        'id',
         'name',
         'description',
         'team',
@@ -152,19 +156,16 @@ class TrainingAdmin(AbsObjAdmin):
 
 class GameSeasonAdmin(AbsObjAdmin):
     list_display = (
+        'id',
         'name',
-        'start_date',
-        'stop_date',
-        'start_time',
-        'stop_time'
+        'start_datetime',
+        'stop_datetime',
     )
     list_filter = tuple()
     search_fields = (
         'name',
-        'start_date',
-        'stop_date',
-        'start_time',
-        'stop_time'
+        'start_datetime',
+        'stop_datetime',
     )
     filter_horizontal = (
         'gamedivisions',
@@ -173,18 +174,15 @@ class GameSeasonAdmin(AbsObjAdmin):
 
 class GameDivisionAdmin(AbsObjAdmin):
     list_display = (
+        'id',
         'name',
-        'start_date',
-        'stop_date',
-        'start_time',
-        'stop_time',
+        'start_datetime',
+        'stop_datetime',
     )
     search_fields = (
         'name',
-        'start_date',
-        'stop_date',
-        'start_time',
-        'stop_time'
+        'start_datetime',
+        'stop_datetime',
     )
     filter_horizontal = (
         'gameseasons',
@@ -193,6 +191,7 @@ class GameDivisionAdmin(AbsObjAdmin):
 
 class GameTournamentFormatAdmin(AbsObjAdmin):
     list_display = (
+        'id',
         'name',
     )
     list_filter = tuple()
@@ -202,6 +201,7 @@ class GameTournamentFormatAdmin(AbsObjAdmin):
 
 class GameTournamentSystemAdmin(AbsObjAdmin):
     list_display = (
+        'id',
         'name',
     )
     list_filter = tuple()
@@ -311,6 +311,7 @@ class GameMatchPenaltyAdminInline(AbsObjTabularInline):
 
 class GameMatchAdmin(AbsObjAdmin):
     list_display = (
+        'id',
         'name',
         'rink',
         'team_a',
@@ -361,6 +362,7 @@ class GameMatchGoalAdmin(AbsObjAdmin):
     )
 
     list_display = (
+        'id',
         'team',
         'time',
         'goalno',
@@ -388,6 +390,7 @@ class GameMatchGoalAdmin(AbsObjAdmin):
 
 class GameMatchGTimeAdmin(AbsObjAdmin):
     list_display = (
+        'id',
         'gamematch',
         'a',
         'b',
@@ -403,6 +406,7 @@ class GameMatchGTimeAdmin(AbsObjAdmin):
 
 class GameMatchPenaltyAdmin(AbsObjAdmin):
     list_display = (
+        'id',
         'gamematch',
         'a',
         'b',
@@ -426,6 +430,7 @@ class GameFineTypeAdmin(AbsObjAdmin):
 
 class GameMatchFineAdmin(AbsObjAdmin):
     list_display = (
+        'id',
         'gamematch',
         'team',
         'start_time',
@@ -444,23 +449,29 @@ class GameMatchFineAdmin(AbsObjAdmin):
     )
 
 
+class GameMatchAdminInline(AbsObjTabularInline):
+    model = GameMatch
+    exclude = ('description', 'detail', 'image', 'name', 'rink')
 
 
-class GameTournamentRegularAdmin(AbsObjAdmin, AbsButtonableModelAdmin):
+class GameTournamentRegularAdmin(AbsButtonableModelAdmin, AbsObjAdmin):
     list_display = (
+        'id',
         'name',
         'description',
-        'start_date', 'stop_date',
-        'start_time', 'stop_time',
+        'start_datetime',
+        'stop_datetime',
     )
+
 
     list_filter = tuple()
 
     search_fields = (
+        'id',
         'name',
         'description',
-        'start_date', 'stop_date',
-        'start_time', 'stop_time'
+        'start_datetime',
+        'stop_datetime',
     )
     filter_horizontal = (
         'teams',
@@ -471,11 +482,18 @@ class GameTournamentRegularAdmin(AbsObjAdmin, AbsButtonableModelAdmin):
         ('build_matrix', "Посчитать матрицу игр")
     ]
 
+    inlines = [
+        GameMatchAdminInline,
+    ]
+
+
     def build_matrix(self, request, tournament):
         '''
             Генерации матрицы игр
         '''
         teams_list = [team for team in tournament.teams.all()];
+
+
         teams_len = len(teams_list)
 
         games_len = teams_len
@@ -493,7 +511,7 @@ class GameTournamentRegularAdmin(AbsObjAdmin, AbsButtonableModelAdmin):
 
         for i in xrange(games_len):
 
-            xteams_list = tuple()
+            xteams_list = []
             for j in xrange(teams_len):
                 xteams_list += [teams_list[(j + i) % teams_len]]
 
@@ -502,7 +520,33 @@ class GameTournamentRegularAdmin(AbsObjAdmin, AbsButtonableModelAdmin):
 
             print xteams_list
             for t1 in xrange(0, games_len, 2):
-                print i + 1, xteams_list[t1], xteams_list[t1 + 1]
+
+                team_a = xteams_list[t1]
+                team_b = xteams_list[t1 + 1]
+
+
+                if(not team_b) or (not team_b):
+                    continue;
+
+                print "                                ", i + 1, team_a.id, team_b.id
+
+
+                cnt = GameMatch.objects.filter(
+                    team_a = team_a,
+                    team_b = team_b,
+                    gametournamentregular = tournament
+                ).count()
+                if (0 == cnt):
+
+                    name =  u"%s: «%s» × «%s»"%(tournament.name, team_a.name, team_b.name)
+
+                    gm = GameMatch(
+                        name = name,
+                        team_a = team_a,
+                        team_b = team_b,
+                        gametournamentregular = tournament
+                    );
+                    gm.save();
 
 
         print

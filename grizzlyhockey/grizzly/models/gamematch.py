@@ -48,6 +48,15 @@ class GameMatch (AbsGameObj):
         verbose_name=u"судьи"
     )
 
+
+    gametournamentregular = models.ForeignKey(
+        'GameTournamentRegular',
+        blank=True,
+        null=True,
+        verbose_name=u"Турнир"
+    )
+
+
     def __str__(self):
         rink = ""
         if(self.rink):

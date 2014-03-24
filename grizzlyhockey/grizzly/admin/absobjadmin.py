@@ -11,8 +11,14 @@ class AbsObjTabularInline(admin.TabularInline):
 
 class AbsObjAdmin(PlaceholderAdmin, AutocompleteModelAdmin):
     save_on_top = True
+    readonly_fields  = (
+        'id',
+        'ctime'
+    )
 
     related_search_fields = {}
+
+
 
     list_display = ('name',)
     list_filter = tuple()
