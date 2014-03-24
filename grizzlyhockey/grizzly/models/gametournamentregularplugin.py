@@ -9,12 +9,14 @@ class GameTournamentRegularPlugin(AbsPlugin):
     '''
 
     gametournamentregular = models.ForeignKey(
-        'GameDivision',
-        verbose_name=u"GameTournamentRegular"
+        'GameTournamentRegular',
+        blank=True,
+        null=True,
+        verbose_name=u"турнир регулярный"
     )
 
     class Meta:
         ordering = ('ctime',)
         app_label = "grizzly"
-        verbose_name = "Игры: турнир регулярный"
-        verbose_name_plural = "Игры: турниры регулярные"
+        verbose_name = "Гризли плагин: турнир регулярный"
+        verbose_name_plural = "Гризли плагин: турниры регулярные"

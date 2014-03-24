@@ -41,15 +41,25 @@ from training       import Training
 
 from gameseason             import GameSeason
 from gameseasonplugin       import GameSeasonPlugin
+from gameseasonpluginmany   import GameSeasonPluginMany
+
 from gamedivision           import GameDivision
 from gamedivisionplugin     import GameDivisionPlugin
-
 from gamedivisionpluginmany import GameDivisionPluginMany
+
 from gametournamentformat   import GameTournamentFormat
 from gametournamentsystem   import GameTournamentSystem
-from gametournamentregular  import GameTournamentRegular
+
+from gametournamentregular              import GameTournamentRegular
+from gametournamentregularplugin        import GameTournamentRegularPlugin
+from gametournamentregularpluginmany    import GameTournamentRegularPluginMany
 
 from gamematch              import GameMatch
+from gamematchplugin        import GameMatchPlugin
+from gamematchpluginmany    import GameMatchPluginMany
+
+
+
 from gamematchgoal          import GameMatchGoal
 from gamefinetype           import GameFineType
 from gamematchfine          import GameMatchFine

@@ -10,6 +10,8 @@ class GameSeasonPlugin(AbsPlugin):
 
     gameseason = models.ForeignKey(
         'GameSeason',
+        blank=True,
+        null=True,
         verbose_name=u"игровой сезон"
     )
 

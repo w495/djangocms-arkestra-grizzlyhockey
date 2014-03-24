@@ -17,6 +17,8 @@ class AbsPlugin(CMSPlugin):
 
     name = models.CharField(
         max_length = 200,
+        blank = True,
+        null = True,
         verbose_name = u"название"
     )
 

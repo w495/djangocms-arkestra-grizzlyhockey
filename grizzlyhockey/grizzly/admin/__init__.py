@@ -490,7 +490,7 @@ class GameTournamentRegularAdmin(AbsButtonableModelAdmin, AbsObjAdmin):
     ]
 
 
-    def build_matrix(self, request, tournament):
+    def build_matrix_simple(self, request, tournament):
         '''
             Генерации матрицы игр
             Простой, не эффективный и не очень устойчивый алгоритм.
@@ -563,42 +563,6 @@ class GameTournamentRegularAdmin(AbsButtonableModelAdmin, AbsObjAdmin):
 
     def build_matrix_1(self, request, tournament):
         '''
-            Генерации матрицы игр
-            Алгоритм основанный на сумме чисел.
-            Должен быть устойчивым.
-            Довести до конца не удалось.
-                http://www.bcc.h14.ru/guestbook.php
-                Сообщение №64.
-        '''
-        teams_list = [team for team in tournament.teams.all()];
-        teams_list = sorted(teams_list, key=lambda x: x.id)
-        teams_len = len(teams_list)
-        if (teams_len % 2):
-            xteams_list.append(None)
-        S = {}
-        for i in xrange(1, teams_len + 1):
-            for j in xrange(1, teams_len + 1):
-                if(i != j):
-                    s = (i + j - 1)
-                    if s > teams_len:
-                        s = (s - teams_len)
-                        print '>', s, i, j
-
-                    elif (s < teams_len):
-                        s = s - 1
-                        print '<', s, i, j
-                    else:
-                        print '=', s, i, j
-
-                    if S.get(i, None):
-                        S[i][s] = j
-                    else:
-                        S[i] = {s: j}
-            print
-
-
-    def build_matrix_2(self, request, tournament):
-        '''
             Генерации матрицы игр.
             Потенциально устойчивый алгоритм, основанный на сдвигах.
             http://otvet.mail.ru/question/57757993
@@ -642,7 +606,47 @@ class GameTournamentRegularAdmin(AbsButtonableModelAdmin, AbsObjAdmin):
                 S[team_a.id][tourno] = team_b.id
                 S[team_b.id][tourno] = team_a.id
 
+        for x in S:
+            print x, "|",
+            for y in S[x]:
+                print "%s "%(S[x][y]),
+            print
 
+
+    def build_matrix_2(self, request, tournament):
+        '''
+            Генерации матрицы игр
+            Алгоритм основанный на сумме чисел.
+            Должен быть устойчивым.
+            Довести до конца не удалось.
+                http://www.bcc.h14.ru/guestbook.php
+                Сообщение №64.
+        '''
+        teams_list = [team for team in tournament.teams.all()];
+        teams_list = sorted(teams_list, key=lambda x: x.id)
+        teams_len = len(teams_list)
+        if (teams_len % 2):
+            xteams_list.append(None)
+        S = {}
+        for i in xrange(1, teams_len + 1):
+            for j in xrange(1, teams_len + 1):
+                if(i != j):
+                    s = (i + j - 1)
+                    if s > teams_len:
+                        s = (s - teams_len)
+                        print '>', s, i, j
+
+                    elif (s < teams_len):
+                        s = s - 1
+                        print '<', s, i, j
+                    else:
+                        print '=', s, i, j
+
+                    if S.get(i, None):
+                        S[i][s] = j
+                    else:
+                        S[i] = {s: j}
+            print
 
 admin.site.register(JudgeType, JudgeTypeAdmin)
 admin.site.register(Judge, JudgeAdmin)
