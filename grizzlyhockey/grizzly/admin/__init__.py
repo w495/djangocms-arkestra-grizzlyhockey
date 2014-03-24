@@ -317,7 +317,10 @@ class GameMatchAdmin(AbsObjAdmin):
         'team_a',
         'team_b',
     )
-    list_filter = tuple()
+    list_filter = (
+        'team_a',
+        'team_b',
+    )
     search_fields = (
         'name',
         'rink',
@@ -490,70 +493,154 @@ class GameTournamentRegularAdmin(AbsButtonableModelAdmin, AbsObjAdmin):
     def build_matrix(self, request, tournament):
         '''
             Генерации матрицы игр
+            Простой, не эффективный и не очень устойчивый алгоритм.
+            http://thiswap.com/2011/07/21/algoritm-sostavleniya-raspisaniya-sportivnyx-matchej/
         '''
         teams_list = [team for team in tournament.teams.all()];
+        teams_list = sorted(teams_list, key=lambda x: x.id)
+        all_team = len(teams_list)
 
+        if (all_team % 2):
+            all_team += 1;
 
-        teams_len = len(teams_list)
+        teams_list.append(None);
+        k = all_team / 2
 
-        games_len = teams_len
+        S = {}
+        for tourno in xrange(1, all_team):
+            team2 = teams_list[2-1]
+            for y in xrange(2, all_team):
+                teams_list[y-1] = teams_list[y]
+            teams_list[all_team-1] = team2;
 
-
-
-
-        print
-        print
-        print
-        print
-
-        if (teams_len % 2):
-            games_len += 1
-
-        for i in xrange(games_len):
-
-            xteams_list = []
-            for j in xrange(teams_len):
-                xteams_list += [teams_list[(j + i) % teams_len]]
-
-            if (teams_len % 2):
-                xteams_list.append(None)
-
-            print xteams_list
-            for t1 in xrange(0, games_len, 2):
-
-                team_a = xteams_list[t1]
-                team_b = xteams_list[t1 + 1]
-
-
-                if(not team_b) or (not team_b):
-                    continue;
-
-                print "                                ", i + 1, team_a.id, team_b.id
-
-
+            for j in xrange(1, k + 1):
+                x = j
+                y = all_team - j + 1
+                team_a = teams_list[x-1]
+                team_b = teams_list[y-1]
                 cnt = GameMatch.objects.filter(
+                    tourno = tourno,
                     team_a = team_a,
                     team_b = team_b,
                     gametournamentregular = tournament
                 ).count()
-                if (0 == cnt):
-
-                    name =  u"%s: «%s» × «%s»"%(tournament.name, team_a.name, team_b.name)
-
+                if (0 == cnt and team_a and team_b):
+                    name =  u"%s (%d): «%s» × «%s»"%(tournament.name, tourno, team_a.name, team_b.name)
                     gm = GameMatch(
+                        tourno = tourno,
                         name = name,
                         team_a = team_a,
                         team_b = team_b,
                         gametournamentregular = tournament
                     );
-                    gm.save();
+                    gm.save()
+
+                if not(team_a):
+                    team_a = lambda: 0
+                    team_a.id = 0;
+
+                if not(team_b):
+                    team_b = lambda: 0
+                    team_b.id = 0;
+
+                print tourno, team_a.id, team_b.id
 
 
-        print
-        print
-        print
-        print
+                if S.get(team_a.id, None) == None:
+                     S[team_a.id] = {}
 
+                if S.get(team_b.id, None) == None:
+                     S[team_b.id] = {}
+
+                S[team_a.id][tourno] = team_b.id
+                S[team_b.id][tourno] = team_a.id
+
+        for x in S:
+            print x, "|",
+            for y in S[x]:
+                print "%s "%(S[x][y]),
+            print
+
+    def build_matrix_1(self, request, tournament):
+        '''
+            Генерации матрицы игр
+            Алгоритм основанный на сумме чисел.
+            Должен быть устойчивым.
+            Довести до конца не удалось.
+                http://www.bcc.h14.ru/guestbook.php
+                Сообщение №64.
+        '''
+        teams_list = [team for team in tournament.teams.all()];
+        teams_list = sorted(teams_list, key=lambda x: x.id)
+        teams_len = len(teams_list)
+        if (teams_len % 2):
+            xteams_list.append(None)
+        S = {}
+        for i in xrange(1, teams_len + 1):
+            for j in xrange(1, teams_len + 1):
+                if(i != j):
+                    s = (i + j - 1)
+                    if s > teams_len:
+                        s = (s - teams_len)
+                        print '>', s, i, j
+
+                    elif (s < teams_len):
+                        s = s - 1
+                        print '<', s, i, j
+                    else:
+                        print '=', s, i, j
+
+                    if S.get(i, None):
+                        S[i][s] = j
+                    else:
+                        S[i] = {s: j}
+            print
+
+
+    def build_matrix_2(self, request, tournament):
+        '''
+            Генерации матрицы игр.
+            Потенциально устойчивый алгоритм, основанный на сдвигах.
+            http://otvet.mail.ru/question/57757993
+            Довести до конца не удалось.
+        '''
+        teams_list = [team for team in tournament.teams.all()];
+        teams_list = sorted(teams_list, key=lambda x: x.id)
+        teams_len = len(teams_list)
+        xl = teams_len
+        odd = teams_len % 2
+        #if (odd):
+        teams_len += 1
+        S = {}
+        for i in xrange(0, teams_len-1):
+            xteams_list = []
+
+            if (odd):
+                xteams_list.append(None)
+            else:
+                xteams_list.append(teams_list[xl-1])
+
+            for j in xrange(xl):
+                xteams_list += [teams_list[(j + i) % (xl)]]
+            print xteams_list
+            for t1 in xrange(0, teams_len/2):
+                x = t1
+                y = teams_len - t1 - 1
+                team_a = xteams_list[x]
+                team_b = xteams_list[y]
+                tourno = i + 1
+                if (not team_a):
+                    team_a = lambda:0
+                    team_a.id = 0
+                if (not team_b):
+                    team_b = lambda:0
+                    team_b.id = 0
+                if S.get(team_a.id, None) == None:
+                     S[team_a.id] = {}
+                if S.get(team_b.id, None) == None:
+                     S[team_b.id] = {}
+                S[team_a.id][tourno] = team_b.id
+                S[team_b.id][tourno] = team_a.id
 
 
 

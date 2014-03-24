@@ -48,6 +48,12 @@ class GameMatch (AbsGameObj):
         verbose_name=u"судьи"
     )
 
+    tourno = models.IntegerField(
+        blank = True,
+        null = True,
+        verbose_name = u"тур"
+    )
+
 
     gametournamentregular = models.ForeignKey(
         'GameTournamentRegular',
@@ -57,26 +63,37 @@ class GameMatch (AbsGameObj):
     )
 
 
-    def __str__(self):
-        rink = ""
-        if(self.rink):
-            rink = "(%s)"%self.rink
-        team_a = ""
-        if(self.team_a):
-            team_a = "«%s»"%self.team_a.name
+    #def __str__(self):
+        #rink = ""
+        #if(self.rink):
+            #rink = "(%s)"%self.rink
+        #team_a = ""
+        #if(self.team_a):
+            #team_a = "«%s»"%self.team_a.name
 
-        team_b = ""
-        if(self.team_b):
-            team_b = "«%s»"%self.team_b.name
+        #team_b = ""
+        #if(self.team_b):
+            #team_b = "«%s»"%self.team_b.name
 
-        return u"%s (%s): «%s» × «%s»"%(self.name, rink, team_a, team_b)
+        #return u"%s (%s): «%s» × «%s»"%(self.name, rink, team_a, team_b)
 
-    def __unicode__(self):
-        return self.__str__()
+    #def __unicode__(self):
+        #rink = ""
+        #if(self.rink):
+            #rink = "(%s)"%self.rink
+        #team_a = ""
+        #if(self.team_a):
+            #team_a = "«%s»"%self.team_a.name
+
+        #team_b = ""
+        #if(self.team_b):
+            #team_b = "«%s»"%self.team_b.name
+
+        #return u"%s (%s): «%s» × «%s»"%(self.name, rink, team_a, team_b)
 
 
     class Meta:
-        ordering = ('ctime',)
+        ordering = ['ctime',]
         app_label = "grizzly"
         verbose_name = "Игры: матч"
         verbose_name_plural = "Игры: матчи"

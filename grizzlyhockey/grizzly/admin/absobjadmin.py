@@ -16,6 +16,10 @@ class AbsObjAdmin(PlaceholderAdmin, AutocompleteModelAdmin):
         'ctime'
     )
 
+    ordering = (
+        '-id',
+    )
+
     related_search_fields = {}
 
 
