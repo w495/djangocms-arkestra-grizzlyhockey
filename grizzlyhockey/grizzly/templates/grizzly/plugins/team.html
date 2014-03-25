@@ -1,7 +1,21 @@
 {% load thumbnail %}
+{% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
 
-<div>
+<section>
+    <!--
+    <h{{IN_BODY_HEADING_LEVEL}}>Команда «{{ instance.team.name }}»</h{{IN_BODY_HEADING_LEVEL}}>
+    -->
+
+    {% block placeholder %}
+        {% if instance.team.description %}
+            <div class="panel panel-default">
+                <div class="panel-heading">Описание команды</div>
+                <div class="panel-body">
+                    {% render_placeholder instance.team.description %}
+                </div>
+            </div>
+        {% endif %}
+    {% endblock placeholder %}
 
 
-
-</div>
+</section>

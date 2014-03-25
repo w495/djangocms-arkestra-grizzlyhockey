@@ -610,6 +610,8 @@ LANGUAGES = (
     ('ru', gettext('Russian'))
 )
 
+PLUGIN_HEADING_LEVEL_DEFAULT = 2
+
 # ------------------------ WYMeditor/SemanticEditor
 
 # these override the settings in cms.plugins.text.settings
