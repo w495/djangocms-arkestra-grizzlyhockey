@@ -490,7 +490,7 @@ class GameTournamentRegularAdmin(AbsButtonableModelAdmin, AbsObjAdmin):
     ]
 
 
-    def build_matrix_simple(self, request, tournament):
+    def build_matrix(self, request, tournament):
         '''
             Генерации матрицы игр
             Простой, не эффективный и не очень устойчивый алгоритм.
