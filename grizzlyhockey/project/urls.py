@@ -6,19 +6,20 @@ from django.conf import settings
 from django.contrib import admin
 admin.autodiscover()
 
+
 urlpatterns = patterns('',
+
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
 
-    (r'^grizzly/', include('grizzly.urls')),
+    url(r'^grizzly/', include('grizzly.urls')),
 
+    url(r"", include('news_and_events.urls')),
 
-    (r'^semantic/', include('semanticeditor.urls')),
+    url(r"^contacts/", include("contacts_and_people.urls")),
 
-    (r"", include("contacts_and_people.urls")),
-
-    (r'^jsi18n/(?P<packages>\S+?)/$', 'django.views.i18n.javascript_catalog'),
+        #(r'^jsi18n/(?P<packages>\S+?)/$', 'django.views.i18n.javascript_catalog'),
 )
 
 if settings.DEBUG:
@@ -27,5 +28,6 @@ if settings.DEBUG:
 urlpatterns += patterns('',
     url('^autocomplete/$', 'widgetry.views.search', name='widgetry-search'),
     url(r'^', include('cms.urls')),
+
 )
 

@@ -4,12 +4,23 @@ from news_and_events import views
 
 urlpatterns = patterns('news_and_events.views',
 
+
+    url(
+        r"^news/$",
+        "newsarticles",
+        name="news-list"
+    ),
+
     # news and events items
+
     url(
         r"^news/(?P<slug>[-\w]+)/$",
         "newsarticle",
         name="news"
         ),
+
+
+
     url(
         r"^event/(?P<slug>[-\w]+)/$",
         "event",
@@ -17,11 +28,6 @@ urlpatterns = patterns('news_and_events.views',
         ),
 
     # main news and events
-    url(
-        r"^news-and-events/(?:(?P<slug>[-\w]+)/)$",
-        views.NewsAndEventsView.as_view(),
-        name="news-and-events"
-        ),
 
     url(
         r"^news-and-events/$",
@@ -29,6 +35,14 @@ urlpatterns = patterns('news_and_events.views',
         {"slug": None},
         name="news-and-events-base"
         ),
+
+    url(
+        r"^news-and-events/(?:(?P<slug>[-\w]+)/)$",
+        views.NewsAndEventsView.as_view(),
+        name="news-and-events"
+        ),
+
+
 
     # news archives
     url(

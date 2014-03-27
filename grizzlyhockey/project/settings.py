@@ -1,35 +1,30 @@
 # -*- coding: utf-8 -*-
 # Django settings for project project.
 
-import os.path
-
-# Make it work straight from the checkout!
-import sys
-sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
-
-# set the BASE_PATH for convenience's sake
-BASE_PATH = os.path.normpath(os.path.dirname(__file__))
-
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
-
-ADMINS = (
-    ('root', 'root@root.com'),
-)
-
 #$ python manage.py schemamigration appname --auto
 
 #$ python manage.py migrate appname
+
 
 import os
 import sys
 import logging
 import platform
 
+import os.path
 
-import os
 import django
 from time import gmtime, strftime
+import sys
+
+# Make it work straight from the checkout!
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
+
+# set the BASE_PATH for convenience's sake
+BASE_PATH = os.path.normpath(os.path.dirname(__file__))
+
+
 
 PATH = os.path.abspath(os.path.dirname(__file__))
 
@@ -44,7 +39,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Your Name', 'your_email@example.com'),
 )
 
 MANAGERS = ADMINS
@@ -92,7 +87,7 @@ USE_I18N = True
 USE_L10N = True
 
 # If you set this to False, Django will not use timezone-aware datetimes.
-USE_TZ = False
+USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
@@ -175,7 +170,15 @@ MIDDLEWARE_CLASSES = (
     'cms.middleware.toolbar.ToolbarMiddleware',
 
     'pagination.middleware.PaginationMiddleware',
+    'htmlmin.middleware.HtmlMinifyMiddleware',
+    'htmlmin.middleware.MarkRequestMiddleware',
+
 )
+
+HTML_MINIFY = True
+
+EXCLUDE_FROM_MINIFYING = ('^my_app/', '^admin/')
+
 
 ROOT_URLCONF = 'project.urls'
 
@@ -534,19 +537,6 @@ THUMBNAIL_PROCESSORS = (
     'easy_thumbnails.processors.filters',
     )
 
-# ------------------------ Django Celery
-try:
-    import djcelery
-    djcelery.setup_loader()
-
-    BROKER_HOST = "localhost"
-    BROKER_PORT = 5672
-    BROKER_USER = "guest"
-    BROKER_PASSWORD = "guest"
-    BROKER_VHOST = "/"
-except ImportError:
-    pass
-
 
 # ------------------------ Django Filer
 
@@ -569,8 +559,8 @@ CMS_SEO_FIELDS = True
 CMS_MEDIA_URL = STATIC_URL + 'cms/'
 
 CMS_TEMPLATES = (
-    ('base.html', gettext('base')),
-    ('title.html', gettext('title')),
+    ('base.html', gettext('base-page')),
+    ('title.html', gettext('title-page')),
 )
 
 CMS_PAGE_FLAGS = (

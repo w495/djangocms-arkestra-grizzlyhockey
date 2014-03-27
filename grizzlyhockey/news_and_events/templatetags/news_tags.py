@@ -1,5 +1,5 @@
 from django import template
-# from entity_tags import entity_for_page, work_out_entity
+#from entity_tags import entity_for_page, work_out_entity
 from datetime import datetime
 
 register = template.Library()

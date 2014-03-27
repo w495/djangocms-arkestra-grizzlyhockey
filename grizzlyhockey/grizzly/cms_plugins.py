@@ -26,7 +26,7 @@ from django.utils.translation import ugettext as _
 
 class TeamPluginMany(CMSPluginBase):
     model = TeamPluginManyModel
-    name = _("Grizzly Teams Many Plugin")
+    name = _("Grizzly Team Many Plugin")
     render_template = "grizzly/plugins/teammany.html" # template to render the plugin with
     def render(self, context, instance, placeholder):
         context.update({'instance':instance})

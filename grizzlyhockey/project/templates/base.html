@@ -1,7 +1,7 @@
-{% block doctype %}<!DOCTYPE html>{% endblock doctype %}
 {% load cms_tags sekizai_tags menu_tags typogrify_tags insert_tags %}
+{% block doctype %}<!DOCTYPE html>{% endblock doctype %}
 {% block html_tag %}<html lang="en" >{% endblock html_tag %}
-<head>
+{% spaceless %}<head>
 {% block scripts %}{% endblock scripts %}
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
 
@@ -23,7 +23,6 @@
       href="{{ STATIC_URL }}arkestra/images/arkestra-favicon.png">
 {% endblock favicon %}
 
-{% render_block "css" %}
 
 {% block styles %}
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/arkestra.css" />
@@ -50,6 +49,19 @@
 .carousel-btn{
     width:10%;
 }
+.team-human-metrics{
+    text-align:center;
+}
+
+.dl-team-playercard dt{
+    width: 5em;
+}
+
+.dl-team-playercard dd{
+    margin-left: 6em;
+}
+
+
 </style>
 
     {% endblock site_styles %}
@@ -59,11 +71,14 @@
 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
 
+{% endspaceless %}
 
-{% render_block "js" %}
+<!-- \/ -->{% render_block "css" %}<!-- \/ -->
+<!-- \/ -->{% render_block "js" %}<!-- \/ -->
 
 </head>
 
+{% spaceless %}
 <body {% block body_attributes %}{% endblock body_attributes %}>
     {% cms_toolbar %}
     {% with placeholder_width=960 generic_main_width=523 sidebar_image_size="294x196" entity_image_size="445x384" entity_map_size="445x100" person_map_size="445x100" sidebar_map_size="296x100" person_image_size="460x460" person_thumbnail_size="40x40" lightbox_max_dimension=600 plugin_thumbnail_size="75x75" place_image_size="627x418" place_map_size="294x182" body_heading_level=2 %}
@@ -115,7 +130,7 @@
         {% endblock body %}
     {% endwith %}
 </body>
-
+{% endspaceless %}
 
 {% block post_body_scripts %}{% endblock post_body_scripts %}
 </html>

@@ -92,6 +92,21 @@ class EventsForthcomingView(ArkestraGenericView):
         return self.response(request)
 
 
+def newsarticles(request):
+    """
+    Responsible for publishing news article
+    """
+
+    return render_to_response(
+        "news_and_events/newsarticles.html",
+        {
+        "newsarticles":NewsArticle.objects.all(),
+        "entity": None,
+        "meta": {"description": None,}
+        },
+        RequestContext(request),
+    )
+
 def newsarticle(request, slug):
     """
     Responsible for publishing news article
