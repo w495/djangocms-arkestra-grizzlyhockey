@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
+
+{% block main_page_body %}
+
+
+{% for newsarticle in newsarticles %}
+
+
+    <h{{PAGE_TITLE_HEADING_LEVEL}}>{{ newsarticle }}</h{{PAGE_TITLE_HEADING_LEVEL}}>
+
+    {% if newsarticle.summary %}
+        <p class="subtitle">{{ newsarticle.summary }}</p>
+    {% endif %}
+
+    
+
+    {% thumbnail newsarticle.image.file sidebar_image_size subject_location=newsarticle.image.subject_location crop as image %}
+    {% with placeholder_width=generic_main_width %}
+        <div class="row columns3">
+            <div class="column firstcolumn doublecolumn">
+                {% block placeholder %}
+                    {% render_placeholder newsarticle.body %}
+                {% endblock placeholder %}
+            </div>
+            <div class="column lastcolumn">
+                {% block image %}
+                    {% if image %}<div><img src="{{ image.url }}" /></div>{% endif %}
+                {% endblock image %}
+                <dl class="not-indented">
+                    <dt>Published</dt>
+                    <dd>{% date newsarticle.date %}</dd>
+                    {% if newsarticle.please_contact.all %}
+                        <dt>General enquiries</dt>
+                        {% for person in newsarticle.please_contact.all %}
+                            <dd><a href = "{{ person.get_absolute_url }}">{{ person }}</a></dd>
+                        {% endfor %}
+                    {% endif %}
+                </dl>
+                {% with newsarticle.links as links %}
+                    {% include "includes/related_links_list.html" %}
+                {% endwith %}
+            </div>
+        </div>
+    {% endwith %}
+
+{% endfor %}
+{% endblock main_page_body %}
