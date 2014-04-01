@@ -4,6 +4,8 @@ from django.core.urlresolvers import reverse
 from django.views import generic
 from django.utils import timezone
 
+from django.core.paginator import Paginator
+
 from grizzly.models import PlayerType
 from grizzly.models import Player
 from grizzly.models import PlayerPlugin
@@ -216,6 +218,8 @@ class RinkScheduleDetailView(generic.DetailView):
 class TeamListView(generic.ListView):
     model = Team
     template_name = 'grizzly/pages/team-list.html'
+
+
 
 class TeamDetailView(generic.DetailView):
     model = Team

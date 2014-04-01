@@ -81,7 +81,7 @@
 .navbar-logo{
     width:  132px;
     height: 50px;
-    background-image: url('{{ STATIC_URL }}grizzly/bullit.png');
+    background-image: url('{{ STATIC_URL }}grizzly/title-logo.png');
     background-repeat: no-repeat;
     background-position: center center;
 }
@@ -123,6 +123,7 @@
 
                                     <ul class= "nav navbar-nav">
                                         <li><a href="{% url news-list %}">Новости</a><li>
+                                        <li><a href="{% url game-division-list %}">Дивизионы</a><li>
                                         <li><a href="{% url team-list %}">Команды</a><li>
                                         {% show_menu 0 100 0 1 "cms/arkestra_menu.html" "" "" %}
                                     </ul>

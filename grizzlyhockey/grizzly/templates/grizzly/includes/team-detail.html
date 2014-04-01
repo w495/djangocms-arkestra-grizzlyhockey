@@ -13,18 +13,41 @@
     {% endif%}
     <!-- Проверка, чтобы не было ссылок на текущий элемент -->
 
-
-    {% block team_description %}
-        {% if team.description %}
-            <div class="panel panel-default">
-                <div class="panel-heading">Описание команды</div>
-                <div class="panel-body">
+    <div class="media">
+        <div class="pull-left" href="#">
+            {% if team.image %}
+                <a href="{% url team-detail pk=team.id %}">
+                    <img  src="{% thumbnail team.image 150x150 %}"
+                        {% if team.image.alt %}
+                            alt="{{ team.image.alt }}"
+                        {% endif %}
+                    />
+                </a>
+            {% endif %}
+        </div>
+        <div class="media-body">
+            {% if team.gamedivisions %}
+                <p>
+                    Дивизионы:
+                    {% for division in team.gamedivisions.all %}
+                        <a href="{% url game-division-detail pk=division.id %}">{{division}}</a>
+                    {% endfor %}
+                </p>
+            {% endif %}
+            {% block team_description %}
+                {% if team.detail %}
+                    <p>{{team.detail}}</p>
                     {% render_placeholder team.description %}
-                </div>
-            </div>
-        {% endif %}
-    {% endblock team_description %}
-
+<!--
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Описание команды</div>
+                        <div class="panel-body">
+                        </div>
+                    </div>-->
+                {% endif %}
+            {% endblock team_description %}
+        </div>
+    </div>
 
     <ul class="media-list">
     {% for player2team in team.player2team_set.all %}
