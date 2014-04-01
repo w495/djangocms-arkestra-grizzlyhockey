@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.contrib import admin
 from django.contrib.contenttypes.models import ContentType
 
@@ -77,7 +79,7 @@ class LinksPlugin(CMSPluginBase):
         return context
         
 
-plugin_pool.register_plugin(LinksPlugin)
+#plugin_pool.register_plugin(LinksPlugin)
 
 
 class FocusOnInlineItemAdmin(admin.StackedInline):
@@ -114,7 +116,7 @@ class FocusOnPluginPublisher(CMSPluginBase):
             })
         return context
 
-plugin_pool.register_plugin(FocusOnPluginPublisher)
+#plugin_pool.register_plugin(FocusOnPluginPublisher)
 
 
 class PluginInlineCarousel(admin.StackedInline):
@@ -202,4 +204,4 @@ class CarouselPluginPublisher(CMSPluginBase):
             self.render_template = "null.html"  
         return context
 
-plugin_pool.register_plugin(CarouselPluginPublisher)
+#plugin_pool.register_plugin(CarouselPluginPublisher)

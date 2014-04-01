@@ -99,5 +99,5 @@ class StudentshipAdmin(VacancyStudentshipAdmin):
         'please_contact',
         ]
 
-admin.site.register(Vacancy,VacancyAdmin)
-admin.site.register(Studentship,StudentshipAdmin)
+#admin.site.register(Vacancy,VacancyAdmin)
+#admin.site.register(Studentship,StudentshipAdmin)

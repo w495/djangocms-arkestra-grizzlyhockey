@@ -26,7 +26,7 @@ from django.utils.translation import ugettext as _
 
 class TeamPluginMany(CMSPluginBase):
     model = TeamPluginManyModel
-    name = _("Grizzly Team Many Plugin")
+    name = _(u"Гризли: несколько команд")
     render_template = "grizzly/plugins/teammany.html" # template to render the plugin with
     def render(self, context, instance, placeholder):
         context.update({'instance':instance})
@@ -34,7 +34,7 @@ class TeamPluginMany(CMSPluginBase):
 
 class TeamPlugin(CMSPluginBase):
     model = TeamPluginModel  #
-    name = _("Grizzly Team Plugin") #
+    name = _(u"Гризли: команда") #
     render_template = "grizzly/plugins/team.html" # template to render the plugin with
     def render(self, context, instance, placeholder):
         context.update({'instance':instance})
@@ -44,7 +44,7 @@ class TeamPlugin(CMSPluginBase):
 
 class PlayerPlugin(CMSPluginBase):
     model = PlayerPluginModel  #
-    name = _("Grizzly Player Plugin") #
+    name = _(u"Гризли: игрок") #
     render_template = "grizzly/plugins/player.html" # template to render the plugin with
     def render(self, context, instance, placeholder):
         context.update({'instance':instance})
@@ -53,7 +53,7 @@ class PlayerPlugin(CMSPluginBase):
 
 class GameSeasonPlugin(CMSPluginBase):
     model = GameSeasonPluginModel  #
-    name = _("Grizzly GameSeason Plugin") #
+    name = _(u"Гризли: сезон") #
     render_template = "grizzly/plugins/gameseason.html"
     def render(self, context, instance, placeholder):
         context.update({'instance':instance})
@@ -61,7 +61,7 @@ class GameSeasonPlugin(CMSPluginBase):
 
 class GameDivisionPlugin(CMSPluginBase):
     model = GameDivisionPluginModel  #
-    name = _("Grizzly GameDivision Plugin") #
+    name = _(u"Гризли: дивизион") #
     render_template = "grizzly/plugins/gamedivision.html"
     def render(self, context, instance, placeholder):
         context.update({'instance':instance})
@@ -78,7 +78,7 @@ class GameDivisionPluginMany(CMSPluginBase):
 
 class GameTournamentRegularPlugin(CMSPluginBase):
     model = GameTournamentRegularPluginModel  #
-    name = _("Grizzly GameTournamentRegular Plugin") #
+    name = _(u"Гризли: регулярный чемпионат") #
     render_template = "grizzly/plugins/gametournamentregular.html"
     def render(self, context, instance, placeholder):
         context.update({'instance':instance})
@@ -104,7 +104,7 @@ class GameMatchPluginMany(CMSPluginBase):
 
 class GameMatchPlugin(CMSPluginBase):
     model = GameMatchPluginModel  #
-    name = _("Grizzly GameMatch Plugin") #
+    name = _(u"Гризли: матч") #
     render_template = "grizzly/plugins/gamematch.html"
     def render(self, context, instance, placeholder):
         context.update({'instance':instance})

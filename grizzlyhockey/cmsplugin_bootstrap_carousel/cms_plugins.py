@@ -23,7 +23,7 @@ class CarouselItemInline(admin.StackedInline):
 class CarouselPlugin(CMSPluginBase):
     model = Carousel
     form = CarouselForm
-    name = _("Carousel")
+    name = _(u"Карусель картинок")
     render_template = "cmsplugin_bootstrap_carousel/carousel.html"
 
     inlines = [

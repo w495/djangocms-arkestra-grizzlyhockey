@@ -127,6 +127,6 @@ class EntityMembersPluginPublisher(AutocompleteMixin, CMSPluginBase):
             })
         return context
 
-plugin_pool.register_plugin(EntityDirectoryPluginPublisher)
-plugin_pool.register_plugin(EntityMembersPluginPublisher)
-plugin_pool.register_plugin(EntityAutoPageLinkPluginPublisher)
+#plugin_pool.register_plugin(EntityDirectoryPluginPublisher)
+#plugin_pool.register_plugin(EntityMembersPluginPublisher)
+#plugin_pool.register_plugin(EntityAutoPageLinkPluginPublisher)

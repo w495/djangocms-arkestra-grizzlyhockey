@@ -63,4 +63,4 @@ class CMSVacanciesPlugin(VacancyStudentshipPluginMixin, ArkestraGenericPlugin, A
             })
         return context
 
-plugin_pool.register_plugin(CMSVacanciesPlugin)
+# plugin_pool.register_plugin(CMSVacanciesPlugin)
