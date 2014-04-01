@@ -1,0 +1,43 @@
+{% load thumbnail %}
+{% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
+
+<section>
+
+    <ul class="media-list">
+    {% for team in team_list %}
+        <li class="media">
+            <div class="pull-left" href="#">
+                {% if team.image %}
+                    <a href="{% url team-detail pk=team.id %}">
+                        <img  class="img-thumbnail" src="{% thumbnail team.image 128x128 %}"
+                            {% if team.image.alt %}
+                                alt="{{ team.image.alt }}"
+                            {% endif %}
+                        />
+                    </a>
+                {% endif %}
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading">
+                    <a href="{% url team-detail pk=team.id %}">
+                        {{team.name}}
+                    </a>
+                </h4>
+                {% if team.gamedivisions %}
+                    <p>
+                        Дивизионы:
+                        {% for division in team.gamedivisions.all %}
+                            <a href="{% url game-division-detail pk=division.id %}">{{division}}</a>
+                        {% endfor %}
+                    </p>
+                {% endif %}
+
+                {% if team.detail %}
+                    <p>{{team.detail}}</p>
+                {% endif %}
+            </div>
+        </li>
+    {% endfor %}
+    </ul>
+
+</section>

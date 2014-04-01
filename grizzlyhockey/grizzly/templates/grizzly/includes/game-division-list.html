@@ -1,0 +1,36 @@
+{% load thumbnail %}
+{% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
+
+<section>
+
+    <ul class="media-list">
+    {% for gamedivision in gamedivision_list %}
+        <li class="media">
+            <div class="pull-left" href="#">
+                {% if gamedivision.image %}
+                    <a href="{% url game-division-detail pk=gamedivision.id %}">
+                        <img  class="img-thumbnail" src="{% thumbnail gamedivision.image 128x128 %}"
+                            {% if gamedivision.image.alt %}
+                                alt="{{ gamedivision.image.alt }}"
+                            {% endif %}
+                        />
+                    </a>
+                {% endif %}
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading">
+                    <a href="{% url game-division-detail pk=gamedivision.id %}">
+                        {{gamedivision.name}}
+                    </a>
+                </h4>
+                {% if gamedivision.detail %}
+                    <p>{{gamedivision.detail}}</p>
+                {% endif %}
+            </div>
+        </li>
+    {% endfor %}
+    </ul>
+
+
+</section>
+
