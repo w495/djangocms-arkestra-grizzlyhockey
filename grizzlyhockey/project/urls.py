@@ -15,11 +15,11 @@ urlpatterns = patterns('',
 
     url(r'^grizzly/', include('grizzly.urls')),
 
-    url(r"", include("vacancies_and_studentships.urls")),
+    #url(r"", include("vacancies_and_studentships.urls")),
 
     url(r"", include("contacts_and_people.urls")),
 
-        #(r'^jsi18n/(?P<packages>\S+?)/$', 'django.views.i18n.javascript_catalog'),
+    (r'^jsi18n/(?P<packages>\S+?)/$', 'django.views.i18n.javascript_catalog'),
 )
 
 if settings.DEBUG:

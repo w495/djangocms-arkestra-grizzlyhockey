@@ -29,6 +29,7 @@ class AutocompleteMixin(object):
         """
         if (isinstance(db_field, ForeignKey) and
                 db_field.name in self.related_search_fields):
+            #pass
             kwargs['widget'] = fk_lookup.FkLookup(db_field.rel.to)
         return super(AutocompleteMixin, self).formfield_for_dbfield(
             db_field,
