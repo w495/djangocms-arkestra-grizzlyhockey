@@ -3,7 +3,6 @@
 from django.db import models
 from absgameobj import AbsGameObj
 
-
 class GameTournamentRegular (AbsGameObj):
 
     gamedivisions = models.ManyToManyField(

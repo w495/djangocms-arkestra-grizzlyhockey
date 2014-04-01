@@ -11,6 +11,7 @@ from grizzly.models import InsuranceType
 from grizzly.models import PlayerType
 from grizzly.models import PlayerStatus
 from grizzly.models import Player
+from grizzly.models import Player2Team
 from grizzly.models import Trainer
 from grizzly.models import Rink
 from grizzly.models import RinkSchedule
@@ -63,10 +64,17 @@ class JudgeAdmin(AbsPersAdmin):
     )
 
 
+
+class Player2TeamAdminInline(AbsObjTabularInline):
+    model = Player2Team
+    exclude = ('description', 'detail', 'name')
+
+
 class PlayerAdmin(AbsPersAdmin):
-    filter_horizontal = (
-        'teams',
-    )
+    inlines = [
+        Player2TeamAdminInline,
+    ]
+
 
 
 class TrainerAdmin(AbsPersAdmin):
@@ -120,6 +128,12 @@ class TeamScheduleAdmin(AbsObjAdmin):
 
 
 
+class Player2TeamAdmin(AbsObjAdmin):
+    list_display = (
+        'player',
+        'team',
+    )
+
 class TeamAdmin(AbsObjAdmin):
     list_display = (
         'id',
@@ -130,10 +144,12 @@ class TeamAdmin(AbsObjAdmin):
         'name',
     )
     filter_horizontal = (
-        'players',
         'teamschedules',
         'gamedivisions'
     )
+    inlines = [
+        Player2TeamAdminInline,
+    ]
 
 class TeamPluginAdmin(AbsObjAdmin):
     pass
@@ -658,6 +674,8 @@ admin.site.register(InsuranceType, InsuranceTypeAdmin)
 admin.site.register(PlayerType,     PlayerTypeAdmin)
 admin.site.register(PlayerStatus,   PlayerStatusAdmin)
 admin.site.register(Player,         PlayerAdmin)
+admin.site.register(Player2Team,    Player2TeamAdmin)
+
 
 admin.site.register(Trainer, TrainerAdmin)
 

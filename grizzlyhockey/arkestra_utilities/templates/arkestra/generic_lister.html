@@ -1,13 +1,12 @@
 {% load placeholder_tags %}
 {% render_placeholder intro_page_placeholder %}
+
 {% if lister.lists %}
 
     <div class="{{ lister.row_class }} {{ lister.list_format }}">
 
         {% for list in lister.lists %}
-
                 <div class = "{{ list.div_class }}">
-
 <!--
                     {% if lister.heading_level %}
                         <h{{ lister.heading_level }}>{{ list.heading_text }}</h{{ lister.heading_level }}>
@@ -42,6 +41,5 @@
         {% endfor %}
         {% include "arkestra/generic_lister_other_items.html" %}
     </div>
-
 
 {% endif %}

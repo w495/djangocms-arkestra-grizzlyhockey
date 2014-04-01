@@ -4,45 +4,99 @@
 {% block main_page_body %}
 
 
-{% for newsarticle in newsarticles %}
+<ul class="media-list">
+    {% for newsarticle in newsarticles %}
+        <li class="media">
+            {% thumbnail newsarticle.image.file 128x128 subject_location=newsarticle.image.subject_location crop as image %}
+
+            {% url news slug=newsarticle.slug as thisurl %}
 
 
-    <h{{PAGE_TITLE_HEADING_LEVEL}}>{{ newsarticle }}</h{{PAGE_TITLE_HEADING_LEVEL}}>
 
-    {% if newsarticle.summary %}
-        <p class="subtitle">{{ newsarticle.summary }}</p>
-    {% endif %}
-
-    
-
-    {% thumbnail newsarticle.image.file sidebar_image_size subject_location=newsarticle.image.subject_location crop as image %}
-    {% with placeholder_width=generic_main_width %}
-        <div class="row columns3">
-            <div class="column firstcolumn doublecolumn">
-                {% block placeholder %}
-                    {% render_placeholder newsarticle.body %}
-                {% endblock placeholder %}
-            </div>
-            <div class="column lastcolumn">
-                {% block image %}
-                    {% if image %}<div><img src="{{ image.url }}" /></div>{% endif %}
-                {% endblock image %}
-                <dl class="not-indented">
-                    <dt>Published</dt>
-                    <dd>{% date newsarticle.date %}</dd>
-                    {% if newsarticle.please_contact.all %}
-                        <dt>General enquiries</dt>
-                        {% for person in newsarticle.please_contact.all %}
-                            <dd><a href = "{{ person.get_absolute_url }}">{{ person }}</a></dd>
-                        {% endfor %}
+            <div class="pull-left" href="#">
+                <div>
+                    {% if image %}
+                        <a href="{{ thisurl }}">
+                            <img  class="img-thumbnail" src="{{ image.url }}"
+                                {% if image.alt %}
+                                    alt="{{ image.alt }}"
+                                {% endif %}
+                            />
+                        </a>
                     {% endif %}
-                </dl>
-                {% with newsarticle.links as links %}
-                    {% include "includes/related_links_list.html" %}
-                {% endwith %}
+                </div>
+                <div class="center">
+                    <date class="text-muted" title="Опубликовано: {% date newsarticle.date %}">
+                        {% date newsarticle.date %}
+                    </date>
+                </div>
             </div>
-        </div>
-    {% endwith %}
+            <div class="media-body">
+                <h{{PAGE_TITLE_HEADING_LEVEL}} class="media-heading">
+                    <a href="{{ thisurl }}">{{ newsarticle }}</a>
+                </h{{PAGE_TITLE_HEADING_LEVEL}}>
+                <div>
+                    {% if newsarticle.summary %}
+                        <p class="subtitle">{{ newsarticle.summary }}</p>
+                    {% endif %}
+                </div>
 
-{% endfor %}
+
+            </div>
+
+<!--
+
+
+
+                <div class="row columns3">
+                    <div class="column firstcolumn doublecolumn">
+                        {% block placeholder %}
+                            {% render_placeholder newsarticle.body %}
+                        {% endblock placeholder %}
+                    </div>
+                    <div class="column lastcolumn">
+                        {% block image %}
+                            {% if image %}<div><img src="{{ image.url }}" /></div>{% endif %}
+                        {% endblock image %}
+                        <dl class="not-indented">
+                            <dt>Published</dt>
+                            <dd>{% date newsarticle.date %}</dd>
+                            {% if newsarticle.please_contact.all %}
+                                <dt>General enquiries</dt>
+                                {% for person in newsarticle.please_contact.all %}
+                                    <dd><a href = "{{ person.get_absolute_url }}">{{ person }}</a></dd>
+                                {% endfor %}
+                            {% endif %}
+                        </dl>
+                    </div>
+                </div>-->
+        </li>
+    {% endfor %}
+</ul>
+
+
+{% if newsarticles.paginator.num_pages > 1 %}
+    <div class="center ">
+        <ul class="pagination pagination-lg">
+
+            <li class="{% if not newsarticles.has_previous %}disabled{% endif %}">
+                <a href="?page={{ newsarticles.previous_page_number }}">&laquo;</a>
+            </li>
+
+            {% for n_page in newsarticles.paginator.page_range  %}
+                <li class="{% if newsarticles.number == n_page %}active{% endif %}">
+                    <a href="?page={{ n_page }}">
+                        {{n_page}}
+                    </a>
+                </li>
+            {% endfor %}
+            <li class="{% if not newsarticles.has_next %}disabled{% endif %}">
+                <a href="?page={{ newsarticles.next_page_number }}">&raquo;</a>
+            </li>
+
+        </ul>
+    </div>
+{% endif %}
+
+
 {% endblock main_page_body %}

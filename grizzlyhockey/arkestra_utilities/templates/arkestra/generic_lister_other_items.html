@@ -1,12 +1,13 @@
 {% if lister.other_items %}
-	<ul class="close other-items icons">
-		{% for item in lister.other_items %}
+    <ul class="other-items">
+        {% for item in lister.other_items %}
             {% if item.link %}
-			<li class="{{ item.css_class }}">
-                <a href = "{{item.link}}">{{item.title|capfirst }}</a>
-            </li>
+                <li class="{{ item.css_class }}">
+                    <a class="btn btn-default" href = "{{item.link}}" role="button" >{{item.title|capfirst }} &raquo;</a>
+                </li>
             {% endif %}
-		{% endfor %}
+        {% endfor %}
     </ul>
 {% endif %}
-
+<!--
+<a class="btn btn-default" href="/news/" role="button">Все новости &raquo;</a>-->

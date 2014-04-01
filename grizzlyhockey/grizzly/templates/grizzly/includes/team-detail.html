@@ -27,15 +27,25 @@
 
 
     <ul class="media-list">
-    {% for player in team.players.all %}
+    {% for player2team in team.player2team_set.all %}
+        {% with player2team.player as player  %}
+
         <li class="media">
             <div class="pull-left" href="#">
-                {% if player.image %}
-                    <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 %}"
-                        {% if picture.alt %}
-                            alt="{{ player.image.alt }}"
+                {% if player2team.image %}
+                    <img  class="img-thumbnail" src="{% thumbnail player2team.image 128x128 %}"
+                        {% if player2team.image.alt %}
+                            alt="{{ player2team.image.alt }}"
                         {% endif %}
                     />
+                {% else %}
+                    {% if player.image %}
+                        <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 %}"
+                            {% if player.image.alt %}
+                                alt="{{ player.image.alt }}"
+                            {% endif %}
+                        />
+                    {% endif %}
                 {% endif %}
                 <div class="team-human-metrics">
                     {% if player.birthday %}
@@ -95,28 +105,28 @@
                 <div class="row" >
                     <div class="col-md-3">
                         <dl class="dl-horizontal dl-team-playercard">
-                            {% if player.game_number %}
+                            {% if player2team.game_number %}
                                 <dt class="text-muted">
                                     Номер:&nbsp;
                                 </dt>
                                 <dd>
-                                    {{player.game_number}}
+                                    {{player2team.game_number}}
                                 </dd>
                             {% endif %}
-                            {% if player.role %}
+                            {% if player2team.role %}
                                 <dt class="text-muted">
                                     Амплуа:&nbsp;
                                 </dt>
                                 <dd>
-                                    <date>{{player.role}}</date>
+                                    <date>{{player2team.role}}</date>
                                 </dd>
                             {% endif %}
-                            {% if player.status %}
+                            {% if player2team.status %}
                                 <dt class="text-muted">
                                     Статус:&nbsp;
                                 </dt>
                                 <dd>
-                                    {{player.status}}
+                                    {{player2team.status}}
                                 </dd>
                             {% endif %}
                             {% if player.type %}
@@ -155,6 +165,10 @@
                 </div>
             </div>
         </li>
+
+
+    {% endwith %}
+
     {% endfor %}
     </ul>
 

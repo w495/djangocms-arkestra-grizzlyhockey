@@ -26,6 +26,7 @@ from playerstatus import PlayerStatus
 from playertype     import PlayerType
 
 from player         import Player
+from player2team    import Player2Team
 from playerplugin   import PlayerPlugin
 from judgetype      import JudgeType
 from judge          import Judge

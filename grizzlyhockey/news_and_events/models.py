@@ -385,14 +385,14 @@ post_save.connect(receiver_function, sender = Event)
 
 class NewsAndEventsPlugin(CMSPlugin, ArkestraGenericPluginOptions):
     DISPLAY = (
-        ("news & events", u"News and events"),
-        ("news", u"News only"),
-        ("events", u"Events only"),
+        (u"новости и события", u"новости и события"),
+        (u"новости", u"новости"),
+        (u"события", u"события"),
         )
-    display = models.CharField("Show", max_length=25,choices = DISPLAY, default = "news & events")
+    display = models.CharField("Show", max_length=25,choices = DISPLAY, default = u"новости и события")
     show_previous_events = models.BooleanField()
-    news_heading_text = models.CharField(max_length=25, default=_(u"News"))
-    events_heading_text = models.CharField(max_length=25, default=_(u"Events"))
+    news_heading_text = models.CharField(max_length=25, default=_(u"новости"))
+    events_heading_text = models.CharField(max_length=25, default=_(u"событияz"))
 
 try:
     mptt.register(Event)

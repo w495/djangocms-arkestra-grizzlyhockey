@@ -15,6 +15,8 @@ from .lister import NewsAndEventsCurrentLister, NewsArchiveLister, \
 
 from arkestra_utilities.settings import MULTIPLE_ENTITY_MODE
 
+from django.core.paginator import Paginator
+
 class NewsAndEventsView(ArkestraGenericView):
     auto_page_attribute = "auto_news_page"
 
@@ -97,10 +99,24 @@ def newsarticles(request):
     Responsible for publishing news article
     """
 
+    newsarticles =  NewsArticle.objects.all()
+
+    paginator = Paginator(newsarticles, 10)
+
+    page = request.GET.get('page', 1)
+    try:
+        newsarticles = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        newsarticles = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        newsarticles = paginator.page(paginator.num_pages)
+
     return render_to_response(
         "news_and_events/newsarticles.html",
         {
-        "newsarticles":NewsArticle.objects.all(),
+        "newsarticles": newsarticles,
         "entity": None,
         "meta": {"description": None,}
         },

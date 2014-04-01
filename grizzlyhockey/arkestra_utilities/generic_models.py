@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
@@ -152,18 +154,18 @@ class ArkestraGenericPluginOptions(models.Model):
         help_text="Leave blank for autoselect",
         related_name="%(class)s_plugin")
     LAYOUTS = (
-        ("sidebyside", u"Side-by-side"),
-        ("stacked", u"Stacked"),
-        )
+        ("sidebyside", u"Линией"),
+        ("stacked", u"Стопкой"),
+    )
     layout = models.CharField(
         "Plugin layout",
         max_length=25,
-        choices=LAYOUTS, default="sidebyside"
-        )
+        choices=LAYOUTS, default="stacked"
+    )
     FORMATS = (
-        ("title", u"Title only"),
-        ("details image", u"Details"),
-        )
+        ("title", u"Только заголовки"),
+        ("details image", u"Детали"),
+    )
     format = models.CharField(
         "Item format", max_length=25, choices=FORMATS,
         default="details image"
@@ -173,20 +175,20 @@ class ArkestraGenericPluginOptions(models.Model):
         default=PLUGIN_HEADING_LEVEL_DEFAULT
         )
     ORDERING = (
-        ("date", u"Date alone"),
-        ("importance/date", u"Importance & date"),
-        )
+        ("date", u"Только дата"),
+        ("importance/date", u"Важность и дата"),
+    )
     order_by = models.CharField(
         max_length=25, choices=ORDERING, default="importance/date"
-        )
+    )
     LIST_FORMATS = (
-        ("vertical", u"Vertical"),
-        ("horizontal", u"Horizontal"),
-        )
+        ("vertical", u"Вертикально"),
+        ("horizontal", u"Горизонтально"),
+    )
     list_format = models.CharField(
-        "List format", max_length=25,
-        choices=LIST_FORMATS, default="vertical"
-        )
+        u"формат списка", max_length=25,
+        choices=LIST_FORMATS, default="vertical",
+    )
     group_dates = models.BooleanField("Show date groups", default=True)
     limit_to = models.PositiveSmallIntegerField(
         "Maximum number of items",

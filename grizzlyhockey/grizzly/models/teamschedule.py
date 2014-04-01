@@ -2,7 +2,7 @@
 
 from django.db import models
 from absschedule import AbsSchedule
-
+from team import Team
 
 class TeamSchedule(AbsSchedule):
 
@@ -10,6 +10,7 @@ class TeamSchedule(AbsSchedule):
         'Team',
         blank=True,
         null=True,
+        through=Team.teamschedules.through,
         verbose_name=u"команды"
     )
 

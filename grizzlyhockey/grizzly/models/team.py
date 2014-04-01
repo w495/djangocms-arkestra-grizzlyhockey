@@ -2,7 +2,6 @@
 
 from django.db import models
 from absobj import AbsObj
-from player import Player
 
 
 class Team(AbsObj):
@@ -22,7 +21,7 @@ class Team(AbsObj):
         'Player',
         blank=True,
         null=True,
-        through=Player.teams.through,
+        through='Player2Team',
         verbose_name=u"игроки"
     )
 

@@ -2,6 +2,7 @@
 
 from django.db import models
 from absschedule import AbsSchedule
+from rink import Rink
 
 class RinkSchedule(AbsSchedule):
 
@@ -9,6 +10,7 @@ class RinkSchedule(AbsSchedule):
         'Rink',
         blank=True,
         null=True,
+        through = Rink.rinkschedules.through,
         verbose_name=u"катки"
     )
 

@@ -62,6 +62,7 @@ class Player(AbsPers):
         'Team',
         blank = True,
         null = True,
+        through='Player2Team',
         verbose_name = u"команды"
     )
 

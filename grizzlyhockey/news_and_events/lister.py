@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
+
 import operator
 from datetime import datetime, timedelta
-
+from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 
@@ -55,6 +57,7 @@ class NewsList(ArkestraGenericList):
                 "title": title,
                 "css_class": "main"
             })
+
 
         return other_items
 
@@ -357,7 +360,7 @@ class NewsAndEventsMenuLister(ArkestraGenericLister):
         ("news", NewsListCurrent),
         ("events", EventsListCurrent),
         ]
-    display = "news and events"
+    display = u"новости и события"
     limit_to = LISTER_MAIN_PAGE_LIST_LENGTH
 
 
@@ -368,14 +371,14 @@ class NewsAndEventsPluginLister(ArkestraGenericLister):
         ]
 
     def other_items(self):
-        link = None
+        link = reverse("news-list")
         if(self.entity):
             link = self.entity.get_auto_page_url(menu.menu_dict["url_attribute"])
         return [{
             "link": link,
-            "title": "More %s" % self.display,
+            "title": u"Все новости",
             "css_class": "main"
-            }]
+        }]
 
 
 class NewsAndEventsPersonLister(ArkestraGenericLister):
@@ -384,24 +387,24 @@ class NewsAndEventsPersonLister(ArkestraGenericLister):
         ("news", NewsListForPerson),
         ("events", EventsListForPerson),
         ]
-    display = "news events"
+    display = u"новости"
 
 
 class NewsArchiveLister(ArkestraGenericLister):
     listkinds = [("news", NewsListArchive)]
-    display = "news"
+    display = u"новости"
 
 
 class EventsArchiveLister(ArkestraGenericLister):
     listkinds = [("events", EventsListArchive)]
-    display = "events"
+    display = u"события"
 
 
 class EventsForthcomingLister(ArkestraGenericLister):
     listkinds = [("events", EventsListForthcoming)]
-    display = "events"
+    display = u"события"
 
 
 class EventsPlaceLister(ArkestraGenericLister):
     listkinds = [("events", EventsListForPlace)]
-    display = "events"
+    display = u"события"

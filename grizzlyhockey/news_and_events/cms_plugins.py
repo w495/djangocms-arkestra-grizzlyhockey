@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django import forms
 from django.utils.translation import ugettext as _
 
@@ -24,7 +26,7 @@ class NewsAndEventsPluginForm(ArkestraGenericPluginForm, forms.ModelForm):
 class CMSNewsAndEventsPlugin(NewsAndEventsPluginMixin, ArkestraGenericPlugin, AutocompleteMixin, CMSPluginBase):
 
     model = NewsAndEventsPlugin
-    name = _("News & events")
+    name = _(u"Новости")
     form = NewsAndEventsPluginForm
     menu_cues = menu_dict
     
@@ -57,12 +59,12 @@ class CMSNewsAndEventsPlugin(NewsAndEventsPluginMixin, ArkestraGenericPlugin, Au
             item_format=instance.format,
             list_format=instance.list_format,
             # request=instance.request
-            )
+        )
 
         context.update({
             'lister': self.lister,
             'placeholder': placeholder,
-            })
+        })
         return context
 
 

@@ -2,6 +2,8 @@
 
 from django.db import models
 from absgameobj import AbsGameObj
+from team import Team
+from gameseason import GameSeason
 
 class GameDivision(AbsGameObj):
 
@@ -9,6 +11,7 @@ class GameDivision(AbsGameObj):
         'GameSeason',
         blank=True,
         null=True,
+        through=GameSeason.gamedivisions.through,
         verbose_name=u"сезоны"
     )
 
@@ -16,6 +19,7 @@ class GameDivision(AbsGameObj):
         'Team',
         blank=True,
         null=True,
+        through=Team.gamedivisions.through,
         verbose_name=u"команды"
     )
 

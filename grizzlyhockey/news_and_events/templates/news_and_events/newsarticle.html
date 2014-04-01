@@ -31,7 +31,7 @@
                     {% if image %}<div><img src="{{ image.url }}" /></div>{% endif %}
                 {% endblock image %}
                 <dl class="not-indented">
-                    <dt>Published</dt>
+                    <dt>Опубликовано:</dt>
                     <dd>{% date newsarticle.date %}</dd>
                     {% if newsarticle.please_contact.all %}
                         <dt>General enquiries</dt>
@@ -46,8 +46,11 @@
             </div>
         </div>
 
+        {% url news-list as newsurl %}
+
+
         <p>
-            <a class="btn btn-default" href="/news/" role="button">Все новости &raquo;</a>
+            <a class="btn btn-default" href="{{newsurl}}" role="button">Все новости &raquo;</a>
         </p>
 
     {% endwith %}
