@@ -19,6 +19,15 @@ class GameTournamentRegular (AbsGameObj):
         verbose_name=u"команды"
     )
 
+
+    def get_tours(self):
+        all_team = self.teams.all().count()
+        if (all_team % 2):
+            all_team += 1;
+        return range(1, all_team )
+
+
+
     class Meta:
         ordering = ('ctime',)
         app_label = "grizzly"

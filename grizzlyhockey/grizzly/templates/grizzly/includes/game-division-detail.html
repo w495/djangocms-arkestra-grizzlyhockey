@@ -5,33 +5,70 @@
 
     <h{{IN_BODY_HEADING_LEVEL}}>Дивизион «{{ gamedivision.name }}»</h{{IN_BODY_HEADING_LEVEL}}>
 
-    <ul class="media-list">
-    {% for team in gamedivision.teams.all %}
-        <li class="media">
-            <div class="pull-left" href="#">
-                {% if team.image %}
-                    <a href="{% url team-detail pk=team.id %}">
-                        <img  class="img-thumbnail" src="{% thumbnail team.image 64x64 %}"
-                            {% if team.image.alt %}
-                                alt="{{ team.image.alt }}"
+    <div class="row">
+        <div class="col-lg-12">
+            <section>
+                <ul class="media-list">
+                {% for team in gamedivision.teams.all %}
+                    <li class="media">
+                        <div class="pull-left" href="#">
+                            {% if team.image %}
+                                <a href="{% url team-detail pk=team.id %}">
+                                    <img  class="img-thumbnail" src="{% thumbnail team.image 64x64 %}"
+                                        {% if team.image.alt %}
+                                            alt="{{ team.image.alt }}"
+                                        {% endif %}
+                                    />
+                                </a>
                             {% endif %}
-                        />
-                    </a>
-                {% endif %}
-            </div>
-            <div class="media-body">
-                <h4 class="media-heading">
-                    <a href="{% url team-detail pk=team.id %}">
-                        Команда «{{team.name}}»
-                    </a>
-                </h4>
-                {% if team.detail %}
-                    <p>{{team.detail}}</p>
-                {% endif %}
-            </div>
-        </li>
-    {% endfor %}
-    </ul>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">
+                                <a href="{% url team-detail pk=team.id %}">
+                                    Команда «{{team.name}}»
+                                </a>
+                            </h4>
+                            {% if team.detail %}
+                                <p>{{team.detail}}</p>
+                            {% endif %}
+                        </div>
+                    </li>
+                {% endfor %}
+                </ul>
+            </section>
+        </div>
+        <div class="col-lg-12">
+            <section>
+                <ul class="media-list">
+                {% for tournament in gamedivision.gametournamentregulars.all %}
+                    <li class="media">
+                        <div class="pull-left" href="#">
+                            {% if tournament.image %}
+                                <a href="{% url game-tournament-regular-detail pk=tournament.id %}">
+                                    <img  class="img-thumbnail" src="{% thumbnail tournament.image 64x64 %}"
+                                        {% if tournament.image.alt %}
+                                            alt="{{ tournament.image.alt }}"
+                                        {% endif %}
+                                    />
+                                </a>
+                            {% endif %}
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">
+                                <a href="{% url game-tournament-regular-detail pk=tournament.id %}">
+                                    Чемпионат «{{tournament.name}}»
+                                </a>
+                            </h4>
+                            {% if tournament.detail %}
+                                <p>{{tournament.detail}}</p>
+                            {% endif %}
+                        </div>
+                    </li>
+                {% endfor %}
+                </ul>
+            </section>
+        </div>
+    </div>
 
 
 </section>

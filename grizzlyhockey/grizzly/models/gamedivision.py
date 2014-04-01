@@ -5,6 +5,8 @@ from absgameobj import AbsGameObj
 from team import Team
 from gameseason import GameSeason
 
+from gametournamentregular import GameTournamentRegular
+
 class GameDivision(AbsGameObj):
 
     gameseasons = models.ManyToManyField(
@@ -21,6 +23,15 @@ class GameDivision(AbsGameObj):
         null=True,
         through=Team.gamedivisions.through,
         verbose_name=u"команды"
+    )
+
+
+    gametournamentregulars = models.ManyToManyField(
+        'GameTournamentRegular',
+        blank=True,
+        null=True,
+        through=GameTournamentRegular.gamedivisions.through,
+        verbose_name=u"регулярные чемпионаты"
     )
 
     class Meta:
