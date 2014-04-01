@@ -1,3 +1,5 @@
+# coding: utf-8
+
 from __future__ import division
 
 from django.contrib import admin
@@ -126,7 +128,7 @@ class ImageSetPluginForm(forms.ModelForm):
 class ImageSetPublisher(SupplyRequestMixin, CMSPluginBase):
     form = ImageSetPluginForm
     model = ImageSetPlugin
-    name = "Галерея картинок"
+    name = u"Галерея картинок"
     text_enabled = True
     raw_id_fields = ('image',)
     inlines = (ImageSetItemEditor,)
@@ -212,7 +214,7 @@ class EmbeddedVideoPlugin(CMSPluginBase):
     model = EmbeddedVideoSetPlugin
     admin_preview = False
 
-    name = "Галерея видео"
+    name = u"Галерея видео"
     text_enabled = True
     inlines = (EmbeddedVideoSetItemEditor,)
 
@@ -257,7 +259,7 @@ class EmbeddedVideoPlugin(CMSPluginBase):
         return "/static/plugin_icons/embedded_videos.png"
 
 
-#plugin_pool.register_plugin(EmbeddedVideoPlugin)
+plugin_pool.register_plugin(EmbeddedVideoPlugin)
 
 
                     # gcbirzan's suggestion on how to calculate LIGHTBOX_COLUMNS

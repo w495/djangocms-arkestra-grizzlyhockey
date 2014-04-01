@@ -52,6 +52,20 @@
 .team-human-metrics{
     text-align:center;
 }
+.carousel{
+    overflow:hidden;
+    background: black;
+    min-height: 300px;
+}
+.carousel-inner-image{
+    display: block;
+    min-width: 1000px;
+    min-height: 300px;
+    background-color:blue;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size:cover;
+}
 .center{
     text-align:center;
 }
@@ -64,6 +78,13 @@
     margin-left: 6em;
 }
 
+.navbar-logo{
+    width:  132px;
+    height: 50px;
+    background-image: url('{{ STATIC_URL }}grizzly/bullit.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+}
 
 </style>
 
@@ -90,19 +111,21 @@
                     {% block outer_wrapper_top %}{% endblock %}
                     <div id="inner-wrapper">
                         {% block menu %}
-                        <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+                        <div class="navbar navbar-fixed-top navbar-default" role="navigation">
                             <div class="container">
                                 <div class="navbar-header">
                                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                                     <span class="sr-only">Toggle navigation</span>
                                     </button>
-                                    <a class="navbar-brand" href="#">Project name</a>
+                                    <a class="navbar-brand navbar-logo" href="/">&nbsp;</a>
                                 </div>
                                 <div class="collapse navbar-collapse">
 
-                                        <ul class= "nav navbar-nav">
-                                        {% show_menu 0 100 100 100 "cms/arkestra_menu.html" "" "" %}
-                                        </ul>
+                                    <ul class= "nav navbar-nav">
+                                        <li><a href="{% url news-list %}">Новости</a><li>
+                                        <li><a href="{% url team-list %}">Команды</a><li>
+                                        {% show_menu 0 100 0 1 "cms/arkestra_menu.html" "" "" %}
+                                    </ul>
 
                                 </div>
                             </div>
@@ -112,12 +135,15 @@
                         <div class="container">
                             {% block pagetitle %}
                                 {% if not current_page.flags.no_page_title %}
-                                    {% filter typogrify %}<h{{PAGE_TITLE_HEADING_LEVEL}}>{% page_attribute title %}</h{{PAGE_TITLE_HEADING_LEVEL}}>{% endfilter %}
+                                    {% filter typogrify %}
+                                    <h{{PAGE_TITLE_HEADING_LEVEL}}>
+                                        {% page_attribute title %}
+                                    </h{{PAGE_TITLE_HEADING_LEVEL}}>
+                                    {% endfilter %}
                                 {% endif %}
                             {% endblock pagetitle %}
                             {% block main_page_body %}
                                 {% filter amp|smartypants|caps|initial_quotes %}
-                                    {% insert "newsflash" %}
                                     {% placeholder body %}
                                 {% endfilter %}
                             {% endblock main_page_body %}

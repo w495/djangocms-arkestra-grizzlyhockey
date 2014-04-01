@@ -69,7 +69,7 @@ class GameDivisionPlugin(CMSPluginBase):
 
 class GameDivisionPluginMany(CMSPluginBase):
     model = GameDivisionPluginManyModel  #
-    name = _("Grizzly GameDivision Many Plugin") #
+    name = _(u"Гризли: несколько дивизионов") #
     render_template = "grizzly/plugins/gamedivisionmany.html"
     def render(self, context, instance, placeholder):
         context.update({'instance':instance})
@@ -87,7 +87,7 @@ class GameTournamentRegularPlugin(CMSPluginBase):
 
 class GameTournamentRegularPluginMany(CMSPluginBase):
     model = GameTournamentRegularPluginManyModel  #
-    name = _("Grizzly GameTournamentRegular Many Plugin") #
+    name = _(u"Гризли: несколько регулярных чемпионатов") #
     render_template = "grizzly/plugins/gametournamentregularmany.html"
     def render(self, context, instance, placeholder):
         context.update({'instance':instance})
@@ -96,7 +96,7 @@ class GameTournamentRegularPluginMany(CMSPluginBase):
 
 class GameMatchPluginMany(CMSPluginBase):
     model = GameMatchPluginManyModel  #
-    name = _("Grizzly GameMatch Many Plugin") #
+    name = _(u"Гризли: несколько матчей") #
     render_template = "grizzly/plugins/gamematchmany.html"
     def render(self, context, instance, placeholder):
         context.update({'instance':instance})
