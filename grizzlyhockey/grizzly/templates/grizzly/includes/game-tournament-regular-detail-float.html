@@ -1,0 +1,105 @@
+{% load thumbnail %}
+{% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="panel-title center">
+            <span>c&nbsp;</span>
+            <date>{{ gametournamentregular.start_datetime }}</date>
+            <span>&nbsp;по&nbsp;</span>
+            <date>{{ gametournamentregular.stop_datetime  }}</date>
+        </div>
+    </div>
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th>Команды</th>
+                <th class="row center">
+                    {% for tourno in gametournamentregular.get_tours %}
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6 ">
+                            {{tourno}}
+                        </div>
+                    {% endfor %}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for team in gametournamentregular.teams.all|dictsort:"ctime" %}
+                <tr>
+                    <th>
+                        <div>
+                            {% if team.image %}
+                                <a href="{% url team-detail pk=team.id %}">
+                                    <img  class="img-thumbnail" src="{% thumbnail team.image 64x64 %}"
+                                        {% if team.image.alt %}
+                                            alt="{{ team.image.alt }}"
+                                        {% endif %}
+                                    />
+                                </a>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <a href="{% url team-detail pk=team.id %}">
+                                «{{team.name}}»
+                            </a>
+                        </div>
+                    </th>
+                    <td class="row center ">
+                    {% for tourno in gametournamentregular.get_tours %}
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+                            <div class="panel panel-default" style="background-color:inherit">
+                                <span class="tourno-mark">{{tourno}}</span>
+                                {% for gamematch in gametournamentregular.gamematch_set.all %}
+                                    {% if gamematch.tourno == tourno %}
+                                            {% if team == gamematch.team_a %}
+                                                <div class="text-sm panel-default">
+                                                    <div>
+                                                        {% if gamematch.team_b.image %}
+                                                            <a href="{% url game-match-detail pk=gamematch.id %}">
+                                                                <img  class="img-thumbnail" src="{% thumbnail gamematch.team_b.image 32x32 %}"
+                                                                    {% if gamematch.team_b.image.alt %}
+                                                                        alt="{{ gamematch.team_b.image.alt }}"
+                                                                    {% endif %}
+                                                                />
+                                                            </a>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div>
+                                                        <a href="{% url game-match-detail pk=gamematch.id %}">
+                                                            «{{gamematch.team_b.name}}»
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                            {% if team == gamematch.team_b %}
+                                                <div class="text-sm">
+                                                    <div >
+                                                        {% if gamematch.team_a.image %}
+                                                            <a href="{% url game-match-detail pk=gamematch.id %}">
+                                                                <img  class="img-thumbnail" src="{% thumbnail gamematch.team_a.image 32x32 %}"
+                                                                    {% if gamematch.team_a.image.alt %}
+                                                                        alt="{{ gamematch.team_a.image.alt }}"
+                                                                    {% endif %}
+                                                                />
+                                                            </a>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div>
+                                                        <a href="{% url game-match-detail pk=gamematch.id %}">
+                                                            «{{gamematch.team_a.name}}»
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
