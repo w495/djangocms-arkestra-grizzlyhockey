@@ -1,17 +1,43 @@
-{% extends "base.html" %}
-
 {% load thumbnail %}
 {% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
 
+<section>
 
-{% block pagetitle %}
-    {% filter typogrify %}
-        <h{{PAGE_TITLE_HEADING_LEVEL}}>
-            Дивизионы
-        </h{{PAGE_TITLE_HEADING_LEVEL}}>
-    {% endfilter %}
-{% endblock pagetitle %}
+    <ul class="media-list">
+    {% for gametournamentregular in gametournamentregular_list %}
+        <li class="media">
+            <div class="pull-left" href="#">
+                {% if gametournamentregular.image %}
+                    <a href="{% url game-tournament-regular-detail pk=gametournamentregular.id %}">
+                        <img  class="img-thumbnail" src="{% thumbnail gametournamentregular.image 128x128 %}"
+                            {% if gametournamentregular.image.alt %}
+                                alt="{{ gametournamentregular.image.alt }}"
+                            {% endif %}
+                        />
+                    </a>
+                {% endif %}
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading">
+                    <a href="{% url game-tournament-regular-detail pk=gametournamentregular.id %}">
+                        {{gametournamentregular.name}}
+                    </a>
+                </h4>
+                {% if gametournamentregular.gamedivisions %}
+                    <p>
+                        Дивизионы:
+                        {% for division in gametournamentregular.gamedivisions.all %}
+                            <a href="{% url game-division-detail pk=division.id %}">{{division}}</a>
+                        {% endfor %}
+                    </p>
+                {% endif %}
 
-{% block main_page_body %}
-    {% include "grizzly/includes/game-division-list.html" %}
-{% endblock main_page_body %}
+                {% if gametournamentregular.detail %}
+                    <p>{{gametournamentregular.detail}}</p>
+                {% endif %}
+            </div>
+        </li>
+    {% endfor %}
+    </ul>
+
+</section>

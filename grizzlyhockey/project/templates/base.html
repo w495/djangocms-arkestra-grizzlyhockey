@@ -92,8 +92,14 @@
 }
 
 .tourno-mark{
+    margin-left: 0.5ex;
     float:left;
     color:#dddddd;
+}
+.game-tournament-regular-item {
+    float:left;
+    min-width: 100px;
+    min-height: 100px;
 }
 </style>
 
@@ -133,6 +139,7 @@
                                     <ul class= "nav navbar-nav">
                                         <li><a href="{% url news-list %}">Новости</a><li>
                                         <li><a href="{% url game-division-list %}">Дивизионы</a><li>
+                                        <li><a href="{% url game-tournament-regular-list %}">Чемпионаты</a><li>
                                         <li><a href="{% url team-list %}">Команды</a><li>
                                         {% show_menu 0 100 0 1 "cms/arkestra_menu.html" "" "" %}
                                     </ul>

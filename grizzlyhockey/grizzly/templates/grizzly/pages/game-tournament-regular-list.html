@@ -7,11 +7,11 @@
 {% block pagetitle %}
     {% filter typogrify %}
         <h{{PAGE_TITLE_HEADING_LEVEL}}>
-            Дивизионы
+            Регулярные чемпионаты
         </h{{PAGE_TITLE_HEADING_LEVEL}}>
     {% endfilter %}
 {% endblock pagetitle %}
 
 {% block main_page_body %}
-    {% include "grizzly/includes/game-division-list.html" %}
+    {% include "grizzly/includes/game-tournament-regular-list.html" %}
 {% endblock main_page_body %}

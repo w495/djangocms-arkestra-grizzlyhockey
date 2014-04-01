@@ -3,98 +3,44 @@
 
 <section>
 
-    <h{{IN_BODY_HEADING_LEVEL}}>Регулярный чемпионат «{{ gametournamentregular.name }}»</h{{IN_BODY_HEADING_LEVEL}}>
+    <header>
+        <h{{IN_BODY_HEADING_LEVEL}}>
+            Регулярный чемпионат «{{ gametournamentregular.name }}»
+        </h{{IN_BODY_HEADING_LEVEL}}>
+    </header>
 
-    <!--
-        Вариант с таблицей, хотя и получается достаточно красивым,
-        Но не очень применим для большого числа команд,
-        возможно, надо будет подумать об адаптивном варианте.
-        Если число команд, больше некоторого значения, то применять,
-        media как и везде.
-    -->
-    <table class="table table-striped table-sm">
-        <thead>
-            <tr>
-                <th>Команды</th>
-                {% for tourno in gametournamentregular.get_tours %}
-                    <th class="center"> {{tourno}} </th>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            {% for team in gametournamentregular.teams.all|dictsort:"ctime" %}
-                <tr>
-                    <th>
-                        <div>
-                            {% if team.image %}
-                                <a href="{% url team-detail pk=team.id %}">
-                                    <img  class="img-thumbnail" src="{% thumbnail team.image 64x64 %}"
-                                        {% if team.image.alt %}
-                                            alt="{{ team.image.alt }}"
-                                        {% endif %}
-                                    />
-                                </a>
-                            {% endif %}
-                        </div>
-                        <div>
-                            <a href="{% url team-detail pk=team.id %}">
-                                «{{team.name}}»
-                            </a>
-                        </div>
-                    </th>
-                    {% for tourno in gametournamentregular.get_tours %}
-                        <td class="center">
-                            {% for gamematch in gametournamentregular.gamematch_set.all %}
-                                {% if gamematch.tourno == tourno %}
-                                        {% if team == gamematch.team_a %}
-                                            <div class="text-sm">
-                                                <span class="tourno-mark">{{tourno}}</span>
-                                                <div>
-                                                    {% if gamematch.team_b.image %}
-                                                        <a href="{% url game-match-detail pk=gamematch.id %}">
-                                                            <img  class="img-thumbnail" src="{% thumbnail gamematch.team_b.image 32x32 %}"
-                                                                {% if gamematch.team_b.image.alt %}
-                                                                    alt="{{ gamematch.team_b.image.alt }}"
-                                                                {% endif %}
-                                                            />
-                                                        </a>
-                                                    {% endif %}
-                                                </div>
-                                                <div>
-                                                    <a href="{% url game-match-detail pk=gamematch.id %}">
-                                                        «{{gamematch.team_b.name}}»
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        {% endif %}
-                                        {% if team == gamematch.team_b %}
-                                            <div class="text-sm">
-                                                <span class="tourno-mark">{{tourno}}</span>
-                                                <div >
-                                                    {% if gamematch.team_a.image %}
-                                                        <a href="{% url game-match-detail pk=gamematch.id %}">
-                                                            <img  class="img-thumbnail" src="{% thumbnail gamematch.team_a.image 32x32 %}"
-                                                                {% if gamematch.team_a.image.alt %}
-                                                                    alt="{{ gamematch.team_a.image.alt }}"
-                                                                {% endif %}
-                                                            />
-                                                        </a>
-                                                    {% endif %}
-                                                </div>
-                                                <div>
-                                                    <a href="{% url game-match-detail pk=gamematch.id %}">
-                                                        «{{gamematch.team_a.name}}»
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                        </td>
+
+    <section class="media">
+        <div class="pull-left" href="#">
+            {% if gametournamentregular.image %}
+                <a href="{% url game-tournament-regular-detail pk=gametournamentregular.id %}">
+                    <img  class="img-thumbnail" src="{% thumbnail gametournamentregular.image 128x128 %}"
+                        {% if gametournamentregular.image.alt %}
+                            alt="{{ gametournamentregular.image.alt }}"
+                        {% endif %}
+                    />
+                </a>
+            {% endif %}
+        </div>
+        <div class="media-body">
+            {% if gametournamentregular.gamedivisions %}
+                <p>
+                    Дивизионы:
+                    {% for division in gametournamentregular.gamedivisions.all %}
+                        <a href="{% url game-division-detail pk=division.id %}">{{division}}</a>
                     {% endfor %}
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                </p>
+            {% endif %}
+
+            {% if gametournamentregular.detail %}
+                <p>{{gametournamentregular.detail}}</p>
+            {% endif %}
+        </div>
+    </section>
+    <br/>
+    <br/>
+
+
+    {% include "grizzly/includes/game-tournament-regular-detail-float.html" %}
 
 </section>
