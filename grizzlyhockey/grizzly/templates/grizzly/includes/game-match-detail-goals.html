@@ -1,0 +1,88 @@
+{% load thumbnail %}
+{% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="panel-title center">
+            <span>
+                Голы команды&nbsp;
+            </span>
+            <a href="{% url team-detail pk=team.id %}">
+                &laquo;{{team.name}}&raquo;
+            </a>
+        </div>
+    </div>
+    <table class="table table-striped">
+        <tr class="center">
+            <th class="center">
+                Время
+            </th>
+            <th class="center">
+                Шайба
+            </th>
+            <th class="center">
+                Игрок
+            </th>
+            <th class="center">
+                Передача
+            </th>
+        <th class="center">
+                Ситуация
+            </th>
+        </tr>
+        {% for goal in gamematch.gamematchgoal_set.all %}
+            {% if goal.team == team  %}
+                <tr>
+                    <td>
+                        {% if goal.time%}
+                            {{goal.time}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if goal.time%}
+                            {{goal.goalno}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% with player=goal.goal_player  %}
+                            <div class="small-text">
+                                {% for player2team in player.player2team_set.all %}
+                                    {% if player2team.player == player %}
+                                        <a href="{% url player-detail pk=player.id %}">
+                                            {{player2team.game_number}}&nbsp;
+                                            {{player.second_name}}&nbsp;
+                                            {{player.first_name}}&nbsp;
+                                            {{player.patronymic}}
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endwith %}
+                    </td>
+                    <td>
+                        {% for player in goal.trans_players.all %}
+                            <div class="small-text">
+                                {% for player2team in player.player2team_set.all %}
+                                    {% if player2team.player == player %}
+                                        <a href="{% url player-detail pk=player.id %}">
+                                            {{player2team.game_number}}&nbsp;
+                                            {{player.second_name}}&nbsp;
+                                            {{player.first_name}}&nbsp;
+                                            {{player.patronymic}}
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    </td>
+                    <td class="game-situation">
+                        {{goal.game_situation}}
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+</div>
+
+

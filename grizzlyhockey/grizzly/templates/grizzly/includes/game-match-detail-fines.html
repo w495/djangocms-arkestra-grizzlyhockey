@@ -1,0 +1,69 @@
+{% load thumbnail %}
+{% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="panel-title center">
+            <span>
+                Штрафы команды&nbsp;
+            </span>
+            <a href="{% url team-detail pk=team.id %}">
+                &laquo;{{team.name}}&raquo;
+            </a>
+        </div>
+    </div>
+    <table class="table table-striped">
+        <tr class="center">
+            <th class="center">
+                Время начала
+            </th>
+            <th class="center">
+                Время конца
+            </th>
+            <th class="center">
+                Игрок
+            </th>
+            <th class="center">
+                Тип
+            </th>
+        </tr>
+        {% for fine in gamematch.gamematchfine_set.all %}
+            {% if fine.team == team  %}
+                <tr>
+                    <td>
+                        {% if fine.start_time%}
+                            {{fine.start_time}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if fine.stop_time%}
+                            {{fine.stop_time}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% with player=fine.fine_player  %}
+                            <div class="small-text">
+                                {% for player2team in player.player2team_set.all %}
+                                    {% if player2team.player == player %}
+                                        <a href="{% url player-detail pk=player.id %}">
+                                            {{player2team.game_number}}&nbsp;
+                                            {{player.second_name}}&nbsp;
+                                            {{player.first_name}}&nbsp;
+                                            {{player.patronymic}}
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endwith %}
+                    </td>
+                    <td >
+                        {{fine.type}}
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+</div>
+
+
