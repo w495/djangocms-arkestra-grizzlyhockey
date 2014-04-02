@@ -6,8 +6,9 @@
     <h{{IN_BODY_HEADING_LEVEL}}>Дивизион «{{ gamedivision.name }}»</h{{IN_BODY_HEADING_LEVEL}}>
 
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-6">
             <section>
+                <h3>Команды</h3>
                 <ul class="media-list">
                 {% for team in gamedivision.teams.all %}
                     <li class="media">
@@ -35,7 +36,7 @@
                             &nbsp;
                             <span class="text-danger">{{team.get_nloses}}</span>
                             &nbsp;
-                            <span class="text-primary">{{team.get_npoints}}</span>
+                            <span class="text-warning">{{team.get_npoints}}</span>
 
                             {% if team.detail %}
                                 <p>{{team.detail}}</p>
@@ -47,8 +48,9 @@
             </section>
         </div>
 
-        <div class="col-lg-12">
+        <div class="col-lg-6">
             <section>
+                <h3>Чемпионаты</h3>
                 <ul class="media-list">
                 {% for tournament in gamedivision.gametournamentregulars.all %}
                     <li class="media">
@@ -77,7 +79,7 @@
                                 {% endif %}
                             </div>
                         </div>
-                        <!--
+
                         <div class="media-body">
                             <h4 class="media-heading">
                                 <a href="{% url game-tournament-regular-detail pk=tournament.id %}">
@@ -88,7 +90,7 @@
                                 <p>{{tournament.detail}}</p>
                             {% endif %}
                         </div>
-                        -->
+
                     </li>
                 {% endfor %}
                 </ul>

@@ -1,4 +1,42 @@
 {% load thumbnail %}
+{% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
 
-{% include "grizzly/includes/game-division-detail.html" with gamedivision=instance.gamedivision %}
+{% with gamedivision=instance.gamedivision %}
 
+
+<section>
+    <a href="{% url game-division-detail pk=gamedivision.id %}">
+        <h3>Дивизион «{{ gamedivision.name }}»</h3>
+    </a>
+    Команды:
+    <table class="game-division-plugin-table">
+        {% for team in gamedivision.teams.all %}
+            <tr>
+                <td>
+                    <a href="{% url team-detail pk=team.id %}">
+                        «{{team.name}}»
+                    </a>
+                    &nbsp;
+                </td>
+                <td class="right">
+                    <span class="text-default">{{team.get_ngames}}</span>
+                    &nbsp;
+                </td>
+                <td class="right">
+                    <span class="text-success">{{team.get_nwins}}</span>
+                    &nbsp;
+                </td>
+                <td class="right">
+                    <span class="text-danger">{{team.get_nloses}}</span>
+                    &nbsp;
+                </td>
+                <td class="right">
+                    <span class="text-warning">{{team.get_npoints}}</span>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+</section>
+
+{% endwith %}

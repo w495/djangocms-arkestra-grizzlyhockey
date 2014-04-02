@@ -31,9 +31,17 @@
         </div>
         <div class="col-sm-2 center scorew">
             <p class="score">
-                <span>{{gamematch.score_a}}</span>
+                {% if gamematch.score_a %}
+                    <span>
+                        {{gamematch.score_a}}
+                    </span>
+                {% endif %}
                 <span>&nbsp;:&nbsp;</span>
-                <span>{{gamematch.score_b}}</span>
+                {% if gamematch.score_b %}
+                    <span>
+                        {{gamematch.score_b}}
+                    </span>
+                {% endif %}
             </p>
         </div>
         <div class="col-sm-5 center">
@@ -63,14 +71,26 @@
         <div class="col-sm-6 center">
             <div class="center">
                 <table class="game-match-detail-time">
+                    {% if gamematch.start_datetime %}
                     <tr>
-                        <td class="date-label-cell" >Начало:&nbsp;</td >
-                        <td>{{gamematch.start_datetime}}</td>
+                        <td class="date-label-cell" >
+                            Начало:&nbsp;
+                        </td >
+                        <td>
+                            {{gamematch.start_datetime}}
+                        </td>
                     </tr>
-                    <tr>
-                        <td class="date-label-cell" style="text-align:right">Конец:&nbsp;</td>
-                        <td>{{gamematch.stop_datetime}}</td>
-                    </tr>
+                    {% endif %}
+                    {% if gamematch.stop_datetime %}
+                        <tr>
+                            <td class="date-label-cell" style="text-align:right">
+                                Конец:&nbsp;
+                            </td>
+                            <td>
+                                {{gamematch.stop_datetime}}
+                            </td>
+                        </tr>
+                    {% endif %}
                 </table>
             </div>
         </div>
