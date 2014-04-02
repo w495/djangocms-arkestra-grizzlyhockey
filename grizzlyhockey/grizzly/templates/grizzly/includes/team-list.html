@@ -3,41 +3,28 @@
 
 <section>
 
-    <ul class="media-list">
-    {% for team in team_list %}
-        <li class="media">
-            <div class="pull-left" href="#">
-                {% if team.image %}
-                    <a href="{% url team-detail pk=team.id %}">
-                        <img  class="img-thumbnail" src="{% thumbnail team.image 128x128 %}"
-                            {% if team.image.alt %}
-                                alt="{{ team.image.alt }}"
-                            {% endif %}
-                        />
-                    </a>
-                {% endif %}
-            </div>
-            <div class="media-body">
-                <h4 class="media-heading">
-                    <a href="{% url team-detail pk=team.id %}">
-                        {{team.name}}
-                    </a>
-                </h4>
-                {% if team.gamedivisions %}
-                    <p>
-                        Дивизионы:
-                        {% for division in team.gamedivisions.all %}
-                            <a href="{% url game-division-detail pk=division.id %}">{{division}}</a>
-                        {% endfor %}
-                    </p>
-                {% endif %}
+    <div class="row">
+        <div class="col-lg-6">
 
-                {% if team.detail %}
-                    <p>{{team.detail}}</p>
-                {% endif %}
-            </div>
-        </li>
-    {% endfor %}
-    </ul>
+            <ul class="media-list">
+                {% for team in team_list|dictsort:"ctime" %}
+                    {% if not forloop.counter|divisibleby:"2" %}
+
+                        {% include "grizzly/includes/team-list-li.html" %}
+
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-lg-6">
+            <ul class="media-list">
+                {% for team in team_list|dictsort:"ctime" %}
+                    {% if forloop.counter|divisibleby:"2" %}
+                        {% include "grizzly/includes/team-list-li.html" %}
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 
 </section>
