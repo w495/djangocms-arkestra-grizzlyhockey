@@ -1,0 +1,91 @@
+{% load thumbnail %}
+{% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
+
+
+<section>
+
+
+
+
+    <ul class="media-list">
+        {% for gamematch in gamematch_list %}
+            <li class="media">
+                <div class="media-body">
+                    <h4 class="media-heading">
+                        <a href="{% url game-division-detail pk=gamematch.id %}">
+                            {{gamematch.name}}
+                        </a>
+                    </h4>
+
+                        <div class="row">
+                            <div class="col-sm-2 center">
+                                {% with team=gamematch.team_a  %}
+                                    {% if team.image %}
+                                        <div>
+                                            <a href="{% url team-detail pk=team.id %}">
+                                                <img  class="img-thumbnail" src="{% thumbnail team.image 64x64 %}"
+                                                    {% if team.image.alt %}
+                                                        alt="{{ team.image.alt }}"
+                                                    {% endif %}
+                                                />
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                    {% if team.name %}
+                                        <div>
+                                            <a href="{% url team-detail pk=team.id %}">
+                                                {{team.name}}
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                {% endwith %}
+                            </div>
+                            <div class="col-sm-2 center scorew">
+                                <p class="score">
+                                    {% if gamematch.score_a %}
+                                        <span>
+                                            {{gamematch.score_a}}
+                                        </span>
+                                    {% endif %}
+                                    <span>&nbsp;:&nbsp;</span>
+                                    {% if gamematch.score_b %}
+                                        <span>
+                                            {{gamematch.score_b}}
+                                        </span>
+                                    {% endif %}
+                                </p>
+                            </div>
+                            <div class="col-sm-2 center">
+                                {% with team=gamematch.team_b  %}
+                                    {% if team.image %}
+                                        <div>
+                                            <a href="{% url team-detail pk=team.id %}">
+                                                <img  class="img-thumbnail" src="{% thumbnail team.image 64x64 %}"
+                                                    {% if team.image.alt %}
+                                                        alt="{{ team.image.alt }}"
+                                                    {% endif %}
+                                                />
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                    {% if team.name %}
+                                        <div>
+                                            <a href="{% url team-detail pk=team.id %}">
+                                                {{team.name}}
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                {% endwith %}
+                            </div>
+                        </div>
+
+                    {% if gamematch.detail %}
+                        <p>{{gamematch.detail}}</p>
+                    {% endif %}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+
+
+</section>
