@@ -3,9 +3,14 @@
 {% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
 
 
+<h4>
+    {{player.second_name}}
+    {{player.first_name}}
+    {{player.patronymic}}
+</h4>
 
-<div class="media">
-    <div class="pull-left" href="#">
+<div class="row" >
+    <div class="col-lg-4 col-md-5 col-sm-6">
         {% if player.image %}
             <img  class="img-thumbnail" src="{% thumbnail player.image 256x256 %}"
                 {% if player.image.alt %}
@@ -13,128 +18,142 @@
                 {% endif %}
             />
         {% endif %}
-        <div class="team-human-metrics">
-            {% if player.birthday %}
-                <div title="Дата рождения">
-                    <!--
-                        <span class="text-muted">
-                            &nbsp;Дата рождения:&nbsp;
-                        </span>
-                    -->
-                    <span title="Дата рождения">
-                        <date>{{player.birthday}}</date>
-                    </span>
-                </div>
-            {% endif %}
-            <div>
-                {% if player.height %}
-                    <span title="Вес">
-                        <!--
-                            <span class="text-muted">
-                                &nbsp;Рост:&nbsp;
-                            </span>
-                        -->
-                        <span>
-                            {{player.height}}
-                        </span>
-                        <span>
-                            &nbsp;см.&nbsp;
-                        </span>
-                    </span>
-                {% endif %}
-
-
-                {% if player.weight %}
-                    <span title="Вес">
-                        <!--
-                            <span class="text-muted">
-                                &nbsp;Вес:&nbsp;
-                            </span>
-                        -->
-                        <span>
-                            {{player.weight}}
-                        </span>
-                        <span>
-                            &nbsp;кг.&nbsp;
-                        </span>
-                    </span>
-                {% endif %}
-            </div>
-        </div>
     </div>
-    <div class="media-body">
-        <h4 class="media-heading">
-            {{player.second_name}}
-            {{player.first_name}}
-            {{player.patronymic}}
-        </h4>
-
+    <div class="col-lg-4 col-md-5 col-sm-6">
+        <dl class="dl-horizontal dl-playercard">
+            {% if player.weight %}
+                <dt title="Вес">
+                    <span class="text-muted">
+                        &nbsp;Вес:&nbsp;
+                    </span>
+                <dt>
+                <dd>
+                    <span>
+                        {{player.weight}}
+                    </span>
+                    <span>
+                        &nbsp;кг.&nbsp;
+                    </span>
+                </dd>
+            {% endif %}
+            {% if player.weight %}
+                <dt title="Рост">
+                    <span class="text-muted">
+                        &nbsp;Рост:&nbsp;
+                    </span>
+                <dt>
+                <dd>
+                    <span>
+                        {{player.height}}
+                    </span>
+                    <span>
+                        &nbsp;см.&nbsp;
+                    </span>
+                </dd>
+            {% endif %}
+            {% if player.birthday %}
+                <dt title="Дата">
+                    <span class="text-muted">
+                        &nbsp;Дата рождения:&nbsp;
+                    </span>
+                <dt>
+                <dd>
+                    <span>
+                        {{player.birthday}}
+                    </span>
+                </dd>
+            {% endif %}
+            {% if player.qualification %}
+                <dt title="Квалификация">
+                    <span class="text-muted">
+                        &nbsp;Квалификация:&nbsp;
+                    </span>
+                <dt>
+                <dd>
+                    {{player.qualification}}
+                </dd>
+            {% endif %}
+            {% if player.detail %}
+                <dt title="Описание">
+                    <span class="text-muted">
+                        &nbsp;Описание:&nbsp;
+                    </span>
+                <dt>
+                <dd>
+                    {{player.detail}}
+                </dd>
+            {%endif%}
+        </dl>
+    </div>
+    <div class="col-lg-4 col-md-5 col-sm-6">
         {% for player2team in player.player2team_set.all %}
             {% if player2team.player == player %}
-            <div class="row" >
-                <div class="col-md-3">
-                    <dl class="dl-horizontal dl-team-playercard">
-                        {% if player2team.game_number %}
-                            <dt class="text-muted">
-                                Номер:&nbsp;
-                            </dt>
-                            <dd>
-                                {{player2team.game_number}}
-                            </dd>
+                <div class="row" >
+                    <div class="col-md-8">
+                        <dl class="dl-horizontal dl-playercard">
+                            {% if player2team.team %}
+                                <dt class="text-muted">
+                                    Команда:&nbsp;
+                                </dt>
+                                <dd>
+                                    <a href="{% url team-detail pk=player2team.team.id %}">
+                                        {{player2team.team}}
+                                    </a>
+                                </dd>
+                            {% endif %}
+                            {% if player2team.game_number %}
+                                <dt class="text-muted">
+                                    Номер:&nbsp;
+                                </dt>
+                                <dd>
+                                    {{player2team.game_number}}
+                                </dd>
+                            {% endif %}
+                            {% if player2team.role %}
+                                <dt class="text-muted">
+                                    Амплуа:&nbsp;
+                                </dt>
+                                <dd>
+                                    <date>{{player2team.role}}</date>
+                                </dd>
+                            {% endif %}
+                            {% if player2team.status %}
+                                <dt class="text-muted">
+                                    Статус:&nbsp;
+                                </dt>
+                                <dd>
+                                    {{player2team.status}}
+                                </dd>
+                            {% endif %}
+                            {% if player2team.player.type %}
+                                <dt class="text-muted">
+                                    Тип:&nbsp;
+                                </dt>
+                                <dd>
+                                    {{player.type}}
+                                </dd>
+                            {% endif %}
+                        </dl>
+                    </div>
+                    <div class="col-md-4 center">
+                        {% if player2team.image %}
+                            <a href="{% url team-detail pk=player2team.team.id %}">
+                                <img  class="img-thumbnail" src="{% thumbnail player2team.image 96x80  crop %}"
+                                    {% if player.image.alt %}
+                                        alt="{{ player2team.image.alt }}"
+                                    {% endif %}
+                                />
+                            </a>
                         {% endif %}
-                        {% if player2team.role %}
-                            <dt class="text-muted">
-                                Амплуа:&nbsp;
-                            </dt>
-                            <dd>
-                                <date>{{player2team.role}}</date>
-                            </dd>
-                        {% endif %}
-                        {% if player2team.status %}
-                            <dt class="text-muted">
-                                Статус:&nbsp;
-                            </dt>
-                            <dd>
-                                {{player2team.status}}
-                            </dd>
-                        {% endif %}
-                        {% if player2team.player.type %}
-                            <dt class="text-muted">
-                                Тип:&nbsp;
-                            </dt>
-                            <dd>
-                                {{player.type}}
-                            </dd>
-                        {% endif %}
-                    </dl>
+
+                    </div>
                 </div>
-                {% endif %}
-            {% endfor %}
-
-            <div class="col-md-9">
-                {% if player.qualification %}
-                    <p>
-                        <span class="text-muted">
-                            Квалификация:&nbsp;
-                        </span>
-                        <span>
-                            {{player.qualification}}
-                        </span>
-                    </p>
-                {% endif %}
-
-                {% if player.detail %}
-                    <p>
-                        {{player.detail}}
-                    </p>
-                {%endif%}
-                <p>
-                    {% block player_description %}
-                        {% render_placeholder player.description %}
-                    {% endblock player_description %}
-                </p>
-            </div>
-        </div>
+            {% endif %}
+        {% endfor %}
     </div>
 </div>
 
+
+{% block player_description %}
+    {% render_placeholder player.description %}
+{% endblock player_description %}
