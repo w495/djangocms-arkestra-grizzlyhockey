@@ -1,17 +1,232 @@
+{% load thumbnail %}
+{% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
 
 
 <section>
     <h{{IN_BODY_HEADING_LEVEL}}>{{gamematch.name}}</h{{IN_BODY_HEADING_LEVEL}}>
 
 
+    <div class="row">
+        <div class="col-sm-5 center">
+            {% with team=gamematch.team_a  %}
+                {% if team.image %}
+                    <div>
+                        <a href="{% url team-detail pk=team.id %}">
+                            <img  class="img-thumbnail" src="{% thumbnail team.image 128x128 %}"
+                                {% if team.image.alt %}
+                                    alt="{{ team.image.alt }}"
+                                {% endif %}
+                            />
+                        </a>
+                    </div>
+                {% endif %}
+                {% if team.name %}
+                    <div>
+                        <a href="{% url team-detail pk=team.id %}">
+                            {{team.name}}
+                        </a>
+                    </div>
+                {% endif %}
+            {% endwith %}
+        </div>
+        <div class="col-sm-2 center scorew">
+            <p class="score">
+                <span>{{gamematch.score_a}}</span>
+                <span>&nbsp;:&nbsp;</span>
+                <span>{{gamematch.score_b}}</span>
+            </p>
+        </div>
+        <div class="col-sm-5 center">
+            {% with team=gamematch.team_b  %}
+                {% if team.image %}
+                    <div>
+                        <a href="{% url team-detail pk=team.id %}">
+                            <img  class="img-thumbnail" src="{% thumbnail team.image 128x128 %}"
+                                {% if team.image.alt %}
+                                    alt="{{ team.image.alt }}"
+                                {% endif %}
+                            />
+                        </a>
+                    </div>
+                {% endif %}
+                {% if team.name %}
+                    <div>
+                        <a href="{% url team-detail pk=team.id %}">
+                            {{team.name}}
+                        </a>
+                    </div>
+                {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 center">
+            <div class="center">
+                <table class="game-match-detail-time">
+                    <tr>
+                        <td class="date-label-cell" >Начало:&nbsp;</td >
+                        <td>{{gamematch.start_datetime}}</td>
+                    </tr>
+                    <tr>
+                        <td class="date-label-cell" style="text-align:right">Конец:&nbsp;</td>
+                        <td>{{gamematch.stop_datetime}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            {% if gamematch.judges.all %}
+                <section>
+                    <h4 class="center">
+                        Судейский состав
+                    </h4>
+                    <ul>
+                    {% for judge in gamematch.judges.all %}
+                        <li >
+                            <!--
+                                {% if judge.image %}
+                                    <div>
+                                        <a href="{% url judge-detail pk=judge.id %}">
+                                            <img  class="img-thumbnail" src="{% thumbnail judge.image 64x64 %}"
+                                                {% if judge.image.alt %}
+                                                    alt="{{ judge.image.alt }}"
+                                                {% endif %}
+                                            />
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            -->
+                            <div>
+                                <a href="{% url judge-detail pk=judge.id %}">
+                                    {{judge}}
+                                </a>
+                            </div>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </section>
+            {% endif %}
+        </div>
 
-    {{gamematch.start_datetime}}
-    {{gamematch.stop_datetime}}
 
-    <>
-{{gamematch.team_a}}
 
-{{gamematch.team_b}}
+
+
+    </div>
+    <div class="row">
+        <div class="col-lg-6 center">
+            {% with team=gamematch.team_a  %}
+                {% include "grizzly/includes/game-match-detail-goals.html" %}
+            {% endwith %}
+        </div>
+        <div class="col-lg-6 center">
+            {% with team=gamematch.team_b  %}
+                {% include "grizzly/includes/game-match-detail-goals.html" %}
+            {% endwith %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 center">
+            {% with team=gamematch.team_a  %}
+                {% include "grizzly/includes/game-match-detail-fines.html" %}
+            {% endwith %}
+        </div>
+        <div class="col-lg-6 center">
+            {% with team=gamematch.team_b  %}
+                {% include "grizzly/includes/game-match-detail-fines.html" %}
+            {% endwith %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4 center">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title center">
+                        <span>
+                            Время игры вратарей
+                        </span>
+                    </div>
+                </div>
+                <table class="table table-striped">
+                    <tr class="center">
+                        <th class="center">
+                            Время
+                        </th>
+                        <th class="center">
+                             «{{gamematch.team_a}}»
+                        </th>
+                        <th class="center">
+                            «{{gamematch.team_b}}»
+                        </th>
+                    </tr>
+                    {% for gtime in gamematch.gamematchgtime_set.all  %}
+                        <tr>
+                            <td>
+                                {{gtime.time}}
+                            </td>
+                            <td>
+                                {{gtime.a}}
+                            </td>
+                            <td>
+                                {{gtime.b}}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-8 center">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title center">
+                        <span>
+                            Время игры вратарей
+                        </span>
+                    </div>
+                </div>
+                <table class="table table-striped">
+                    <tr class="center">
+                        <th class="center">
+                            «{{gamematch.team_a}}»
+                        </th>
+                        <th class="center">
+                            «{{gamematch.team_b}}»
+                        </th>
+                        <th class="center">
+                            Вр «{{gamematch.team_a}}»
+                        </th>
+                        <th class="center">
+                            Вр «{{gamematch.team_b}}»
+                        </th>
+                        <th>
+                            Результат
+                        </th>
+                    </tr>
+                    {% for penalty in gamematch.gamematchpenalty_set.all  %}
+                        <tr>
+                            <td>
+                                {{penalty.a}}
+                            </td>
+                            <td>
+                                {{penalty.b}}
+                            </td>
+                            <td>
+                                {{penalty.gla}}
+                            </td>
+                            <td>
+                                {{penalty.glb}}
+                            </td>
+                            <td>
+                                {{penalty.result}}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
 
 
 

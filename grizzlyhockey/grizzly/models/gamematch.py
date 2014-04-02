@@ -18,7 +18,7 @@ class GameMatch (AbsGameObj):
         blank=True,
         null=True,
         verbose_name=u"команда A",
-        related_name="team_a",
+        related_name="gamematch_a",
     )
 
     team_b = models.ForeignKey(
@@ -26,7 +26,7 @@ class GameMatch (AbsGameObj):
         blank=True,
         null=True,
         verbose_name=u"команда Б",
-        related_name="team_b",
+        related_name="gamematch_b",
     )
 
     score_a = models.IntegerField(

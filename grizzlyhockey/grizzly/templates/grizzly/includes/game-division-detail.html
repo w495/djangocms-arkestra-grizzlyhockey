@@ -28,6 +28,15 @@
                                     Команда «{{team.name}}»
                                 </a>
                             </h4>
+
+                            <span class="text-default">{{team.get_ngames}}</span>
+                            &nbsp;
+                            <span class="text-success">{{team.get_nwins}}</span>
+                            &nbsp;
+                            <span class="text-danger">{{team.get_nloses}}</span>
+                            &nbsp;
+                            <span class="text-primary">{{team.get_npoints}}</span>
+
                             {% if team.detail %}
                                 <p>{{team.detail}}</p>
                             {% endif %}
@@ -37,6 +46,7 @@
                 </ul>
             </section>
         </div>
+
         <div class="col-lg-12">
             <section>
                 <ul class="media-list">
@@ -52,6 +62,20 @@
                                     />
                                 </a>
                             {% endif %}
+                            <div class="team-human-metrics">
+                                {% if player.birthday %}
+                                    <div title="Дата рождения">
+                                        <!--
+                                            <span class="text-muted">
+                                                &nbsp;Дата рождения:&nbsp;
+                                            </span>
+                                        -->
+                                        <span title="Дата рождения">
+                                            <date>{{player.birthday}}</date>
+                                        </span>
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
                         <!--
                         <div class="media-body">

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
+
 from absobj import AbsObj
 
 
@@ -38,6 +39,29 @@ class Team(AbsObj):
         null=True,
         verbose_name=u"дивизионы"
     )
+
+    def get_ngames(self):
+        n = self.gamematch_a.count() + self.gamematch_b.count()
+        return n
+
+    def get_nwins(self):
+        wa = self.gamematch_a.filter(score_a__gt = models.F('score_b')).count()
+        wb = self.gamematch_a.filter(score_b__gt = models.F('score_a')).count()
+        return wa + wb
+
+
+    def get_nloses(self):
+        la = self.gamematch_a.filter(score_a__lt = models.F('score_b')).count()
+        lb = self.gamematch_a.filter(score_b__lt = models.F('score_a')).count()
+        return la + lb
+
+
+    def get_npoints(self):
+        n = 100 * self.get_nwins() / self.get_ngames() / 100.0
+
+        return n
+
+
 
     class Meta:
         ordering = ('name',)
