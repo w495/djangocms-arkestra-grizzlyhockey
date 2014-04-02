@@ -8,7 +8,7 @@
 
             <ul class="media-list">
                 {% for team in team_list|dictsort:"ctime" %}
-                    {% if not forloop.counter|add:"1"|divisibleby:"2" %}
+                    {% if not forloop.counter|divisibleby:"2" %}
 
                         {% include "grizzly/includes/team-list-li.html" %}
 
@@ -19,7 +19,7 @@
         <div class="col-lg-6">
             <ul class="media-list">
                 {% for team in team_list|dictsort:"ctime" %}
-                    {% if forloop.counter|add:"1"|divisibleby:"2" %}
+                    {% if forloop.counter|divisibleby:"2" %}
                         {% include "grizzly/includes/team-list-li.html" %}
                     {% endif %}
                 {% endfor %}

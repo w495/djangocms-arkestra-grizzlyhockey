@@ -57,7 +57,7 @@ class Team(AbsObj):
 
 
     def get_npoints(self):
-        n = 100 * self.get_nwins() / self.get_ngames() / 100.0
+        n = 100 * self.get_nwins() / (self.get_ngames() + 1) / 100.0
 
         return n
 
