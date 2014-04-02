@@ -34,7 +34,7 @@
                         <div>
                             {% if team.image %}
                                 <a href="{% url team-detail pk=team.id %}">
-                                    <img  class="img-thumbnail" src="{% thumbnail team.image 64x64 %}"
+                                    <img  class="img-thumbnail" src="{% thumbnail team.image 64x64 crop %}"
                                         {% if team.image.alt %}
                                             alt="{{ team.image.alt }}"
                                         {% endif %}
@@ -58,7 +58,7 @@
                                                 <div>
                                                     {% if gamematch.team_b.image %}
                                                         <a href="{% url game-match-detail pk=gamematch.id %}">
-                                                            <img  class="img-thumbnail" src="{% thumbnail gamematch.team_b.image 32x32 %}"
+                                                            <img  class="img-thumbnail" src="{% thumbnail gamematch.team_b.image 32x32 crop %}"
                                                                 {% if gamematch.team_b.image.alt %}
                                                                     alt="{{ gamematch.team_b.image.alt }}"
                                                                 {% endif %}
@@ -79,7 +79,7 @@
                                                 <div >
                                                     {% if gamematch.team_a.image %}
                                                         <a href="{% url game-match-detail pk=gamematch.id %}">
-                                                            <img  class="img-thumbnail" src="{% thumbnail gamematch.team_a.image 32x32 %}"
+                                                            <img  class="img-thumbnail" src="{% thumbnail gamematch.team_a.image 32x32 crop  %}"
                                                                 {% if gamematch.team_a.image.alt %}
                                                                     alt="{{ gamematch.team_a.image.alt }}"
                                                                 {% endif %}
@@ -92,6 +92,24 @@
                                                         «{{gamematch.team_a.name}}»
                                                     </a>
                                                 </div>
+
+                                                {% if gamematch.score_a %}
+                                                    {% if gamematch.score_b %}
+                                                        <div title="Счет">
+                                                            <span>{{gamematch.score_a}}</span>
+                                                            <span>&nbsp;:&nbsp;</span>
+                                                            <span>{{gamematch.score_b}}</span>
+                                                        </div>
+                                                    {% endif %}
+                                                {% endif %}
+
+                                                {% if gamematch.start_datetime %}
+                                                    <div class="small-text datetime-mark" title="Дата">
+                                                        <div>{{gamematch.start_datetime|date:"Y M d"}}&nbsp;</div>
+                                                        <div>{{gamematch.start_datetime|date:"H:i"}}</div>
+                                                    </div>
+                                                {% endif %}
+
                                             </div>
                                         {% endif %}
                                 {% endif %}

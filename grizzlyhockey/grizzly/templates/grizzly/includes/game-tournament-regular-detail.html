@@ -14,7 +14,7 @@
         <div class="pull-left" href="#">
             {% if gametournamentregular.image %}
                 <a href="{% url game-tournament-regular-detail pk=gametournamentregular.id %}">
-                    <img  class="img-thumbnail" src="{% thumbnail gametournamentregular.image 128x128 %}"
+                    <img  class="img-thumbnail" src="{% thumbnail gametournamentregular.image 128x128 crop %}"
                         {% if gametournamentregular.image.alt %}
                             alt="{{ gametournamentregular.image.alt }}"
                         {% endif %}

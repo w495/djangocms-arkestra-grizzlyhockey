@@ -6,7 +6,7 @@
     <div class="pull-left" href="#">
         {% if team.image %}
             <a href="{% url team-detail pk=team.id %}">
-                <img  class="img-thumbnail" src="{% thumbnail team.image 128x128 %}"
+                <img  class="img-thumbnail" src="{% thumbnail team.image 128x128 crop %}"
                     {% if team.image.alt %}
                         alt="{{ team.image.alt }}"
                     {% endif %}

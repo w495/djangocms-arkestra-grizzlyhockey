@@ -46,18 +46,40 @@ class Team(AbsObj):
 
     def get_nwins(self):
         wa = self.gamematch_a.filter(score_a__gt = models.F('score_b')).count()
-        wb = self.gamematch_a.filter(score_b__gt = models.F('score_a')).count()
+        wb = self.gamematch_b.filter(score_b__gt = models.F('score_a')).count()
         return wa + wb
 
 
     def get_nloses(self):
         la = self.gamematch_a.filter(score_a__lt = models.F('score_b')).count()
-        lb = self.gamematch_a.filter(score_b__lt = models.F('score_a')).count()
+        lb = self.gamematch_b.filter(score_b__lt = models.F('score_a')).count()
         return la + lb
 
 
     def get_npoints(self):
-        n = 100 * self.get_nwins() / (self.get_ngames() + 1) / 100.0
+
+
+        wa =  self.gamematch_a.aggregate(models.Sum('score_a')).get('score_a__sum', 0)
+        wb =  self.gamematch_b.aggregate(models.Sum('score_b')).get('score_b__sum', 0)
+
+        if(not wa):
+            wa = 0
+
+        if(not wb):
+            wb = 0
+
+        la =  self.gamematch_a.aggregate(models.Sum('score_b')).get('score_b__sum', 0)
+        lb =  self.gamematch_b.aggregate(models.Sum('score_a')).get('score_a__sum', 0)
+
+
+        if(not la):
+            la = 0
+
+        if(not lb):
+            lb = 0
+
+
+        n = (wa + wb);
 
         return n
 
