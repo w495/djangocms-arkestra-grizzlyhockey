@@ -103,19 +103,6 @@
                     <ul>
                     {% for judge in gamematch.judges.all %}
                         <li >
-                            <!--
-                                {% if judge.image %}
-                                    <div>
-                                        <a href="{% url judge-detail pk=judge.id %}">
-                                            <img  class="img-thumbnail" src="{% thumbnail judge.image 64x64 %}"
-                                                {% if judge.image.alt %}
-                                                    alt="{{ judge.image.alt }}"
-                                                {% endif %}
-                                            />
-                                        </a>
-                                    </div>
-                                {% endif %}
-                            -->
                             <div>
                                 <a href="{% url judge-detail pk=judge.id %}">
                                     {{judge}}
@@ -127,19 +114,15 @@
                 </section>
             {% endif %}
         </div>
-
-
-
-
-
     </div>
+
     <div class="row">
-        <div class="col-lg-6 center">
+        <div class="col-lg-12 center">
             {% with team=gamematch.team_a  %}
                 {% include "grizzly/includes/game-match-detail-goals.html" %}
             {% endwith %}
         </div>
-        <div class="col-lg-6 center">
+        <div class="col-lg-12 center">
             {% with team=gamematch.team_b  %}
                 {% include "grizzly/includes/game-match-detail-goals.html" %}
             {% endwith %}
@@ -147,12 +130,12 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-6 center">
+        <div class="col-lg-12 center">
             {% with team=gamematch.team_a  %}
                 {% include "grizzly/includes/game-match-detail-fines.html" %}
             {% endwith %}
         </div>
-        <div class="col-lg-6 center">
+        <div class="col-lg-12 center">
             {% with team=gamematch.team_b  %}
                 {% include "grizzly/includes/game-match-detail-fines.html" %}
             {% endwith %}
@@ -160,7 +143,7 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-4 center">
+        <div class="col-lg-12 center">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="panel-title center">
@@ -197,12 +180,12 @@
                 </table>
             </div>
         </div>
-        <div class="col-lg-8 center">
+        <div class="col-lg-12 center">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="panel-title center">
                         <span>
-                            Время игры вратарей
+                            Штрафные броски после игры
                         </span>
                     </div>
                 </div>
