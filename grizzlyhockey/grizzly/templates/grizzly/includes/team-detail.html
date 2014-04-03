@@ -38,12 +38,14 @@
                 <p>{{team.detail}}</p>
             {% endif %}
             {% block team_description %}
-                {% render_placeholder team.description %}
+                <div>
+                    {% render_placeholder team.description %}
+                </div>
             {% endblock team_description %}
         </div>
     </div>
 
-    <ul class="media-list">
+    <ul class="media-list team-player-list">
         {% for player2team in team.player2team_set.all %}
             {% with player2team.player as player  %}
                 <li class="media">
