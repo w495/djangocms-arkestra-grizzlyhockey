@@ -3,12 +3,12 @@
 
 
 <li class="col-md-6">
-    <div class="media ">
+    <div class="media ghl-list-item">
         <div class="pull-left" href="#">
             {% if team.image %}
                 <div>
                     <a href="{% url team-detail pk=team.id %}">
-                        <img  class="img-thumbnail" src="{% thumbnail team.image 128x128 crop %}"
+                        <img  class="img-thumbnail" src="{% thumbnail team.image 64x64 crop %}"
                             {% if team.image.alt %}
                                 alt="{{ team.image.alt }}"
                             {% endif %}
@@ -16,7 +16,7 @@
                     </a>
                 </div>
             {% else %}
-                <div class="img-null p128x128 img-thumbnail">
+                <div class="img-null p64x64 img-thumbnail">
                 </div>
             {% endif %}
         </div>
@@ -50,7 +50,6 @@
                     {% endfor %}
                 </p>
             {% endif %}
-
             {% if team.detail %}
                 <p>{{team.detail}}</p>
             {% endif %}

@@ -5,7 +5,7 @@
 <section>
     <div class="row">
         <div class="col-lg-12">
-            <ul class="media-list">
+            <ul class="row">
                 {% for player in player_list|dictsort:"ctime" %}
                         {% include "grizzly/includes/player-list-li.html" %}
                 {% endfor %}

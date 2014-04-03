@@ -4,10 +4,10 @@
 
 
 <li class="col-md-6">
-    <div class="media">
+    <div class="media ghl-list-item">
         <div class="pull-left" href="#">
             {% if player.image %}
-                <div style="min-width:128px; min-height:128px;">
+                <div >
                     <a href="{% url player-detail pk=player.id %}">
                         <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 crop %}"
                             {% if player.image.alt %}
