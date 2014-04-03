@@ -3,7 +3,7 @@
 {% load cache %}
 {% with gamedivision=instance.gamedivision %}
 
-{% cache 500 gamedivision-plugin %}
+{% cache 500 gamedivision-plugin gamedivision %}
 <section>
     <a href="{% url game-division-detail pk=gamedivision.id %}">
         <h3>Дивизион «{{ gamedivision.name }}»</h3>

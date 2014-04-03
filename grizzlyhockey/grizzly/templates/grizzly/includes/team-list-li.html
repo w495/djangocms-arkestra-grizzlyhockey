@@ -1,7 +1,9 @@
 {% load thumbnail %}
 {% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
+{% load cache %}
 
 
+{% cache 500 ghl-list-item-team team %}
 <li class="col-md-6">
     <div class="media ghl-list-item">
         <div class="pull-left" href="#">
@@ -53,4 +55,5 @@
         </div>
     </div>
 </li>
+{% endcache %}
 
