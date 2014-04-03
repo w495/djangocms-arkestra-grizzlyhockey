@@ -26,7 +26,7 @@
             {% endif %}
         </div>
         <div class="media-body">
-            {% if team.gamedivisions %}
+            {% if team.gamedivisions.count > 0 %}
                 <p>
                     Дивизионы:
                     {% for division in team.gamedivisions.all %}
@@ -34,12 +34,14 @@
                     {% endfor %}
                 </p>
             {% endif %}
-            {% block team_description %}
-                {% if team.detail %}
-                    <p>{{team.detail}}</p>
-                    {% render_placeholder team.description %}
-                {% endif %}
-            {% endblock team_description %}
+            {% if team.detail %}
+                <p>{{team.detail}}</p>
+            {% endif %}
+            <p>
+                {% block team_description %}
+                        {% render_placeholder team.description %}
+                {% endblock team_description %}
+            </p>
         </div>
     </div>
 
