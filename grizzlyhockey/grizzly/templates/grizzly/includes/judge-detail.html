@@ -1,0 +1,157 @@
+
+{% load thumbnail %}
+{% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
+
+
+
+<section >
+    <h4>
+        {{judge.second_name}}
+        {{judge.first_name}}
+        {{judge.patronymic}}
+    </h4>
+
+    <section class="row" >
+        <div class="col-lg-4 col-md-5 col-sm-6">
+            {% if judge.image %}
+                <img  class="img-thumbnail" src="{% thumbnail judge.image 256x256 %}"
+                    {% if judge.image.alt %}
+                        alt="{{ judge.image.alt }}"
+                    {% endif %}
+                />
+            {% endif %}
+        </div>
+        <div class="col-lg-4 col-md-5 col-sm-6">
+            <dl class="dl-horizontal dl-judgecard">
+                {% if judge.birthday %}
+                    <dt title="Дата">
+                        <span class="text-muted">
+                            &nbsp;Дата рождения:&nbsp;
+                        </span>
+                    <dt>
+                    <dd>
+                        <span>
+                            {{judge.birthday}}
+                        </span>
+                    </dd>
+                {% endif %}
+                {% if judge.types.count > 0 %}
+                    <dt title="Типы судейства">
+                        <span class="text-muted">
+                            &nbsp;Типы судейства:&nbsp;
+                        </span>
+                    <dt>
+                    <dd>
+                        {% for type in judge.types.all %}
+                            <div>{{type}}</div>
+                        {% endfor %}
+                    </dd>
+                {% endif %}
+                {% if judge.detail %}
+                    <dt title="Описание">
+                        <span class="text-muted">
+                            &nbsp;Описание:&nbsp;
+                        </span>
+                    <dt>
+                    <dd>
+                        {{judge.detail}}
+                    </dd>
+                {%endif%}
+            </dl>
+        </div>
+
+        <div class="col-lg-4 col-md-5 col-sm-6">
+            <ul class="media-list">
+                {% for gamematch in judge.gamematches.all %}
+
+                    <li class="media">
+                        <div class="media-body">
+                                <a href="{% url game-match-detail pk=gamematch.id %}">
+                                    {{gamematch.name}}
+                                </a>
+
+                                <div class="row">
+                                    <div class="col-md-4 center">
+                                        {% with team=gamematch.team_a  %}
+                                            {% if team.image %}
+                                                <div>
+                                                    <a href="{% url team-detail pk=team.id %}">
+                                                        <img  class="img-thumbnail" src="{% thumbnail team.image 48x48 crop %}"
+                                                            {% if team.image.alt %}
+                                                                alt="{{ team.image.alt }}"
+                                                            {% endif %}
+                                                        />
+                                                    </a>
+                                                </div>
+                                            {% endif %}
+                                            {% if team.name %}
+                                                <div>
+                                                    <a href="{% url team-detail pk=team.id %}">
+                                                        {{team.name}}
+                                                    </a>
+                                                </div>
+                                            {% endif %}
+                                        {% endwith %}
+                                    </div>
+                                    <div class="col-md-4 center">
+                                        <div class="">
+                                            {% if gamematch.score_a %}
+                                                <span>
+                                                    {{gamematch.score_a}}
+                                                </span>
+                                            {% endif %}
+                                            <span>&nbsp;:&nbsp;</span>
+                                            {% if gamematch.score_b %}
+                                                <span>
+                                                    {{gamematch.score_b}}
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                            {% if gamematch.start_datetime %}
+                                                <div class="small-text datetime-mark" title="Дата">
+                                                    <div>{{gamematch.start_datetime|date:"Y M d"}}&nbsp;</div>
+                                                    <div>{{gamematch.start_datetime|date:"H:i"}}</div>
+                                                </div>
+                                            {% endif %}
+                                    </div>
+                                    <div class="col-md-4 center">
+                                        {% with team=gamematch.team_b  %}
+                                            {% if team.image %}
+                                                <div>
+                                                    <a href="{% url team-detail pk=team.id %}">
+                                                        <img  class="img-thumbnail" src="{% thumbnail team.image 48x48 crop %}"
+                                                            {% if team.image.alt %}
+                                                                alt="{{ team.image.alt }}"
+                                                            {% endif %}
+                                                        />
+                                                    </a>
+                                                </div>
+                                            {% endif %}
+                                            {% if team.name %}
+                                                <div>
+                                                    <a href="{% url team-detail pk=team.id %}">
+                                                        {{team.name}}
+                                                    </a>
+                                                </div>
+                                            {% endif %}
+                                        {% endwith %}
+                                    </div>
+                                </div>
+
+                            {% if gamematch.detail %}
+                                <p>{{gamematch.detail}}</p>
+                            {% endif %}
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+    <section class="row" >
+        <article class="col-lg-12">
+            {% block judge_description %}
+                {% render_placeholder judge.description %}
+            {% endblock judge_description %}
+        </article>
+    </section>
+</section>

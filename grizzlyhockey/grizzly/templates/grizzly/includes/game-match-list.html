@@ -40,8 +40,8 @@
                                     {% endif %}
                                 {% endwith %}
                             </div>
-                            <div class="col-sm-2 center scorew">
-                                <p class="score">
+                            <div class="col-sm-2 center">
+                                <p class="">
                                     {% if gamematch.score_a %}
                                         <span>
                                             {{gamematch.score_a}}
@@ -52,6 +52,18 @@
                                         <span>
                                             {{gamematch.score_b}}
                                         </span>
+                                    {% endif %}
+                                    {% if gamematch.start_datetime %}
+                                        <div class="small-text datetime-mark" title="Дата">
+                                            <span>{{gamematch.start_datetime|date:"Y M d"}}&nbsp;</span>
+                                            <span>{{gamematch.start_datetime|date:"H:i"}}</span>
+                                        </div>
+                                    {% endif %}
+                                    {% if gamematch.stop_datetime %}
+                                        <div class="small-text datetime-mark" title="Дата">
+                                            <span>{{gamematch.stop_datetime|date:"Y M d"}}&nbsp;</span>
+                                            <span>{{gamematch.stop_datetime|date:"H:i"}}</span>
+                                        </div>
                                     {% endif %}
                                 </p>
                             </div>

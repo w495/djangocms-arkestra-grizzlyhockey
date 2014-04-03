@@ -1,0 +1,57 @@
+{% load thumbnail %}
+{% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
+
+
+<section>
+    <div class="row">
+        <div class="col-lg-12">
+            <ul class="row">
+                {% for judge in judge_list|dictsort:"ctime" %}
+                    <li class="col-md-6">
+                        <div class="media ghl-list-item">
+                            <div class="pull-left" href="#">
+                                {% if judge.image %}
+                                    <div >
+                                        <a href="{% url judge-detail pk=judge.id %}">
+                                            <img  class="img-thumbnail" src="{% thumbnail judge.image 128x128 crop %}"
+                                                {% if judge.image.alt %}
+                                                    alt="{{ judge.image.alt }}"
+                                                {% endif %}
+                                            />
+                                        </a>
+                                    </div>
+                                {% else %}
+                                    <div class="img-null p128x128 img-thumbnail">
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">
+                                    <a href="{% url judge-detail pk=judge.id %}">
+                                        {{judge.second_name}}
+                                        {{judge.first_name}}
+                                        {{judge.patronymic}}
+                                    </a>
+                                </h4>
+                                {% if judge.birthday %}
+                                    <div title="Дата рождения">
+                                        <span title="Дата рождения">
+                                            <date>{{judge.birthday}}</date>
+                                        </span>
+                                    </div>
+                                {% endif %}
+                                {% if judge.types.count > 0 %}
+                                    <div class="Типы судейства">
+                                        {% for type in judge.types.all %}
+                                            <span>{{type}}</span>
+                                        {% endfor %}
+                                    </div >
+                                {% endif %}
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</section>
