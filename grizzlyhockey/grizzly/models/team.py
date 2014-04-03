@@ -3,7 +3,7 @@
 from django.db import models
 
 from absobj import AbsObj
-
+from django_cached_functions import cached_function
 
 class Team(AbsObj):
 
@@ -40,22 +40,25 @@ class Team(AbsObj):
         verbose_name=u"дивизионы"
     )
 
+    @cached_function
     def get_ngames(self):
         n = self.gamematch_a.count() + self.gamematch_b.count()
         return n
 
+    @cached_function
     def get_nwins(self):
         wa = self.gamematch_a.filter(score_a__gt = models.F('score_b')).count()
         wb = self.gamematch_b.filter(score_b__gt = models.F('score_a')).count()
         return wa + wb
 
 
+    @cached_function
     def get_nloses(self):
         la = self.gamematch_a.filter(score_a__lt = models.F('score_b')).count()
         lb = self.gamematch_b.filter(score_b__lt = models.F('score_a')).count()
         return la + lb
 
-
+    @cached_function
     def get_npoints(self):
 
 

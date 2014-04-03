@@ -7,6 +7,7 @@ South==0.8.4
 argparse==1.1
 beautifulsoup4==4.3.2
 cssselect==0.9.1
+django-cached-functions==0.1.1
 django-classy-tags==0.4
 django-cms==2.3.5
 django-easyfilters==0.5

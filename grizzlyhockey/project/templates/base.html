@@ -1,175 +1,191 @@
 {% load cms_tags sekizai_tags menu_tags typogrify_tags insert_tags %}
+{% load cache %}
 {% block doctype %}<!DOCTYPE html>{% endblock doctype %}
-{% block html_tag %}<html lang="en" >{% endblock html_tag %}
-{% spaceless %}<head>
-{% block scripts %}{% endblock scripts %}
-<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
 
-{% block meta %}
-    {% if meta.items %}
-        {% for name,content in meta.items %}
-            <meta name="{{ name }}" content="{{ content }}" />
-        {% endfor %}
-    {% else %}
-        <meta name="description" content="{% page_attribute meta_description %}"/>
-    {% endif %}
-{% endblock meta %}
+{% block html_tag %}
+    <html lang="en" >
+{% endblock html_tag %}
 
-{% block title %}<title>{% page_attribute title %}</title>{% endblock %}
+<head>
 
-{% block favicon %}
-<link rel="icon"
-      type="image/png"
-      href="{{ STATIC_URL }}arkestra/images/arkestra-favicon.png">
-{% endblock favicon %}
+    {% block scripts %}{% endblock scripts %}
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
 
+    {% block meta %}
+        {% if meta.items %}
+            {% for name,content in meta.items %}
+                <meta name="{{ name }}" content="{{ content }}" />
+            {% endfor %}
+        {% else %}
+            <meta name="description" content="{% page_attribute meta_description %}"/>
+        {% endif %}
+    {% endblock meta %}
 
-{% block styles %}
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/arkestra.css" />
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/arkestra_lists.css" />
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/arkestra_images.css" />
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/arkestra_layout.css" />
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/arkestra_navigation.css" />
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/arkestra_presentation_editor.css" />
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/temporaryhacks.css" />
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/carousel.css" />
+    {% block title %}
+        <title>
+            {% page_attribute title %}
+        </title>
+    {% endblock %}
 
-<!--[if lte IE 8]><link href="{{ STATIC_URL }}arkestra/css/ie-fixes/ie-lte-8.css" rel="stylesheet" type="text/css" /><![endif]-->
-<!--[if lte IE 7]><link href="{{ STATIC_URL }}arkestra/css/ie-fixes/ie-lte-7.css" rel="stylesheet" type="text/css" /><![endif]-->
-<!--[if lte IE 6]><link href="{{ STATIC_URL }}arkestra/css/ie-fixes/ie-lte-6.css" rel="stylesheet" type="text/css" /><![endif]-->
-
-    {% block extrastyles %}
-<link rel="stylesheet" type="text/css" href="http://getbootstrap.com/dist/css/bootstrap.min.css" />
-<link rel="stylesheet" type="text/css" href="http://getbootstrap.com/examples/offcanvas/offcanvas.css" />
-    {% endblock extrastyles %}
-
-    {% block site_styles %}
-
-<style>
-.carousel-btn{
-    width:10%;
-}
-.team-human-metrics{
-    text-align:center;
-}
-.carousel{
-    overflow:hidden;
-    background: black;
-    min-height: 300px;
-}
-.carousel-inner-image{
-    display: block;
-    min-width: 1000px;
-    min-height: 300px;
-    background-color:blue;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size:cover;
-}
-
-.game-division-plugin-table{
-    margin-left: 1em;
-}
-
-.center{
-    text-align:center;
-}
-
-.left{
-    text-align:left;
-}
+    {% block favicon %}
+        <link rel="icon"
+            type="image/png"
+            href="{{ STATIC_URL }}arkestra/images/arkestra-favicon.png">
+    {% endblock favicon %}
 
 
-.right{
-    text-align:right;
-}
+    {% block styles %}
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/arkestra.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/arkestra_lists.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/arkestra_images.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/arkestra_layout.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/arkestra_navigation.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/arkestra_presentation_editor.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/temporaryhacks.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/carousel.css" />
+
+        <!--[if lte IE 8]><link href="{{ STATIC_URL }}arkestra/css/ie-fixes/ie-lte-8.css" rel="stylesheet" type="text/css" /><![endif]-->
+        <!--[if lte IE 7]><link href="{{ STATIC_URL }}arkestra/css/ie-fixes/ie-lte-7.css" rel="stylesheet" type="text/css" /><![endif]-->
+        <!--[if lte IE 6]><link href="{{ STATIC_URL }}arkestra/css/ie-fixes/ie-lte-6.css" rel="stylesheet" type="text/css" /><![endif]-->
+
+        {% block extrastyles %}
+            <link rel="stylesheet" type="text/css" href="http://getbootstrap.com/dist/css/bootstrap.min.css" />
+            <link rel="stylesheet" type="text/css" href="http://getbootstrap.com/examples/offcanvas/offcanvas.css" />
 
 
-.game-situation{
-    text-align:left;
-}
-
-.dl-team-playercard dt{
-    width: 5em;
-}
-
-.dl-team-playercard dd{
-    margin-left: 6em;
-}
-
-.dl-playercard dt{
-    width: 9em;
-}
-
-.dl-playercard dd{
-    margin-left: 10em;
-}
 
 
-.navbar-logo{
-    width:  132px;
-    height: 50px;
-    background-image: url('{{ STATIC_URL }}grizzly/title-logo.png');
-    background-repeat: no-repeat;
-    background-position: center center;
-}
+        {% endblock extrastyles %}
+
+        {% block site_styles %}
+            <style>
+                body {
+                    padding-top: 70px;
+                }
+                footer {
+                    padding: 30px 0;
+                }
+
+                .carousel-btn{
+                    width:10%;
+                }
+                .team-human-metrics{
+                    text-align:center;
+                }
+                .carousel{
+                    overflow:hidden;
+                    background: black;
+                    min-height: 300px;
+                }
+                .carousel-inner-image{
+                    display: block;
+                    min-width: 1000px;
+                    min-height: 300px;
+                    background-color:blue;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-size:cover;
+                }
+
+                .game-division-plugin-table{
+                    margin-left: 1em;
+                }
+
+                .center{
+                    text-align:center;
+                }
+
+                .left{
+                    text-align:left;
+                }
 
 
-.float-left{
-    float:left;
-}
+                .right{
+                    text-align:right;
+                }
 
-.tourno-mark{
-    margin-left: 0.5ex;
-    float:left;
-    color:#dddddd;
-}
-.game-tournament-regular-item {
-    float:left;
-    min-width: 100px;
-    min-height: 100px;
-}
 
-.score{
-    font-size:2em;
-    height: 50px;
-    margin-top: 1em;
-    margin-bottom: 1em;
-}
+                .game-situation{
+                    text-align:left;
+                }
 
-.date-label-cell{
-    text-align:right;
-    color: gray;
-}
+                .dl-team-playercard dt{
+                    width: 5em;
+                }
 
-.datetime-mark{
-    color: gray;
-}
+                .dl-team-playercard dd{
+                    margin-left: 6em;
+                }
 
-.small-text{
-    font-size:0.8em;
-}
+                .dl-playercard dt{
+                    width: 9em;
+                }
 
-.game-match-detail-time{
-    margin:2em;
-}
-</style>
+                .dl-playercard dd{
+                    margin-left: 10em;
+                }
 
-    {% endblock site_styles %}
 
-{% endblock styles %}
+                .navbar-logo{
+                    width:  132px;
+                    height: 50px;
+                    background-image: url('{{ STATIC_URL }}grizzly/title-logo.png');
+                    background-repeat: no-repeat;
+                    background-position: center center;
+                }
 
-<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-<script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
 
-{% endspaceless %}
+                .float-left{
+                    float:left;
+                }
 
-<!-- \/ -->{% render_block "css" %}<!-- \/ -->
-<!-- \/ -->{% render_block "js" %}<!-- \/ -->
+                .tourno-mark{
+                    margin-left: 0.5ex;
+                    float:left;
+                    color:#dddddd;
+                }
+                .game-tournament-regular-item {
+                    float:left;
+                    min-width: 100px;
+                    min-height: 100px;
+                }
+
+                .score{
+                    font-size:2em;
+                    height: 50px;
+                    margin-top: 1em;
+                    margin-bottom: 1em;
+                }
+
+                .date-label-cell{
+                    text-align:right;
+                    color: gray;
+                }
+
+                .datetime-mark{
+                    color: gray;
+                }
+
+                .small-text{
+                    font-size:0.8em;
+                }
+
+                .game-match-detail-time{
+                    margin:2em;
+                }
+            </style>
+
+        {% endblock site_styles %}
+    {% endblock styles %}
+
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
+
+    <!-- \/ -->{% render_block "css" %}<!-- \/ -->
+    <!-- \/ -->{% render_block "js" %}<!-- \/ -->
 
 </head>
 
-{% spaceless %}
 <body {% block body_attributes %}{% endblock body_attributes %}>
     {% cms_toolbar %}
     {% with placeholder_width=960 generic_main_width=523 sidebar_image_size="294x196" entity_image_size="445x384" entity_map_size="445x100" person_map_size="445x100" sidebar_map_size="296x100" person_image_size="460x460" person_thumbnail_size="40x40" lightbox_max_dimension=600 plugin_thumbnail_size="75x75" place_image_size="627x418" place_map_size="294x182" body_heading_level=2 %}
@@ -228,7 +244,7 @@
         {% endblock body %}
     {% endwith %}
 </body>
-{% endspaceless %}
+
 
 {% block post_body_scripts %}{% endblock post_body_scripts %}
 </html>
