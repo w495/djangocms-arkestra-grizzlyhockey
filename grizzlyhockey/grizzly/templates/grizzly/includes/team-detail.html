@@ -37,11 +37,9 @@
             {% if team.detail %}
                 <p>{{team.detail}}</p>
             {% endif %}
-            <p>
-                {% block team_description %}
-                        {% render_placeholder team.description %}
-                {% endblock team_description %}
-            </p>
+            {% block team_description %}
+                {% render_placeholder team.description %}
+            {% endblock team_description %}
         </div>
     </div>
 

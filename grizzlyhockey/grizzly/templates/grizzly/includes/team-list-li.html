@@ -6,13 +6,18 @@
     <div class="media ">
         <div class="pull-left" href="#">
             {% if team.image %}
-                <a href="{% url team-detail pk=team.id %}">
-                    <img  class="img-thumbnail" src="{% thumbnail team.image 128x128 crop %}"
-                        {% if team.image.alt %}
-                            alt="{{ team.image.alt }}"
-                        {% endif %}
-                    />
-                </a>
+                <div>
+                    <a href="{% url team-detail pk=team.id %}">
+                        <img  class="img-thumbnail" src="{% thumbnail team.image 128x128 crop %}"
+                            {% if team.image.alt %}
+                                alt="{{ team.image.alt }}"
+                            {% endif %}
+                        />
+                    </a>
+                </div>
+            {% else %}
+                <div class="img-null p128x128 img-thumbnail">
+                </div>
             {% endif %}
         </div>
         <div class="media-body">
