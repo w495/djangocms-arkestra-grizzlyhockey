@@ -1,0 +1,60 @@
+{% load thumbnail %}
+{% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
+
+
+<section>
+    <div class="row">
+        <div class="col-lg-12">
+            <ul class="row">
+                {% for rink in rink_list|dictsort:"ctime" %}
+                    <li class="col-md-6">
+                        <div class="media ghl-list-item">
+                            <div class="pull-left" href="#">
+                                {% if rink.image %}
+                                    <div >
+                                        <a href="{% url rink-detail pk=rink.id %}">
+                                            <img  class="img-thumbnail" src="{% thumbnail rink.image 128x128 crop %}"
+                                                {% if rink.image.alt %}
+                                                    alt="{{ rink.image.alt }}"
+                                                {% endif %}
+                                            />
+                                        </a>
+                                    </div>
+                                {% else %}
+                                    <div class="img-null p128x128 img-thumbnail">
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">
+                                    <a href="{% url rink-detail pk=rink.id %}">
+                                        {{rink.name}}
+                                    </a>
+                                </h4>
+                                    <div>
+                                        {% if rink.town %}
+                                            <span>{{rink.town}}</span>
+                                        {% endif %}
+                                        {% if rink.street %}
+                                            <span>,&nbsp;{{rink.street}}</span>
+                                        {% endif %}
+                                        {% if rink.house %}
+                                            <span>,&ensp;дом&nbsp;{{rink.house}}</span>
+                                        {% endif %}
+                                        {% if rink.building %}
+                                            <span>,&ensp;cт.&nbsp;{{rink.building}}</span>
+                                        {% endif %}
+                                    </div>
+                                    {% if rink.detail %}
+                                        <div>
+                                            {{rink.detail}}
+                                        </div>
+                                    {%endif%}
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</section>

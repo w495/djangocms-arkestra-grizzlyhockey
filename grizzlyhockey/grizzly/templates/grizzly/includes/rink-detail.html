@@ -19,19 +19,49 @@
                 </div>
             {% endif %}
             <p>
-                <dl class="dl-horizontal dl-rinkcard">
-                    {% if rink.birthday %}
-                        <dt title="Дата">
-                            <span class="text-muted">
-                                &nbsp;Дата открытия:&nbsp;
-                            </span>
-                        <dt>
-                        <dd>
-                            <span>
-                                {{rink.birthday}}
-                            </span>
-                        </dd>
+                <p>
+                    {% if rink.town %}
+                        <span>{{rink.town}}</span>
                     {% endif %}
+                    {% if rink.street %}
+                        <span>,&nbsp;{{rink.street}}</span>
+                    {% endif %}
+                    {% if rink.house %}
+                        <span>,&ensp;дом&nbsp;{{rink.house}}</span>
+                    {% endif %}
+                    {% if rink.building %}
+                        <span>,&ensp;cт.&nbsp;{{rink.building}}</span>
+                    {% endif %}
+                </p>
+                {% if rink.detail %}
+                    <p>
+                        {{rink.detail}}
+                    </p>
+                {%endif%}
+
+
+                <!--
+                <dl class="dl-horizontal dl-rinkcard">
+                    <dt title="Адрес">
+                        <span class="text-muted">
+                            &nbsp;Адрес:&nbsp;
+                        </span>
+                    <dt>
+                    <dd>
+                        {% if rink.town %}
+                            <span>{{rink.town}}</span>
+                        {% endif %}
+                        {% if rink.street %}
+                            <span>,&nbsp;{{rink.street}}</span>
+                        {% endif %}
+                        {% if rink.house %}
+                            <span>,&ensp;дом&nbsp;{{rink.house}}</span>
+                        {% endif %}
+                        {% if rink.building %}
+                            <span>,&ensp;cт.&nbsp;{{rink.building}}</span>
+                        {% endif %}
+                    </dd>
+
                     {% if rink.town %}
                         <dt title="Город">
                             <span class="text-muted">
@@ -83,6 +113,7 @@
                         </dd>
                     {%endif%}
                 </dl>
+                -->
             </p>
         </div>
         <div class="col-lg-4 col-md-5 col-sm-6">
