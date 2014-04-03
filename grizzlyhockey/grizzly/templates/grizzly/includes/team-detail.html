@@ -50,21 +50,23 @@
             {% with player2team.player as player  %}
                 <li class="media">
                     <div class="pull-left" href="#">
-                        {% if player2team.image %}
-                            <img  class="img-thumbnail" src="{% thumbnail player2team.image 128x128 %}"
-                                {% if player2team.image.alt %}
-                                    alt="{{ player2team.image.alt }}"
-                                {% endif %}
-                            />
-                        {% else %}
-                            {% if player.image %}
-                                <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 %}"
-                                    {% if player.image.alt %}
-                                        alt="{{ player.image.alt }}"
+                        <a href="{% url player-detail pk=player.id %}">
+                            {% if player2team.image %}
+                                <img  class="img-thumbnail" src="{% thumbnail player2team.image 128x128 %}"
+                                    {% if player2team.image.alt %}
+                                        alt="{{ player2team.image.alt }}"
                                     {% endif %}
                                 />
+                            {% else %}
+                                {% if player.image %}
+                                    <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 %}"
+                                        {% if player.image.alt %}
+                                            alt="{{ player.image.alt }}"
+                                        {% endif %}
+                                    />
+                                {% endif %}
                             {% endif %}
-                        {% endif %}
+                        </a>
                         <div class="team-human-metrics">
                             {% if player.birthday %}
                                 <div title="Дата рождения">
@@ -116,9 +118,11 @@
                     </div>
                     <div class="media-body">
                         <h4 class="media-heading">
-                            {{player.second_name}}
-                            {{player.first_name}}
-                            {{player.patronymic}}
+                            <a href="{% url player-detail pk=player.id %}">
+                                {{player.second_name}}
+                                {{player.first_name}}
+                                {{player.patronymic}}
+                            </a>
                         </h4>
                         <div class="row" >
                             <div class="col-md-3">
