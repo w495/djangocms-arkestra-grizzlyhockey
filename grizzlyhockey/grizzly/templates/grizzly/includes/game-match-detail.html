@@ -83,11 +83,23 @@
                     {% endif %}
                     {% if gamematch.stop_datetime %}
                         <tr>
-                            <td class="date-label-cell" style="text-align:right">
+                            <td class="date-label-cell right">
                                 Конец:&nbsp;
                             </td>
                             <td>
                                 {{gamematch.stop_datetime}}
+                            </td>
+                        </tr>
+                    {% endif %}
+                    {% if gamematch.rink %}
+                        <tr>
+                            <td class="date-label-cell right">
+                                Каток:&nbsp;
+                            </td>
+                            <td class="left">
+                                <a href="{% url rink-detail pk=gamematch.rink.id %}">
+                                    {{gamematch.rink}}
+                                </a>
                             </td>
                         </tr>
                     {% endif %}
