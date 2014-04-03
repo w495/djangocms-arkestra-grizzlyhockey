@@ -60,33 +60,20 @@ class Team(AbsObj):
 
     @cached_function
     def get_npoints(self):
-
-
         wa =  self.gamematch_a.aggregate(models.Sum('score_a')).get('score_a__sum', 0)
         wb =  self.gamematch_b.aggregate(models.Sum('score_b')).get('score_b__sum', 0)
-
         if(not wa):
             wa = 0
-
         if(not wb):
             wb = 0
-
         la =  self.gamematch_a.aggregate(models.Sum('score_b')).get('score_b__sum', 0)
         lb =  self.gamematch_b.aggregate(models.Sum('score_a')).get('score_a__sum', 0)
-
-
         if(not la):
             la = 0
-
         if(not lb):
             lb = 0
-
-
         n = (wa + wb);
-
         return n
-
-
 
     class Meta:
         ordering = ('name',)

@@ -2,52 +2,54 @@
 {% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
 
 
-<li class="media">
-    <div class="pull-left" href="#">
-        {% if team.image %}
-            <a href="{% url team-detail pk=team.id %}">
-                <img  class="img-thumbnail" src="{% thumbnail team.image 128x128 crop %}"
-                    {% if team.image.alt %}
-                        alt="{{ team.image.alt }}"
-                    {% endif %}
-                />
-            </a>
-        {% endif %}
-    </div>
-    <div class="media-body">
-        <h4 class="media-heading">
-            <a href="{% url team-detail pk=team.id %}">
-                {{team.name}}
-            </a>
-            &nbsp;
-            <span title="Игры" class="text-default">
-                {{team.get_ngames}}
-            </span>
-            &nbsp;
-            <span title="Победы" class="text-success">
-                {{team.get_nwins}}
-            </span>
-            &nbsp;
-            <span title="Поражения" class="text-danger">
-                {{team.get_nloses}}
-            </span>
-            &nbsp;
-            <span title="Очки" class="text-warning">
-                {{team.get_npoints}}
-            </span>
-        </h4>
-        {% if team.gamedivisions.count > 0 %}
-            <p>
-                Дивизионы:
-                {% for division in team.gamedivisions.all %}
-                    <a href="{% url game-division-detail pk=division.id %}">{{division}}</a>
-                {% endfor %}
-            </p>
-        {% endif %}
+<li class="col-md-6">
+    <div class="media ">
+        <div class="pull-left" href="#">
+            {% if team.image %}
+                <a href="{% url team-detail pk=team.id %}">
+                    <img  class="img-thumbnail" src="{% thumbnail team.image 128x128 crop %}"
+                        {% if team.image.alt %}
+                            alt="{{ team.image.alt }}"
+                        {% endif %}
+                    />
+                </a>
+            {% endif %}
+        </div>
+        <div class="media-body">
+            <h4 class="media-heading">
+                <a href="{% url team-detail pk=team.id %}">
+                    {{team.name}}
+                </a>
+                &nbsp;
+                <span title="Игры" class="text-default">
+                    {{team.get_ngames}}
+                </span>
+                &nbsp;
+                <span title="Победы" class="text-success">
+                    {{team.get_nwins}}
+                </span>
+                &nbsp;
+                <span title="Поражения" class="text-danger">
+                    {{team.get_nloses}}
+                </span>
+                &nbsp;
+                <span title="Очки" class="text-warning">
+                    {{team.get_npoints}}
+                </span>
+            </h4>
+            {% if team.gamedivisions.count > 0 %}
+                <p>
+                    Дивизионы:
+                    {% for division in team.gamedivisions.all %}
+                        <a href="{% url game-division-detail pk=division.id %}">{{division}}</a>
+                    {% endfor %}
+                </p>
+            {% endif %}
 
-        {% if team.detail %}
-            <p>{{team.detail}}</p>
-        {% endif %}
+            {% if team.detail %}
+                <p>{{team.detail}}</p>
+            {% endif %}
+        </div>
     </div>
 </li>
 
