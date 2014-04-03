@@ -32,7 +32,7 @@
                 {% endblock image %}
                 <dl class="not-indented">
                     <dt>Опубликовано:</dt>
-                    <dd>{% date newsarticle.date %}</dd>
+                    <dd>{{ newsarticle.date }}</dd>
                     {% if newsarticle.please_contact.all %}
                         <dt>General enquiries</dt>
                         {% for person in newsarticle.please_contact.all %}
