@@ -1,0 +1,85 @@
+{% load thumbnail %}
+{% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
+
+
+
+<li class="col-md-6">
+    <div class="media">
+        <div class="pull-left" href="#">
+            {% if player.image %}
+                <div style="min-width:128px; min-height:128px;">
+                    <a href="{% url player-detail pk=player.id %}">
+                        <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 crop %}"
+                            {% if player.image.alt %}
+                                alt="{{ player.image.alt }}"
+                            {% endif %}
+                        />
+                    </a>
+                </div>
+            {% else %}
+                <div class="img-null p128x128 img-thumbnail">
+                </div>
+            {% endif %}
+        </div>
+        <div class="media-body">
+            <h4 class="media-heading">
+                <a href="{% url player-detail pk=player.id %}">
+                    {{player.second_name}}
+                    {{player.first_name}}
+                    {{player.patronymic}}
+                </a>
+            </h4>
+            <div >
+                {% if player.birthday %}
+                    <div title="Дата рождения">
+                        <!--
+                            <span class="text-muted">
+                                &nbsp;Дата рождения:&nbsp;
+                            </span>
+                        -->
+                        <span title="Дата рождения">
+                            <date>{{player.birthday}}</date>
+                        </span>
+                    </div>
+                {% endif %}
+                <div>
+                    {% if player.height %}
+                        <span title="Рост">
+                            <!--
+                                <span class="text-muted">
+                                    &nbsp;Рост:&nbsp;
+                                </span>
+                            -->
+                            <span>
+                                {{player.height}}
+                            </span>
+                            <span>
+                                &nbsp;см.&nbsp;
+                            </span>
+                        </span>
+                    {% endif %}
+
+
+                    {% if player.weight %}
+                        <span title="Вес">
+                            <!--
+                                <span class="text-muted">
+                                    &nbsp;Вес:&nbsp;
+                                </span>
+                            -->
+                            <span>
+                                {{player.weight}}
+                            </span>
+                            <span>
+                                &nbsp;кг.&nbsp;
+                            </span>
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+            {% if player.detail %}
+                <p>{{player.detail}}</p>
+            {% endif %}
+        </div>
+    </div>
+</li>
