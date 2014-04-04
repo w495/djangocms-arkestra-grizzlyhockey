@@ -17,6 +17,9 @@
                         {% endif %}
                     />
                 </div>
+            {% else %}
+                <div class="img-null p256x256 img-thumbnail">
+                </div>
             {% endif %}
             <p>
                 <p>
@@ -139,6 +142,9 @@
                                                         />
                                                     </a>
                                                 </div>
+                                            {% else %}
+                                                <div class="img-null p48x48 img-thumbnail">
+                                                </div>
                                             {% endif %}
                                             {% if team.name %}
                                                 <div>
@@ -181,6 +187,9 @@
                                                             {% endif %}
                                                         />
                                                     </a>
+                                                </div>
+                                            {% else %}
+                                                <div class="img-null p48x48 img-thumbnail">
                                                 </div>
                                             {% endif %}
                                             {% if team.name %}
