@@ -1,20 +1,23 @@
 import thread
 import os
 import time
+import uuid
 
 from django.conf import settings
 
 
 class ProfileMiddleware(object):
 
+    time = 0
+
     def process_request(self, request):
         self.time = time.time()
-        pass
 
     def process_response(self, request, response):
 
-        response["X-Time-Delta"] = time.time() - self.time
-        response["X-PID"] = os.getpid()
-        response["X-TID"] = thread.get_ident()
+        response["X-Dtm"] = time.time() - self.time
+        response["X-Pid"] = os.getpid()
+        response["X-Tid"] = thread.get_ident()
+        response["X-Rid"] = "%s"%(uuid.uuid4())
 
         return response
