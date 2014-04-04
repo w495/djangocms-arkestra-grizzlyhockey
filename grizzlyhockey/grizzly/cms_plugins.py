@@ -19,6 +19,7 @@ from grizzly.models import GameTournamentRegularPluginMany   as GameTournamentRe
 from grizzly.models import GameMatchPlugin      as GameMatchPluginModel
 from grizzly.models import GameMatchPluginMany  as GameMatchPluginManyModel
 
+from grizzly.models import GameMatch
 
 
 from django.utils.translation import ugettext as _
@@ -110,7 +111,26 @@ class GameMatchPlugin(CMSPluginBase):
         context.update({'instance':instance})
         return context
 
+import datetime
 
+class GameMatchSchedulePlugin(CMSPluginBase):
+    name = _(u"Гризли: расписание матчей") #
+    render_template = "grizzly/plugins/gamematchschedule.html"
+    def render(self, context, instance, placeholder):
+        context.update({'instance':instance})
+        return context
+
+    def render(self, context, instance, placeholder):
+
+        date = datetime.date.today()
+        end_week = date + datetime.timedelta(10)
+        gamematches =  GameMatch.objects.filter(
+            start_datetime__range = [date, end_week]
+        ).order_by('start_datetime')
+
+        instance.gamematches = gamematches
+        context['instance'] = instance
+        return context
 
 plugin_pool.register_plugin(TeamPlugin)
 plugin_pool.register_plugin(TeamPluginMany)
@@ -125,5 +145,8 @@ plugin_pool.register_plugin(GameTournamentRegularPlugin)
 plugin_pool.register_plugin(GameTournamentRegularPluginMany)
 
 plugin_pool.register_plugin(GameMatchPlugin)
+
+plugin_pool.register_plugin(GameMatchSchedulePlugin)
+
 plugin_pool.register_plugin(GameMatchPluginMany)
 

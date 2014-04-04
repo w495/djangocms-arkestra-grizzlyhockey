@@ -42,6 +42,8 @@ from grizzly.models import InsuranceType
 from grizzly.models import PlayerStatus
 
 
+import datetime
+
 class GameDivisionListView(generic.ListView):
     model = GameDivision
     template_name = 'grizzly/pages/game-division-list.html'
@@ -96,12 +98,24 @@ class GameMatchListView(generic.ListView):
     model = GameMatch
     template_name = 'grizzly/pages/game-match-list.html'
 
+    def get_queryset(self, *args, **kwargs):
+        return self.model.objects.all().order_by('-start_datetime')
+
 class GameMatchDetailView(generic.DetailView):
     model = GameMatch
     template_name = 'grizzly/pages/game-match-detail.html'
 
 
+class GameMatchScheduleView(generic.ListView):
+    model = GameMatch
+    template_name = 'grizzly/pages/game-match-schedule.html'
 
+    def get_queryset(self, *args, **kwargs):
+        date = datetime.date.today()
+        end_week = date + datetime.timedelta(10)
+        return self.model.objects.filter(
+            start_datetime__gt = date
+        ).order_by('start_datetime')
 
 
 

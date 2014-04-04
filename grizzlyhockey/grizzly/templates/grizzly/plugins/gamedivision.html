@@ -10,6 +10,39 @@
     </a>
     Команды:
     <table class="game-division-plugin-table">
+            <tr>
+                <th>&nbsp;
+                </th>
+                <th class="right">
+                    <span title="Игры"  class="text-default">
+                        И
+                    </span>
+                    &nbsp;
+                </th>
+                <th class="right">
+                    <span title="Победы" class="text-success">
+                        В
+                    </span>
+                    &nbsp;
+                </th>
+                <th class="right">
+                    <span title="Ничьи" class="text-info">
+                        Н
+                    </span>
+                    &nbsp;
+                </th>
+                <th class="right">
+                    <span title="Поражения" class="text-danger">
+                        П
+                    </span>
+                    &nbsp;
+                </th>
+                <th class="right">
+                    <span title="Очки" class="text-warning">
+                        О
+                    </span>
+                </th>
+            </tr>
         {% for team in gamedivision.teams.all|dictsort:"ctime" %}
             <tr>
                 <td class="game-division-plugin-table-name">
@@ -31,14 +64,14 @@
                     &nbsp;
                 </td>
                 <td class="right">
-                    <span title="Поражения" class="text-danger">
-                        {{team.nloses}}
+                    <span title="Ничьи" class="text-info">
+                        {{team.ndraws}}
                     </span>
                     &nbsp;
                 </td>
                 <td class="right">
-                    <span title="Ничьи" class="text-info">
-                        {{team.ndraws}}
+                    <span title="Поражения" class="text-danger">
+                        {{team.nloses}}
                     </span>
                     &nbsp;
                 </td>
