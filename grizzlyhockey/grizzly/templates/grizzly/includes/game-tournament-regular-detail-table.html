@@ -77,6 +77,24 @@
                                                         «{{gamematch.team_b.name}}»
                                                     </a>
                                                 </div>
+
+                                               {% if gamematch.score_a %}
+                                                    {% if gamematch.score_b %}
+                                                        <div title="Счет">
+                                                            <span>{{gamematch.score_a}}</span>
+                                                            <span>&nbsp;:&nbsp;</span>
+                                                            <span>{{gamematch.score_b}}</span>
+                                                        </div>
+                                                    {% endif %}
+                                                {% endif %}
+
+                                                {% if gamematch.start_datetime %}
+                                                    <div class="small-text datetime-mark" title="Дата">
+                                                        <div>{{gamematch.start_datetime|date:"Y M d"}}&nbsp;</div>
+                                                        <div>{{gamematch.start_datetime|date:"H:i"}}</div>
+                                                    </div>
+                                                {% endif %}
+
                                             </div>
                                         {% endif %}
                                         {% if team == gamematch.team_b %}
