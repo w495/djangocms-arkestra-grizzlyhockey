@@ -23,6 +23,9 @@
                         {% endif %}
                     />
                 </a>
+            {% else %}
+                <div class="img-null p150x150 img-thumbnail">
+                </div>
             {% endif %}
         </div>
         <div class="media-body">
@@ -34,6 +37,23 @@
                     {% endfor %}
                 </p>
             {% endif %}
+            <p>
+                <span title="Игры" class="text-default">
+                    {{team.ngames}}
+                </span>
+                &nbsp;
+                <span title="Победы" class="text-success">
+                    {{team.nwins}}
+                </span>
+                &nbsp;
+                <span title="Поражения" class="text-danger">
+                    {{team.nloses}}
+                </span>
+                &nbsp;
+                <span title="Очки" class="text-warning">
+                    {{team.npoints}}
+                </span>
+            </p>
             {% if team.detail %}
                 <p>{{team.detail}}</p>
             {% endif %}
@@ -64,6 +84,9 @@
                                             alt="{{ player.image.alt }}"
                                         {% endif %}
                                     />
+                                {% else %}
+                                    <div class="img-null p128x128 img-thumbnail">
+                                    </div>
                                 {% endif %}
                             {% endif %}
                         </a>

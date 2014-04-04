@@ -63,6 +63,12 @@ class GameMatch (AbsGameObj):
     )
 
 
+    def save(self, *args, **kwargs):
+        res = super(GameMatch, self).save(*args, **kwargs)
+        self.team_a.reindex()
+        self.team_b.reindex()
+        return res
+
     #def __str__(self):
         #rink = ""
         #if(self.rink):

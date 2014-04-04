@@ -20,22 +20,26 @@
                 </td>
                 <td class="right">
                     <span title="Игры"  class="text-default">
-                        {{team.get_ngames}}
+                        {{team.ngames}}
                     </span>
                     &nbsp;
                 </td>
                 <td class="right">
                     <span title="Победы" class="text-success">
-                        {{team.get_nwins}}
+                        {{team.nwins}}
                     </span>
                     &nbsp;
                 </td>
                 <td class="right">
-                    <span title="Поражения" class="text-danger">{{team.get_nloses}}</span>
+                    <span title="Поражения" class="text-danger">
+                        {{team.nloses}}
+                    </span>
                     &nbsp;
                 </td>
                 <td class="right">
-                    <span title="Очки" class="text-warning">{{team.get_npoints}}</span>
+                    <span title="Очки" class="text-warning">
+                        {{team.npoints}}
+                    </span>
                 </td>
             </tr>
         {% endfor %}

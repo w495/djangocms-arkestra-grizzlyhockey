@@ -29,19 +29,19 @@
                 </a>
                 &nbsp;
                 <span title="Игры" class="text-default">
-                    {{team.get_ngames}}
+                    {{team.ngames}}
                 </span>
                 &nbsp;
                 <span title="Победы" class="text-success">
-                    {{team.get_nwins}}
+                    {{team.nwins}}
                 </span>
                 &nbsp;
                 <span title="Поражения" class="text-danger">
-                    {{team.get_nloses}}
+                    {{team.nloses}}
                 </span>
                 &nbsp;
                 <span title="Очки" class="text-warning">
-                    {{team.get_npoints}}
+                    {{team.npoints}}
                 </span>
             </h4>
             {% if team.gamedivisions.count > 0 %}

@@ -40,25 +40,44 @@ class Team(AbsObj):
         verbose_name=u"дивизионы"
     )
 
-    @cached_function
-    def get_ngames(self):
-        n = self.gamematch_a.count() + self.gamematch_b.count()
-        return n
+    ngames = models.IntegerField(
+        verbose_name=u"Количество игр (Ч)",
+        blank=True,
+        null=True,
+    )
 
-    @cached_function
+    nwins = models.IntegerField(
+        verbose_name=u"Количество побед (Ч)",
+        blank=True,
+        null=True,
+    )
+
+    nloses = models.IntegerField(
+        verbose_name=u"Количество поражений (Ч)",
+        blank=True,
+        null=True,
+    )
+
+    npoints = models.IntegerField(
+        verbose_name=u"Количество очков (Ч)",
+        blank=True,
+        null=True,
+    )
+
     def get_nwins(self):
         wa = self.gamematch_a.filter(score_a__gt = models.F('score_b')).count()
         wb = self.gamematch_b.filter(score_b__gt = models.F('score_a')).count()
         return wa + wb
 
-
-    @cached_function
     def get_nloses(self):
         la = self.gamematch_a.filter(score_a__lt = models.F('score_b')).count()
         lb = self.gamematch_b.filter(score_b__lt = models.F('score_a')).count()
         return la + lb
 
-    @cached_function
+    def get_ngames(self):
+        n = self.get_nwins() + self.get_nwins()
+        return n
+
     def get_npoints(self):
         wa =  self.gamematch_a.aggregate(models.Sum('score_a')).get('score_a__sum', 0)
         wb =  self.gamematch_b.aggregate(models.Sum('score_b')).get('score_b__sum', 0)
@@ -74,6 +93,24 @@ class Team(AbsObj):
             lb = 0
         n = (wa + wb);
         return n
+
+    def _reindex(self):
+        self.ngames = self.get_ngames()
+        self.nwins  = self.get_nwins()
+        self.nloses = self.get_nloses()
+        self.npoints = self.get_npoints()
+
+    def reindex(self):
+        #>>> from grizzly.models import Team
+        #>>> [x.reindex() for x in Team.objects.all()]
+        
+        self._reindex()
+        self.save()
+
+    def save(self, *args, **kwargs):
+        self._reindex()
+        return super(Team, self).save(*args, **kwargs)
+
 
     class Meta:
         ordering = ('name',)
