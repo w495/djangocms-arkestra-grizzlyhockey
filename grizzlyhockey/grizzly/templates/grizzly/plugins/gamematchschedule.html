@@ -4,84 +4,78 @@
 
 {% with gamematch_list=instance.gamematches.all %}
 
-    <ul class="media-list">
+    <h4>
+        Расписание
+    </h4>
+    <table class="table">
         {% for gamematch in gamematch_list %}
-            <li class="media">
-                <div class="media-body">
-                        <a href="{% url game-match-detail pk=gamematch.id %}">
-                            {{gamematch.name}}
-                        </a>
-                        <div class="row">
-                            <div class="col-md-4 center">
-                                {% with team=gamematch.team_a  %}
-                                    {% if team.image %}
-                                        <div>
-                                            <a href="{% url team-detail pk=team.id %}">
-                                                <img  class="img-thumbnail" src="{% thumbnail team.image 32x32 %}"
-                                                    {% if team.image.alt %}
-                                                        alt="{{ team.image.alt }}"
-                                                    {% endif %}
-                                                />
-                                            </a>
-                                        </div>
-                                    {% else %}
-                                        <div class="img-null p32x32 img-thumbnail">
-                                        </div>
-                                    {% endif %}
-                                    {% if team.name %}
-                                        <div>
-                                            <a href="{% url team-detail pk=team.id %}">
-                                                {{team.name}}
-                                            </a>
-                                        </div>
-                                    {% endif %}
-                                {% endwith %}
+            <tr class="media">
+                <td class="col-md-4 center">
+                    {% with team=gamematch.team_a  %}
+                        {% if team.image %}
+                            <div>
+                                <a href="{% url team-detail pk=team.id %}">
+                                    <img  class="img-thumbnail" src="{% thumbnail team.image 32x32 %}"
+                                        {% if team.image.alt %}
+                                            alt="{{ team.image.alt }}"
+                                        {% endif %}
+                                    />
+                                </a>
                             </div>
-                            <div class="col-md-4 center">
-                                <p class="">
-                                    {% if gamematch.start_datetime %}
-                                        <div class="small-text datetime-mark" title="Дата">
-                                            <span>{{gamematch.start_datetime|date:"d M Y"}}&nbsp;</span>
-                                            <span>{{gamematch.start_datetime|date:"H:i"}}</span>
-                                        </div>
-                                    {% endif %}
-                                    {% if gamematch.rink %}
-                                        <p>
-                                            <a href="{% url rink-detail pk=gamematch.rink.id %}"> {{gamematch.rink}} </a>
-                                        </p>
-                                    {% endif %}
-                                </p>
+                        {% else %}
+                            <div class="img-null p32x32 img-thumbnail">
                             </div>
-                            <div class="col-md-4 center">
-                                {% with team=gamematch.team_b  %}
-                                    {% if team.image %}
-                                        <div>
-                                            <a href="{% url team-detail pk=team.id %}">
-                                                <img  class="img-thumbnail" src="{% thumbnail team.image 32x32 %}"
-                                                    {% if team.image.alt %}
-                                                        alt="{{ team.image.alt }}"
-                                                    {% endif %}
-                                                />
-                                            </a>
-                                        </div>
-                                    {% else %}
-                                        <div class="img-null p32x32 img-thumbnail">
-                                        </div>
-                                    {% endif %}
-                                    {% if team.name %}
-                                        <div>
-                                            <a href="{% url team-detail pk=team.id %}">
-                                                {{team.name}}
-                                            </a>
-                                        </div>
-                                    {% endif %}
-                                {% endwith %}
+                        {% endif %}
+                        {% if team.name %}
+                            <div>
+                                <a href="{% url team-detail pk=team.id %}">
+                                    {{team.name}}
+                                </a>
                             </div>
+                        {% endif %}
+                    {% endwith %}
+                </td>
+                <td class="col-md-4 center">
+                    {% if gamematch.start_datetime %}
+                        <div class="small-text datetime-mark" title="Дата">
+                            <span>{{gamematch.start_datetime|date:"d M Y"}}&nbsp;</span>
+                            <span>{{gamematch.start_datetime|date:"H:i"}}</span>
                         </div>
-                </div>
-            </li>
+                    {% endif %}
+                    {% if gamematch.rink %}
+                        <p>
+                            <a href="{% url rink-detail pk=gamematch.rink.id %}"> {{gamematch.rink}} </a>
+                        </p>
+                    {% endif %}
+                </td>
+                <td class="col-md-4 center">
+                    {% with team=gamematch.team_b  %}
+                        {% if team.image %}
+                            <div>
+                                <a href="{% url team-detail pk=team.id %}">
+                                    <img  class="img-thumbnail" src="{% thumbnail team.image 32x32 %}"
+                                        {% if team.image.alt %}
+                                            alt="{{ team.image.alt }}"
+                                        {% endif %}
+                                    />
+                                </a>
+                            </div>
+                        {% else %}
+                            <div class="img-null p32x32 img-thumbnail">
+                            </div>
+                        {% endif %}
+                        {% if team.name %}
+                            <div>
+                                <a href="{% url team-detail pk=team.id %}">
+                                    {{team.name}}
+                                </a>
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                </td>
+            </tr>
         {% endfor %}
-    </ul>
+    </table>
 
     <a class="btn btn-default" href="{% url game-match-schedule %}" role="button">Все расписание»</a>
 
