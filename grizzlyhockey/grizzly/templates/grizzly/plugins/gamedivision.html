@@ -9,7 +9,7 @@
         <h4>Дивизион «{{ gamedivision.name }}»</h4>
     </a>
     Команды:
-    <table class="game-division-plugin-table small-text">
+    <table class="game-division-plugin-table">
         {% for team in gamedivision.teams.all|dictsort:"ctime" %}
             <tr>
                 <td class="game-division-plugin-table-name">
