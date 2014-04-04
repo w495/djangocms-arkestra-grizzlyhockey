@@ -30,13 +30,25 @@
                                 </a>
                             </h4>
 
-                            <span class="text-default">{{team.ngames}}</span>
+                            <span title="Игры" class="text-default">
+                                {{team.ngames}}
+                            </span>
                             &nbsp;
-                            <span class="text-success">{{team.nwins}}</span>
+                            <span title="Победы" class="text-success">
+                                {{team.nwins}}
+                            </span>
                             &nbsp;
-                            <span class="text-danger">{{team.nloses}}</span>
+                            <span title="Поражения" class="text-danger">
+                                {{team.nloses}}
+                            </span>
                             &nbsp;
-                            <span class="text-warning">{{team.npoints}}</span>
+                            <span title="Ничьи" class="text-info">
+                                {{team.ndraws}}
+                            </span>
+                            &nbsp;
+                            <span title="Очки" class="text-warning">
+                                {{team.npoints}}
+                            </span>
 
                             {% if team.detail %}
                                 <p>{{team.detail}}</p>

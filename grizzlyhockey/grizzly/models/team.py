@@ -58,6 +58,12 @@ class Team(AbsObj):
         null=True,
     )
 
+    ndraws = models.IntegerField(
+        verbose_name=u"Количество ничьих (Ч)",
+        blank=True,
+        null=True,
+    )
+
     npoints = models.IntegerField(
         verbose_name=u"Количество очков (Ч)",
         blank=True,
@@ -74,11 +80,19 @@ class Team(AbsObj):
         lb = self.gamematch_b.filter(score_b__lt = models.F('score_a')).count()
         return la + lb
 
+
+    def get_ndraws(self):
+        da = self.gamematch_a.filter(score_a = models.F('score_b')).count()
+        db = self.gamematch_b.filter(score_b = models.F('score_a')).count()
+        return da + db
+
+
     def get_ngames(self):
-        n = self.get_nwins() + self.get_nwins()
+        n = self.nwins + self.nloses + self.ndraws
         return n
 
-    def get_npoints(self):
+
+    def get_ngoals(self):
         wa =  self.gamematch_a.aggregate(models.Sum('score_a')).get('score_a__sum', 0)
         wb =  self.gamematch_b.aggregate(models.Sum('score_b')).get('score_b__sum', 0)
         if(not wa):
@@ -94,11 +108,17 @@ class Team(AbsObj):
         n = (wa + wb);
         return n
 
+    def get_npoints(self):
+        res = self.nwins * 2 + self.ndraws
+        return res
+
     def _reindex(self):
-        self.ngames = self.get_ngames()
         self.nwins  = self.get_nwins()
         self.nloses = self.get_nloses()
+        self.ndraws = self.get_ndraws()
+        self.ngames = self.get_ngames()
         self.npoints = self.get_npoints()
+
 
     def reindex(self):
         #>>> from grizzly.models import Team
@@ -106,6 +126,7 @@ class Team(AbsObj):
         
         self._reindex()
         self.save()
+
 
     def save(self, *args, **kwargs):
         self._reindex()
