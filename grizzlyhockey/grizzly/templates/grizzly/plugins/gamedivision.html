@@ -12,7 +12,7 @@
     <table class="game-division-plugin-table small-text">
         {% for team in gamedivision.teams.all|dictsort:"ctime" %}
             <tr>
-                <td>
+                <td class="game-division-plugin-table-name">
                     <a href="{% url team-detail pk=team.id %}">
                         «{{team.name}}»
                     </a>
