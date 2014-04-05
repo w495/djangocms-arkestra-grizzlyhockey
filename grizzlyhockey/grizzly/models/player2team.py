@@ -85,22 +85,29 @@ class Player2Team(AbsObj):
 
 
     def get_ngames(self):
-        ga = self.player.gamematch_a.filter(team_a = self.team).count()
-        gb = self.player.gamematch_b.filter(team_b = self.team).count()
-
-        return ga + gb
+        if (self.player):
+            ga = self.player.gamematch_a.filter(team_a = self.team).count()
+            gb = self.player.gamematch_b.filter(team_b = self.team).count()
+            return ga + gb
+        return 0
 
     def get_ngoals(self):
-        x = self.player.gamematchgoal_goal.filter(team = self.team).count()
-        return x
+        if (self.player):
+            x = self.player.gamematchgoal_goal.filter(team = self.team).count()
+            return x
+        return 0
 
     def get_nfines(self):
-        x = self.player.gamematchfine_set.filter(team = self.team).count()
-        return x
+        if (self.player):
+            x = self.player.gamematchfine_set.filter(team = self.team).count()
+            return x
+        return 0
 
     def get_ntrans(self):
-        x = self.player.gamematchgoal_trans.filter(team = self.team).count()
-        return x
+        if (self.player):
+            x = self.player.gamematchgoal_trans.filter(team = self.team).count()
+            return x
+        return 0
 
 
     def reindex(self):
