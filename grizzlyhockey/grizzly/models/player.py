@@ -2,6 +2,7 @@
 
 from django.db import models
 from abspers import AbsPers
+from gamematchgoal import GameMatchGoal
 
 class Player(AbsPers):
 
@@ -66,7 +67,17 @@ class Player(AbsPers):
         verbose_name = u"команды"
     )
 
+    gamematchgoal_trans = models.ManyToManyField(
+        'GameMatchGoal',
+        blank=True,
+        null=True,
+        through=GameMatchGoal.trans_players.through,
+        verbose_name=u"игроки, сделавшие результативную передачу"
+    )
 
+
+    def reindex(self):
+        [p2t.reindex() for p2t in self.player2team_set.all()]
 
     def __str__(self):
         return u"%s, %s %s %s"%(self.game_number, self.second_name, self.first_name, self.patronymic)

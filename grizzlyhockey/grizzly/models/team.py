@@ -118,6 +118,7 @@ class Team(AbsObj):
         self.ndraws = self.get_ndraws()
         self.ngames = self.get_ngames()
         self.npoints = self.get_npoints()
+        [p2t.reindex() for p2t in self.player2team_set.all()]
 
 
     def reindex(self):

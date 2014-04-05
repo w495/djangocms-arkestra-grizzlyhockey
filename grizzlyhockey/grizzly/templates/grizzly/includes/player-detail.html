@@ -7,7 +7,10 @@
         {{player.second_name}}
         {{player.first_name}}
         {{player.patronymic}}
+
+
     </h4>
+
 
     <section class="row" >
         <div class="col-lg-4 col-md-5 col-sm-6">
@@ -94,6 +97,7 @@
                                 {% if player2team.team %}
                                     <dt class="text-muted">
                                         Команда:&nbsp;
+
                                     </dt>
                                     <dd>
                                         <a href="{% url team-detail pk=player2team.team.id %}">
@@ -125,27 +129,58 @@
                                         {{player2team.status}}
                                     </dd>
                                 {% endif %}
-                                {% if player2team.player.type %}
+                                {% if player2team.type %}
                                     <dt class="text-muted">
                                         Тип:&nbsp;
                                     </dt>
                                     <dd>
-                                        {{player.type}}
+                                        {{player2team.type}}
                                     </dd>
                                 {% endif %}
+
+                                <dt class="text-muted">
+                                    Игр:&nbsp;
+                                </dt>
+                                <dd>
+                                    {{player2team.ngames}}
+                                </dd>
+
+                                <dt class="text-muted">
+                                    Голов:&nbsp;
+                                </dt>
+                                <dd>
+                                    {{player2team.ngoals}}
+                                </dd>
+
+                                <dt class="text-muted">
+                                    Передач:&nbsp;
+                                </dt>
+                                <dd>
+                                    {{player2team.ntrans}}
+                                </dd>
+
+                                <dt class="text-muted">
+                                    Штрафов:&nbsp;
+                                </dt>
+                                <dd>
+                                    {{player2team.nfines}}
+                                </dd>
+
                             </dl>
                         </div>
                         <div class="col-md-4 center">
                             {% if player2team.image %}
                                 <a href="{% url team-detail pk=player2team.team.id %}">
-                                    <img  class="img-thumbnail" src="{% thumbnail player2team.image 96x80  crop %}"
+                                    <img  class="img-thumbnail" src="{% thumbnail player2team.image 64x64  crop %}"
                                         {% if player.image.alt %}
                                             alt="{{ player2team.image.alt }}"
                                         {% endif %}
                                     />
                                 </a>
+                            {% else %}
+                                <div class="img-null p64x64 img-thumbnail">
+                                </div>
                             {% endif %}
-
                         </div>
                     </div>
                 {% endif %}

@@ -71,6 +71,8 @@ class Player2TeamAdminInline(AbsObjTabularInline):
 
 
 class PlayerAdmin(AbsPersAdmin):
+    exclude = ['gamematchgoal_trans']
+    
     inlines = [
         Player2TeamAdminInline,
     ]
@@ -345,6 +347,8 @@ class GameMatchAdmin(AbsObjAdmin):
     )
     filter_horizontal = (
         'judges',
+        'players_a',
+        'players_b',
     )
 
     inlines = [
@@ -359,6 +363,26 @@ class GameMatchAdmin(AbsObjAdmin):
         # just save obj reference for future processing in Inline
         request._obj_ = obj
         return super(GameMatchAdmin, self).get_form(request, obj, **kwargs)
+
+
+    def formfield_for_manytomany(self, db_field, request, **kwargs):
+        field = super(GameMatchAdmin, self).formfield_for_manytomany(
+            db_field,
+            request,
+            **kwargs
+        )
+
+        if request._obj_ and request._obj_.team_a :
+            if db_field.name == 'players_a':
+                pids = [p.id for p in request._obj_.team_a.player2team_set.all()]
+                field.queryset = field.queryset.filter(player2team__in = pids)
+
+        if request._obj_ and request._obj_.team_b :
+            if db_field.name == 'players_b':
+                pids = [p.id for p in request._obj_.team_b.player2team_set.all()]
+                field.queryset = field.queryset.filter(player2team__in = pids)
+
+        return field
 
 class GameMatchGoalAdmin(AbsObjAdmin):
 

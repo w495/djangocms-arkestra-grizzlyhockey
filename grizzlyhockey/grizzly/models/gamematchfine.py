@@ -60,6 +60,11 @@ class GameMatchFine (AbsObj):
     )
 
 
+    def save(self, *args, **kwargs):
+        fine_player.reindex()
+        return super(GameMatchFine, self).save(*args, **kwargs)
+
+
     class Meta:
         ordering = ('ctime',)
         app_label = "grizzly"

@@ -27,6 +27,10 @@ from playertype     import PlayerType
 
 from player         import Player
 from player2team    import Player2Team
+
+#from player2gamematcha    import Player2GameMatchA
+#from player2gamematchb    import Player2GameMatchB
+
 from playerplugin   import PlayerPlugin
 from judgetype      import JudgeType
 from judge          import Judge

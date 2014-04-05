@@ -5,6 +5,31 @@ from cms.admin.placeholderadmin import PlaceholderAdmin
 
 from autocomplete.widgets import *
 
+from django.contrib.admin.options import ModelAdmin
+from django.contrib.admin import widgets
+
+class CustomModelAdmin:
+    def formfield_for_manytomany(self, db_field, request=None, **kwargs):
+        """
+        Get a form Field for a ManyToManyField.
+        """
+        # If it uses an intermediary model that isn't auto created, don't show
+        # a field in admin.
+        if not db_field.rel.through._meta.auto_created:
+            return None
+        db = kwargs.get('using')
+
+        if db_field.name in self.raw_id_fields:
+            kwargs['widget'] = widgets.ManyToManyRawIdWidget(db_field.rel, using=db)
+            kwargs['help_text'] = ''
+        else:
+            kwargs['widget'] = widgets.FilteredSelectMultiple(db_field.verbose_name, False) # change second argument to True for filter_vertical
+
+        return db_field.formfield(**kwargs)
+
+ModelAdmin.__bases__ = (CustomModelAdmin,) + ModelAdmin.__bases__
+
+
 class AbsObjTabularInline(admin.TabularInline):
     related_search_fields = {}
 
@@ -58,3 +83,4 @@ class AbsObjAdmin(PlaceholderAdmin, AutocompleteModelAdmin):
         options_tab,
         description_tab
     )
+

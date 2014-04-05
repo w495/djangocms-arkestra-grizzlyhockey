@@ -40,7 +40,7 @@ class GameMatchGoal (AbsObj):
         blank=True,
         null=True,
         verbose_name=u"игрок, забросивший шайбу",
-        related_name="goal_player"
+        related_name="gamematchgoal_goal"
     )
 
     ##
@@ -59,6 +59,12 @@ class GameMatchGoal (AbsObj):
         max_length = 200,
         verbose_name = u"игровая ситуация"
     )
+
+    def save(self, *args, **kwargs):
+        goal_player.reindex()
+        [p.reindex() for p in self.trans_players.all()]
+        return super(GameMatchGoal, self).save(*args, **kwargs)
+
 
     class Meta:
         ordering = ('ctime',)

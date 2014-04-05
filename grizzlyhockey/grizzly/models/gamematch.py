@@ -29,6 +29,23 @@ class GameMatch (AbsGameObj):
         related_name="gamematch_b",
     )
 
+    players_a = models.ManyToManyField(
+        'Player',
+        blank=True,
+        null=True,
+        verbose_name=u"игроки А",
+        related_name="gamematch_a"
+    )
+
+    players_b = models.ManyToManyField(
+        'Player',
+        blank=True,
+        null=True,
+        verbose_name=u"игроки Б",
+        related_name="gamematch_b"
+    )
+
+
     score_a = models.IntegerField(
         blank = True,
         null = True,
