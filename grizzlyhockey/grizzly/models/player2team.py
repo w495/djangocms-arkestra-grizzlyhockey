@@ -75,6 +75,14 @@ class Player2Team(AbsObj):
         default=0
     )
 
+    # alter table grizzly_player2team add npoints int(11) default null;
+    npoints = models.IntegerField(
+        verbose_name=u"Количество очков (Ч)",
+        blank=True,
+        null=True,
+        default=0
+    )
+
 
     def get_ngames(self):
         ga = self.player.gamematch_a.filter(team_a = self.team).count()

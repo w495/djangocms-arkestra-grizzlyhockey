@@ -20,6 +20,23 @@ class GameMatchGTime (AbsObj):
         verbose_name=u"время"
     )
 
+
+    # alter table grizzly_gamematchgtime add team_id int(11) default null;
+    team = models.ForeignKey(
+        'Team',
+        blank=True,
+        null=True,
+        verbose_name=u"команда",
+    )
+
+    # alter table grizzly_gamematchgtime add player_id int(11) default null;
+    player = models.ForeignKey(
+        'Player',
+        blank=True,
+        null=True,
+        verbose_name=u"игрок"
+    )
+
     a = models.CharField(
         blank = True,
         null = True,

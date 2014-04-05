@@ -14,6 +14,35 @@ class GameMatchPenalty (AbsObj):
         verbose_name=u"Матч"
     )
 
+
+
+    # alter table grizzly_gamematchpenalty add team_id int(11) default null;
+    team = models.ForeignKey(
+        'Team',
+        blank=True,
+        null=True,
+        verbose_name=u"команда",
+    )
+
+    # alter table grizzly_gamematchpenalty add player_id int(11) default null;
+    player = models.ForeignKey(
+        'Player',
+        blank=True,
+        null=True,
+        verbose_name=u"игрок",
+        related_name="player"
+    )
+
+    # alter table grizzly_gamematchpenalty add gl_player_id int(11) default null;
+    gl_player = models.ForeignKey(
+        'Player',
+        blank=True,
+        null=True,
+        verbose_name=u"вратарь",
+        related_name="gl_player"
+    )
+
+
     a = models.CharField(
         blank = True,
         null = True,
@@ -44,13 +73,11 @@ class GameMatchPenalty (AbsObj):
     )
 
 
-    result = models.CharField(
+    result  = models.NullBooleanField(
         blank = True,
         null = True,
-        max_length = 200,
         verbose_name = u"Результат"
     )
-
 
     class Meta:
         ordering = ('ctime',)

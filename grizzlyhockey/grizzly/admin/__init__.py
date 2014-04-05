@@ -72,7 +72,7 @@ class Player2TeamAdminInline(AbsObjTabularInline):
 
 class PlayerAdmin(AbsPersAdmin):
     exclude = ['gamematchgoal_trans']
-    
+
     inlines = [
         Player2TeamAdminInline,
     ]
@@ -318,13 +318,55 @@ class GameMatchFineAdminInline(AbsObjTabularInline):
 
 class GameMatchGTimeAdminInline(AbsObjTabularInline):
     model = GameMatchGTime
-    exclude = ('description', 'detail', 'image', 'name')
+    exclude = ('description', 'detail', 'image', 'name', 'a', 'b')
+
+
+    def formfield_for_foreignkey(self, db_field, request=None, **kwargs):
+        field = super(GameMatchGTimeAdminInline, self).formfield_for_foreignkey(
+            db_field,
+            request,
+            **kwargs
+        )
+
+        if request._obj_ and request._obj_.team_a and request._obj_.team_b:
+            if db_field.name == 'team':
+                field.queryset = field.queryset.filter(
+                    id__in = (request._obj_.team_a.id, request._obj_.team_b.id)
+                )
+            if db_field.name == 'player':
+                field.queryset = field.queryset.filter(
+                    teams__in = (request._obj_.team_a, request._obj_.team_b)
+                )
+        return field
+
 
 
 class GameMatchPenaltyAdminInline(AbsObjTabularInline):
     model = GameMatchPenalty
-    exclude = ('description', 'detail', 'image', 'name')
+    exclude = ('description', 'detail', 'image', 'name', 'a', 'b', 'gla', 'glb')
 
+    def formfield_for_foreignkey(self, db_field, request=None, **kwargs):
+        field = super(GameMatchPenaltyAdminInline, self).formfield_for_foreignkey(
+            db_field,
+            request,
+            **kwargs
+        )
+
+        if request._obj_ and request._obj_.team_a and request._obj_.team_b:
+            if db_field.name == 'team':
+                field.queryset = field.queryset.filter(
+                    id__in = (request._obj_.team_a.id, request._obj_.team_b.id)
+                )
+            if db_field.name == 'player':
+                field.queryset = field.queryset.filter(
+                    teams__in = (request._obj_.team_a, request._obj_.team_b)
+                )
+            if db_field.name == 'gl_player':
+                field.queryset = field.queryset.filter(
+                    teams__in = (request._obj_.team_a, request._obj_.team_b)
+                )
+
+        return field
 
 
 class GameMatchAdmin(AbsObjAdmin):
@@ -494,7 +536,7 @@ class GameMatchFineAdmin(AbsObjAdmin):
 
 class GameMatchAdminInline(AbsObjTabularInline):
     model = GameMatch
-    exclude = ('description', 'detail', 'image', 'name', 'rink')
+    exclude = ('description', 'detail', 'image', 'name', 'stop_datetime')
 
 
 class GameTournamentRegularAdmin(AbsButtonableModelAdmin, AbsObjAdmin):
