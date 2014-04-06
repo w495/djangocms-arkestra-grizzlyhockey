@@ -61,7 +61,7 @@ class GameMatchGoal (AbsObj):
     )
 
     def save(self, *args, **kwargs):
-        goal_player.reindex()
+        self.goal_player.reindex()
         [p.reindex() for p in self.trans_players.all()]
         return super(GameMatchGoal, self).save(*args, **kwargs)
 
