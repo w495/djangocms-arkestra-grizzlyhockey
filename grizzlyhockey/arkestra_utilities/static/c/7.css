@@ -1,0 +1,29 @@
+/* IE 7 */
+
+div.space-on-left p.pull-out-new,
+div.space-on-left span.image.left,
+div.space-on-left.images-left span.image    {
+    margin-left: -30%;
+    }
+
+div.space-on-right p.pull-out-new,
+div.space-on-right span.image.right,
+div.space-on-right.images-right span.image    {
+    margin-right: -30%;
+    }
+
+/* images */
+
+ul.imageset li {
+display: inline!important;   /* overrides inline-block which IE7 and lower don't understand properly */
+}
+
+.imageset a .more-information {
+   zoom: 1; /* gives the read more box haslayout, otherwise it looks wrong */
+   }
+
+/* the carousel */
+
+.faded, .faded * {
+	filter:alpha(opacity=90); /* IE lt 8 */
+}

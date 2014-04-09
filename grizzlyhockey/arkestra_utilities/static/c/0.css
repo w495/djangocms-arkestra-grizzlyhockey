@@ -1,0 +1,1524 @@
+/* ------------------------------------------------------------- 
+   Reset default browser CSS.
+   Based on work by Eric Meyer:
+   http://meyerweb.com/eric/tools/css/reset/index.html  
+-------------------------------------------------------------- */
+/* v1.0 | 20080212 */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+}
+body {
+    background:#fff;
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+/* remember to define focus styles! */
+:focus {
+	outline: 0;
+}
+/* remember to highlight inserts somehow! */
+ins {
+	text-decoration: none;
+}
+del {
+	text-decoration: line-through;
+}
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+a img { border: none; }
+/* ------------------------------------------------------------- 
+   End Reset CSS  
+-------------------------------------------------------------- */
+
+.subtitle   {
+    font-weight: bold;
+    font-size: 120%;
+    }
+
+    
+/* 
+standout - large type
+big-quotes - fancy quotes - implies standout */
+
+p.standout, 
+p.big-quotes
+    {
+    font-size:177%; 
+    line-height: 1.5;
+    font-family:"Hoefler Text", "Didot", Georgia, serif;
+    padding-right:25px;
+    margin-left:0;
+    margin-top:.0em;
+    }
+
+p.standout:first-line,
+p.big-quotes:first-line   {
+    color: #990033;
+}
+
+p.big-quotes     {
+    background:url(fixes/quotes-right.png) right bottom no-repeat;
+    display:list-item;
+    padding-left:35px; 
+    list-style:none inside url(fixes/quotes-left.png);
+    text-indent:-35px;
+    }
+/* 
+pull-out - in a space-on-right or space-on-left element, brings the pulled-out element out of the margin in the appropriate direction
+*/
+
+div.space-on-right .pull-out-new,
+div.space-on-right.images-right span.image    {
+    float: right;
+    clear:right;
+    margin-right: -50%;
+    margin-left: 10%;
+    }
+
+div.space-on-left .pull-out-new,
+div.space-on-left.images-left span.image    {
+    float: left;
+    clear: left;
+    margin-left: -50%;
+    margin-right: 10%;
+    }
+
+.pull-out-new {width: 75%;}    /* the ones which aren't images need a width - for images, Arkestra will do its best to give them a 75% width based on a typical browser text size */
+
+div.space-on-left p.pull-out-new.big-quotes,
+div.space-on-right p.pull-out-new.big-quotes   { width: 65%;} /* makes a bit of room for the quotes */
+
+div.space-on-left .pull-out-new.standout   {margin-right: 3.5%;}
+div.space-on-right .pull-out-new.standout   {margin-left: 3.5%;}
+
+div.space-on-left p.pull-out-new.big-quotes {margin-right: 5%;}
+div.space-on-right p.pull-out-new.big-quotes{margin-left: 5%;}  
+
+/* drop caps */   
+        
+p.drop-cap:first-letter  {
+    float: left;
+    font-family: "Hoefler Text", "Didot", Georgia, serif;
+    font-size: 300%;
+    font-weight: bold;
+    line-height: 1;
+    margin-right: 0.04em;
+    margin-bottom:-0.1em;
+}
+
+
+/* typogrify_tags */
+
+.caps {font-size: 93%;}
+.amp {font-size: 105%; font-family: "Hoefler Text", "Didot", Georgia, serif; font-style:italic;}    
+.dquo {margin-left:-.3em; }
+
+dt  {color: gray;}
+
+/* styles for publications */
+
+cite.articles, cite.conference-proceedings    {font-style: normal; }
+cite.journal    {font-style: italic;}
+.publication-details    {color: #777;}
+ul.publications {list-style-type: none;}
+.publications li { margin-left: 0; padding-left: 0;}
+.publications dd, .publications li  {margin-bottom: .5em}
+.statistics dt {color: #903;}
+
+/* A tint is a background colour on an item - it could be a row, column, paragraph, list or other block element. When such a background colour is applied, it also pads out the element. */
+
+.tint, .tint1, .tint2, .tint3, .tint4, .tint5, .tint6,
+.outline, .outline-red	{
+	padding: 1em;
+    }
+
+.outline   {outline: 1px solid gray;}
+.outline-red   {outline: 1px solid #990033;}
+
+div.space-on-left {margin-left: 33%;}
+div.space-on-right {margin-right: 33%;}
+
+img.center {
+	  display: block;
+	  margin-left: auto;
+	  margin-right: auto;
+	}
+
+/* pull-out, stand-out, quotes */
+/* old version- we don't use this any more */
+
+p.pull-out  {
+    background:url(fixes/quotes-right.png) right bottom no-repeat;
+    font-size:177%; 
+    line-height: 1.5;
+    font-family:"Hoefler Text", "Didot", Georgia, serif;
+    margin-left:0;
+    margin-top:.0em;
+    padding-left:35px; 
+    padding-right:25px;
+    text-indent:-35px;
+    display:list-item;
+    list-style:none inside url(fixes/quotes-left.png);
+}
+
+p.pull-out:first-line   {
+    color: #990033;
+}
+
+span.home-role {text-align: center; font-weight: bold;} 
+
+/* Arkestra credit */
+
+ul li.arkestra {text-align: right; display: block; padding: 0;
+}
+
+ul li.arkestra a {
+    font-family:"Hoefler Text", "Didot", Georgia, serif;
+}                                                       
+
+.hide   {
+    position:fixed;
+    left:-10000px;
+    top:auto;
+    width:1px;
+    height:1px;
+    overflow:hidden;
+    }
+/* Arkestra image plugin */
+
+/* remember that many images will be in an <a> that is *not* a link */
+
+
+/* ================ all images =============== */
+
+.image a  {
+    position: relative; /* for any absolutely-positioned elements inside */
+    display: block;
+}
+
+/* ================ all single imagesets =============== */
+
+/*  span.imageset.image
+        a
+            img.plugin
+            span.image-title.text
+            span.image-description.text
+            span.link-title.text
+            span.link-description.text
+            span.more-information
+                span.hide
+            span.link-arrow (if no span.more-information)
+*/
+
+span.imageset.image {
+    display: inline-block; /* because otherwise a block, that could get too wide */
+}
+
+/* ================ all multiple imagesets =============== */
+
+/*  ul.imageset
+        li.image[.link]
+            a
+                img.plugin
+                span.image-title.text
+                span.image-description.text
+                span.link-title.text
+                span.link-description.text
+                span.more-information
+                    span.hide
+                span.link-arrow (if no span.more-information)
+*/
+
+ul.imageset {padding: 0; margin: 0; position}
+
+/* ================ all items in multiple image sets =============== */
+
+ul.imageset li.image {
+    display: inline-block;
+    vertical-align: top;
+    /* these are default padding/margin values - Arkestra can overwrite them in
+    multiple.html and lightbox.html */
+    padding: 10px 0;
+    margin-right: 20px;
+    margin-left: 0;
+}
+
+ul.imageset li.image.lastinrow {
+    /* no margin needed; it has nothing on its right */
+    margin-right: 0;
+    }
+
+ul.imageset li.image a {
+    vertical-align: middle;
+    }
+
+/* applies to items inside lightboxes too, so no ul selector */
+.imageset .image img { /* center images within their block anchor containers */
+    margin-left: auto;
+    margin-right: auto;
+    display: block;  /* the image inside is a block, so we don't get text lines */
+
+    }
+
+/* ================ when images are links =============== */
+
+.imageset a:link,
+.imageset a:visited,
+.imageset a:link:hover,
+.imageset a:visited:hover  {
+    color: black;
+    text-decoration: none;
+    font-weight: 300;
+}
+
+ul.imageset li.image.link {
+    /* these is a default padding value - Arkestra can overwrite it in
+    multiple.html and lightbox.html */
+    padding: 10px;
+    margin-right: 0;
+    }
+
+/* hovering over the set dims it, but not the one we're hovering over */
+ul.imageset:hover li.image.link {
+    opacity: 1;
+    }
+
+ul.imageset:hover li.image.link:hover {
+    opacity: 1;
+    background: white;
+    outline: 1px solid gray;
+    }
+
+/* ================ when images have text =============== */
+
+/* all text items */
+
+.imageset span {
+    text-align: left;
+}
+
+/* all text on imageset items is in a block element */
+.imageset .text {
+    display: block;
+    padding: 0;
+    margin: 0;
+    zoom: 1;
+}
+
+/* the image-title is generally superimposed on it */
+.imageset .image-title {
+    text-transform:uppercase;
+    text-align: right;
+    font-size: 95%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 2px 10px;
+    color: black;
+    background: rgba(255,255,255,.7);
+    }
+
+.imageset .image-caption {
+    font-style: italic;
+    font-weight: lighter;
+    font-size: 90%;
+    text-align: right;
+    padding-bottom: 5px;
+    }
+
+.imageset .link-title {
+    font-weight: bold;
+}
+
+.imageset .link-description {
+    font-weight: lighter;
+    }
+
+.imageset a:link:hover .image-title {
+    background: rgba(255,255,255,.9);
+    }
+
+
+/* ================ READ MORE buttons =============== */
+
+.imageset a:link .more-information,
+.imageset a:visited .more-information,
+.imageset a:hover .more-information  {
+    text-transform:uppercase;
+    font-size: 80%;
+    padding: 1px 3px;
+    border-radius: 3px;
+    text-decoration: none;
+    /* default colours white on black; sliders for example are reversed */
+    border: 1px solid black;
+    color: white;
+    background: black;
+    }
+
+.imageset a:hover .more-information {
+    color: black;
+    background: rgba(255,255,255,.7);
+}
+
+/* ================ link arrow icons =============== */
+.imageset a:link .link-arrow,
+.imageset a:visited .link-arrow {
+    background: url(/static/arkestra/images/default_styles/image-link-arrow.png) no-repeat;
+    width: 20px;
+    height: 20px;
+    display: block;
+    position: absolute;
+    right: -4px;
+    bottom: -4px;
+}
+
+.imageset a:link:hover .link-arrow,
+.imageset a:visited:hover .link-arrow {
+    background: url(/static/arkestra/images/default_styles/image-link-arrow-reversed.png) no-repeat;
+}
+
+
+/* SemanticEditor class required: no-image-link-arrows */
+
+.no-image-link-arrows .imageset a:link .link-arrow {
+    background-image: none;
+    }
+
+/* ================ lightboxes =============== */
+
+/*  div#fancybox-content
+        div - created by fancybox style="width:auto;height:auto;overflow: auto;position: static;" - needs to be amended in fancybox
+            div.imageset.imageset-item
+                span.imageset-item-data.image-title.text
+                span.imageset-item-data.image-caption.text
+                img
+                div
+                    span.link-title.text
+                    span.link-description.text
+                    a
+                        span.more-information.text */
+
+div#fancybox-content { /* lightbox border and background */
+    border: 10px solid black;  /* we ought to get rid of the ones on the element */
+    z-index: auto;             /* z-index: auto and position: static required to get IE7 to work properly */
+    position: static;
+    }
+
+div.imageset.imageset-item  {
+}
+
+div#fancybox-content span.image-title,
+div#fancybox-content span.image-caption {
+    position: relative;   /* override the usual absolute positioning; static's no good because of IE7  */
+    z-index: 1103;       /* higher than the 1102 of the left/right anchors */
+    padding: 2px 0;
+    color: white;
+    background: black;
+}
+
+div#fancybox-content img {
+    display: block;     /* if inline, would expose empty line background  */
+    }
+
+div#fancybox-content div.link-information {
+    position: relative;       /* z-index: auto and position: relative required to get IE7 to work properly */
+    z-index: 1103;            /* higher than the 1102 of the left/right anchors */
+    color: black;
+    background: white;
+    padding: 4px 10px;
+    display: block;
+    }
+
+div#fancybox-content div.link-information span.link-title,
+div#fancybox-content div.link-information span.link-description {
+    margin-bottom: 6px;
+}
+
+div#fancybox-content a .more-information {
+    font-size: 75%;
+    }
+
+/* stop the left/right links from covering the border */
+
+a#fancybox-left {
+    margin-left: 10px;
+}
+
+a#fancybox-right {
+    margin-right: 10px;
+}
+
+/* ================ images more generally =============== */
+
+/* images as used in news plugins etc are usually floated right */
+
+img.left    {float: left; margin-right: 1em; margin-bottom: .5em;}
+img.right   {float: right; margin-left: 1em; margin-bottom: .5em;}
+
+/* image plugin - an image will be inside a span.image, along with its span.image-caption */
+
+a img {border: none;}
+
+span.image {display: block; clear: both;}
+span.image span.image-caption {display: block;}
+
+/* styles available to the presentation editor */
+
+/* images: float left/right - left/right floats can be applied either directly to image plugins or their containers */
+
+.images-left span.image,
+span.image.left {
+    float: left;
+    margin-right: 5px;
+    clear: none;
+    }
+
+.images-right span.image,
+span.image.right {
+    float: right;
+    margin-left: 5px;
+    clear: none;
+    }
+
+/* images: have borders - appplied to the elements containing images/carousels
+
+it's a bit awkward when non-floated images can have borders, because then the border area is the width of the containing element, which can be rather wide*/
+
+.image-borders span.image,
+.image-borders div.anythingSlider,
+*[class|="has-background"]  {
+    background: #efefef;
+    padding: 7px;
+    border: 1px solid #888;
+    margin-bottom: 5px;
+    }
+
+.image-borders div.anythingSlider-minimalist-square {
+    background: #efefef;
+    padding: 7px;
+    border: 1px solid #888;
+    margin-bottom: 37px;
+    }
+
+.image-borders div.anythingSlider-minimalist-square .anythingControls ul.thumbNav {
+    margin-top: 12px;
+}
+
+.image-borders div.carousel-envelope
+  {
+    background: #efefef;
+    padding: 4px 7px;
+    border: 1px solid #888;
+    }
+
+/* Within each row, columns are floated (all floated left, except for the last one which is floated right. We need the row to expand downwards to the bottom of the columns it contains, and it won't do this automatically because the columns are floated. So, this is a technique to insert some invisible content after the elements, and which pull down the bottom of the row. */
+
+.row:after, .expands:after, ul.plugin-list li:after	{
+		content: ".";
+		display: block;
+		height: 0;
+		clear: both;
+		visibility: hidden;
+    }
+
+/* vertical margins on each row - adjust to taste */
+
+div.row {
+    clear: both;
+    margin: .5em 0 .2em;
+    height:100%;
+    }
+
+div.row div.row {
+    margin: .25em 0 .25em; 
+    height: 100%; /* why do we do this? */
+    }
+
+div.plugin  {margin-bottom: 1em;}
+div.plugin div.row  {margin: 0; padding: 0;}
+
+/* column widths 
+
+These need to be ordered carefully. 
+
+Firstly, single-width columns - .column - need to come before double and triple-width ones, so that they don't override them. We could solve this with chained selectors - /column.doublecolumn - but of course IE6 is too stupid to recognise these
+
+Secondly, if a column has *both* double and triple columns:
+
+    the semantic editor treats it as a double, so:
+    the presentation system in arkestra_utilities/output_libraries/plugin_widths.py will do the same, so:
+    doublecolumns must come last
+    
+A different issue here is that WebKit has rounding errors. Mostly they don't matter, but they are cumulative. So, 
+a 48% of a 960px width should be 460.8 (i.e. 461); Safari computes this as 460.
+
+As the columns add up, so do the rounding errors.
+
+ */
+
+/* single widths */
+
+.columns1 .column,
+.column .columns1 .column   { width: 100%;}
+
+.columns2 .column, 
+.column .columns2 .column   {width: 48%;}
+
+.columns3 .column,
+.column .columns3 .column   {width: 30.67%; }
+
+.columns4 .column,
+.column .columns4 .column	{width: 22%;}
+
+.columns5 .column,
+.column .columns5 .column 	{width: 16.8%;}
+
+.columns6 .column,
+.column .columns6 .column	{width: 13.33%;}
+
+/* note to self - there is a reason for this inefficient multiplicity of styles that could be rationalised: IE6. */
+
+/* triple widths */
+
+.columns4 .triplecolumn,
+.column .columns4 .triplecolumn     {width: 74%;}
+
+.columns5 .triplecolumn,
+.column .columns5 .triplecolumn     {width: 58.4%;}
+
+.columns6 .triplecolumn,
+.column .columns6 .triplecolumn     {width: 48%;}
+
+/* double widths */
+
+.columns3 .doublecolumn,
+.column .columns3 .doublecolumn     {width: 65.4%;}
+
+.columns4 .doublecolumn,
+.column .columns4 .doublecolumn     {width: 48%;}
+
+.columns5 .doublecolumn,
+.column .columns5 .doublecolumn     {width: 37.73%;}
+
+.columns6 .doublecolumn,
+.column .columns6 .doublecolumn     {width: 30.67%; }
+
+/* all rows float left except the last, which floats right
+all rows have a left margin except the first, which has none */
+
+.row .column	{
+	float: left;
+	margin-left: 4%; 
+	}
+	
+/* hand adjustments to tweak spaces between columns because of WebKit rounding errors */
+
+/*.row.columns2 .column-2,
+.row.columns6 .column-3,
+.row.columns3 .column-2 {
+    margin-left: 4.1%; 
+    }
+
+.row.columns6 .column-5 {
+    margin-left: 3.9%; 
+    }
+*/
+.row li.column {
+    list-style: none; 
+    font-size: 1em; 
+    display: block; 
+    clear: none;
+    }
+
+div.column.firstcolumn,
+li.column.firstcolumn	{
+	margin-left: 0;
+	}
+		
+div.column.lastcolumn,
+li.column.lastcolumn	{
+	float: right;
+	clear: right;
+	margin-left: 0 !important; 
+	}    /* lists */
+
+/* we really need to fix some of these styles. the idea of a div.plugin ul li
+is quite out of date now and a nuisance */
+
+ul, ol, dl  {margin-left: 0; padding-left: 0;}
+ul ul, ol ol, dl dl {margin-left: 0; padding-left: 20px;}
+
+ul	{margin-bottom: .2em;}
+ul ul, ul ul ul, ul ul ul ul, ul ul ul ul ul, ul ul ul ul ul ul {margin-bottom: 0;}
+
+
+ul.entity-tree li {margin: 0; padding: 0;}
+ul.entity-tree ul {margin: 0.5em 0px 0px 20px;}
+ul.entity-tree li {list-style: none;}
+
+
+/* icons */
+ul.no-marker {list-style-type: none;}
+
+ul.icons    {
+    list-style: square url(/static/arkestra/images/default_styles/hand-right.png);
+    padding-left: 30px;
+}
+
+/* plugin list items */
+
+ul.plugin-list {margin-top: 0;}
+
+ul.plugin-list .title   {font-weight: bold;}
+
+ul.plugin-list.vertical li {
+    list-style: none;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    margin-left: 0;
+}
+
+ul.plugin-list.vertical li:first-child {padding-top: 0;}
+div.main_page ul.plugin-list.vertical li.grouper li.important {
+    padding: .5em;
+    margin: 1px 0 1em;
+    background-color: #eee;
+    }
+
+/* groupers in plugin lists */
+ul.plugin-list li.grouper {font-weight: bold;}
+ul.plugin-list li.grouper ul {
+    font-weight: normal;
+    padding-left: 0;
+    }
+
+
+/* list for links to other items, (e.g. news and events) */
+ul.other-items  {
+    border-top: 1px solid #ddd;
+    padding-top: 0.5em;
+    clear: both;
+    }
+
+/* "fancy" means links have link icons" - obviously a <p> is not really a list, but it's being displayed as a list item */
+
+ul.other-items li.main {font-weight: bold;}
+
+ul.fancy,
+p.fancy    {margin-left: 30px;}
+
+ul.fancy li,
+p.fancy   {
+    list-style: square url(/static/arkestra/images/default_styles/hand-right.png);
+    }
+
+p.fancy   {
+    display: list-item;
+    }
+
+/*
+
+ul.close li, div.plugin ul.close li {margin-left: 0; padding-bottom: .2em;}
+
+ul.linkIcon,
+ul.plugin,
+.fancy ul {
+        margin: 0;
+        padding: 0;
+        list-style:none;
+    }
+
+ul.linkIcon li,
+ul.plugin_list li,
+.fancy li   {
+    list-style:none;
+    margin: 0;
+    }
+
+div.plugin ul {
+    font-weight: normal;
+    list-style:none;
+    }
+
+div.plugin ul li {
+    margin: 0;
+    }
+
+div.plugin li.pluslistitem   {
+    clear: right;
+    padding: 0 0 .4em;
+}
+
+.plugin li    {
+    line-height: 1.25;
+    padding-bottom: .6em;
+    clear: both;
+    }
+
+ul.none {list-style-type: none;}
+
+ul.linkIcon li,
+.fancy li,
+li.key   {
+    background: url(/media/images/hand-right.png) left .5ex no-repeat;
+    padding-left: 30px;
+    display: block;
+    }
+
+.fancy li li,
+li.key li    {
+    background: none;
+    padding-left: 20px;
+    display: block;
+    }
+
+
+li.key  {font-weight: bold; list-style: none; margin: 0; padding: 0.1em 0;} */
+
+
+/* used only in entity trees, I think */
+
+.grey   {color: gray;}
+.italic {font-style: italic;}
+.bold   {font-weight: bold;}
+
+/* directories */
+
+div.directory ul {list-style: none; }
+div.directory li {margin-left: 0;}
+div.directory li li {margin-left: 1.5em;}
+div.directory ul li .entity {font-weight: bold; }
+div.directory ul li li .entity {font-weight: normal;}
+
+/* inline lists */
+
+ul.horizontal li, ul.horizontal a  {
+    display: inline;
+    list-style-type: none;
+    }
+
+ul.horizontal.grid li {
+        padding-right: 1em;}
+
+li.horizontal   {float: left; list-style-type: none;}
+
+ul.index {
+    padding: 0;
+    }
+
+ul.index li  {
+    font-weight: bold;
+    display: inline;
+    float: left;
+    margin: 0px 0.3em 0.4em 0px
+    }
+
+ul.index li a {display: block;
+    padding: 0.1em;
+    width: 2.1em;
+    color: white;
+    background: #666;
+    text-align: center;
+    border: 1px solid black !important; /* important because otherwise site's links styles can affect it */
+    }
+
+ul.index li a:hover {
+    text-decoration: none;
+    color: #666;
+    background: white;
+    }
+
+/* date indexes for plugin lists */
+ul.plugin-index li {
+    list-style: none;
+    margin-bottom: 1em;
+    padding-bottom: 1em;
+    border-top: 1px solid #aaa;
+}
+
+ul.plugin-index li:first-child {
+    border-top: none;
+}
+
+ul.plugin-index ul {
+    text-align: right;
+    float: right;
+    }
+
+ul.plugin-index ul li {
+    border-top: none;
+    padding-bottom: .2em;
+    margin-bottom: 0;
+}
+
+ul.boxed li {
+    border: 1px solid #ccc;
+    background: #ecf1ff;
+    list-style:none;
+    padding: .5em;
+    margin: 0 0 1em;
+    }
+
+ul.boxed li li {border: none;}
+ul.boxed li dl {margin:0;}
+
+dl dd {padding: 0; margin: 0 0 5px 10px;}
+dl dd.not-indented,
+dl.not-indented dd
+ {padding: 0; margin-left: 0;}
+
+/* for the sub column - the right hand column in some pages - that contains lists of links etc */
+
+
+/* link system */
+
+li div.link-description  {padding: 0 0 .2em 0;}
+ul.object-links li  {
+    margin: 1em 0;
+    padding: 0;
+    list-style: none;
+}
+div#map-canvas {
+    height: 500px;
+    width: 100%;
+    font-size: 80%;
+}
+
+div#map-canvas h2 {
+    margin: 0;
+    padding: 0;
+    font-size: 120%;
+    border-bottom: none;}
+
+div#map-canvas div.labels {
+    font-family: "gill sans", "gill sans mt", "Trebuchet MS", sans-serif;
+    color: white;
+    background-color: gray;
+    font-size: 13px;
+    padding: 2px 3px;
+    font-weight: normal;
+    text-align: center;
+    white-space: nowrap;
+    border-radius: 2px;
+   }
+
+div#map-canvas div.labels.main-label {
+    background-color: black;
+    font-weight: bold;
+
+   }
+/* the default horizontal menu site navigation menu */
+
+ul.menu	{ /* the whole thing */
+	text-align: left;
+    z-index: 200;
+    position: relative;  
+	} 
+	
+li.menu_item a	{
+	text-decoration: none; 
+	border: none;
+}
+	
+li.menu_item a:hover	{
+	}
+
+li.menu_item	{ /* all items */
+	display: inline; 
+	width: 100%;
+	list-style-type: none; 
+	}
+
+ul.menu ul { /* 2nd level list */
+    display: inline; 
+    text-align: right; 
+    float: right; 
+}
+	
+ul.menu ul li { /* 2nd level items */
+   	position: relative; /* for the absolute drop-down */
+}
+
+ul.menu ul ul { /* 3rd level list - off by default */
+	display: none;
+    text-align: left;
+	position: absolute;
+    left: 0;
+    width: 100%;
+}
+
+ul.menu ul li:hover ul { /* hovering over 2nd level displays third */
+	display: block;
+}
+
+ul.menu ul ul li {
+    display: list-item;
+}
+
+ul.menu ul ul ul   {
+    top: -1px;
+    left: 100%;
+    padding-top: 0;
+}
+
+ul.menu ul ul ul li {
+}
+
+ul.menu ul ul li:hover ul    {
+    display: block;
+}
+
+ul.menu li li:hover ul ul,
+ul.menu li li:hover ul ul
+   {display:none;}
+ul.menu li li:hover ul,
+ul.menu li li li:hover ul    {display:block;}
+
+/* the default tab menu, as used for People and Places */
+
+ul#tab-menu {
+	border-bottom: 7px solid #707070;
+	float:left;
+	width: 100%; /* width of entire menu */
+	margin: 0 0 .5em 0; /*margin underneath menu*/
+	padding: 0;
+}
+ul#tab-menu li {
+	background:url(/static/arkestra/images/tabmenu/tabmenu_bg_inactive_rt.gif) no-repeat right top;
+	float:left;
+	margin: 0 2px 0 0; /*gap between menu tabs*/
+	padding:0;
+	list-style: none;
+}
+
+ul#tab-menu a {
+	background:url(/static/arkestra/images/tabmenu/tabmenu_bg_inactive_lt.gif) no-repeat left top;
+	display:block;
+	padding: 0.1em 1.2em;/*padding within tab*/	
+}
+ul#tab-menu  .active span {
+	color:#fff;
+	display:block;
+	padding: 0.1em 1.2em;		
+}
+ul#tab-menu .active {
+	background:url(/static/arkestra/images/tabmenu/tabmenu_bg_active_rt.gif) no-repeat right top;
+	border-bottom: 1px solid #707070;
+}
+ul#tab-menu .active span {
+	background:url(/static/arkestra/images/tabmenu/tabmenu_bg_active_lt.gif) no-repeat left top;
+}
+ul#tab-menu a, 
+ul#tab-menu li a:link, 
+ul#tab-menu li a:visited, 
+ul#tab-menu li a:hover, 
+ul#tab-menu li a:active{
+	color:#fff;
+	text-decoration:none;
+	border-bottom: none;
+}div.carousel
+{
+    border:1px solid #000000;
+    margin:0;
+    padding:0;
+    position:relative;
+}
+
+
+div.carousel > ul.carousel-segments
+{
+    margin:0;
+    padding:0;
+}
+
+div.carousel > ul.carousel-segments > li.carousel-segment
+{
+    display:none;
+    list-style-type:none;
+    margin:0;
+    padding:0;
+    line-height: 0;
+}
+
+div.carousel > ul.carousel-segments > li.carousel-segment > p,
+div.carousel > ul.carousel-segments > li.carousel-segment > p > a,
+div.carousel > ul.carousel-segments > li.carousel-segment > a
+{
+    color:black;
+    font-size:1em;
+    position:absolute;
+}
+
+div.carousel > ul.carousel-segments > li.carousel-segment > p > a,
+div.carousel > ul.carousel-segments > li.carousel-segment > a
+{
+    text-decoration:underline;
+}
+
+
+/* div.carousel > ul.carousel-btns, */
+div.carousel > ul.carousel-btns > li.carousel-btn
+{
+    background-color:#ccc;
+}
+
+div.carousel > ul.carousel-btns
+{
+    border-top:1px solid black;
+    bottom:0px;
+    margin:0;
+    padding:0;
+    position:absolute;
+    width:100%;
+}
+
+div.carousel > ul.carousel-btns > li.carousel-btn
+{
+    border-right:1px solid black;
+    cursor:default;
+    display:block;
+    float:left;
+    font-size:1.1em;
+    height:2.7em;
+    list-style-type:none;
+    margin:0;
+    padding:0;
+    text-align:center;
+    width:33%;
+}
+
+div.carousel > ul.carousel-btns > li.carousel-btn.right
+{
+    border-right:none;
+    float:right;
+}
+
+
+div.carousel > ul.carousel-btns > li.carousel-btn.single-line
+{
+    line-height:2.5em;
+}
+
+div.carousel > ul.carousel-btns > li.carousel-btn.multi-line
+{
+    line-height:1.35em;
+}
+
+div.carousel > ul.carousel-btns > li.carousel-btn,
+div.carousel > ul.carousel-btns > li.carousel-btn > a
+{
+    color:#333;
+    display:block;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+div.carousel > ul.carousel-btns > li.carousel-btn.focus,
+div.carousel > ul.carousel-btns > li.carousel-btn.focus > a
+{
+    background-color:white;
+    color:black;
+    text-decoration:none;
+}
+
+
+.faded, .faded *
+{
+    filter:alpha(opacity=93); /* IE lt 8 */
+    opacity:0.93; /* FF lt 1.5, Netscape */
+}
+
+
+/* ----------------------------------------------------------------------------------- */
+
+div.carousel > div.carousel-fader
+{
+    background-color:#000000;
+    display:none;
+    left:0px;
+    position:absolute;
+    top:0px;
+}
+
+
+.carousel-faded100, .carousel-faded100 * { filter:alpha(opacity=100); /* IE lt 8 */ opacity:1.00; /* FF lt 1.5, Netscape */ }
+.carousel-faded90, .carousel-faded90 * { filter:alpha(opacity=90); /* IE lt 8 */ opacity:0.90; /* FF lt 1.5, Netscape */ }
+.carousel-faded80, .carousel-faded80 * { filter:alpha(opacity=80); /* IE lt 8 */ opacity:0.80; /* FF lt 1.5, Netscape */ }
+.carousel-faded70, .carousel-faded70 * { filter:alpha(opacity=70); /* IE lt 8 */ opacity:0.70; /* FF lt 1.5, Netscape */ }
+.carousel-faded60, .carousel-faded60 * { filter:alpha(opacity=60); /* IE lt 8 */ opacity:0.60; /* FF lt 1.5, Netscape */ }
+.carousel-faded50, .carousel-faded50 * { filter:alpha(opacity=50); /* IE lt 8 */ opacity:0.50; /* FF lt 1.5, Netscape */ }
+.carousel-faded40, .carousel-faded40 * { filter:alpha(opacity=40); /* IE lt 8 */ opacity:0.40; /* FF lt 1.5, Netscape */ }
+.carousel-faded30, .carousel-faded30 * { filter:alpha(opacity=30); /* IE lt 8 */ opacity:0.30; /* FF lt 1.5, Netscape */ }
+.carousel-faded20, .carousel-faded20 * { filter:alpha(opacity=20); /* IE lt 8 */ opacity:0.20; /* FF lt 1.5, Netscape */ }
+.carousel-faded10, .carousel-faded10 * { filter:alpha(opacity=10); /* IE lt 8 */ opacity:0.10; /* FF lt 1.5, Netscape */ }
+.carousel-faded0, .carousel-faded0 * { filter:alpha(opacity=0); /* IE lt 8 */ opacity:0.00; /* FF lt 1.5, Netscape */ }
+
+.pagination {
+    margin: 20px 0;
+}
+
+.pagination ul {
+    display: inline-block;
+    margin-left: 0;
+    margin-bottom: 0;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    padding: 0;
+}
+.pagination ul>li {
+    display: inline;
+}
+
+
+.pagination ul>li>a,
+.pagination ul>li>span {
+    float: left;
+    background-color: #fff;
+}
+
+.pagination ul li a,
+.pagination ul li span{
+    text-decoration: none;
+    border: 0;
+    color: #555;
+    padding: 0 6px;
+    line-height: 25px;
+    height: 25px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.pagination ul li:first-child a{
+    border-radius: 0 0 0 0;
+    margin-right: 5px;
+    padding: 0;
+}
+.pagination ul li:last-child a{
+    border-radius: 0 0 0 0;
+    margin-left: 5px;
+    padding: 0;
+}
+.pagination ul li:first-child > i{
+    border-radius: 0 0 0 0;
+    margin-right: 10px;
+}
+.pagination ul li:last-child > i{
+    border-radius: 0 0 0 0;
+    margin-left: 10px;
+}
+.pagination ul li .next,
+.pagination ul li .prev {
+    display: block;
+    float: left;
+    font-size: 13px;
+    line-height: 30px;
+    width: 30px;
+    height: 30px;
+    color: #d3d3d2;
+    background-color: #e9e9e9;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    background-color: gray;
+    border-radius: 0 0 0 0;
+    color: #D3D3D2;
+    display: block;
+    float: left;
+    font-size: 2em;
+    font-style: normal;
+    height: 25px;
+    line-height: 20px;
+    width: 25px;
+}
+
+.pagination ul li .prev {
+    padding: 0 0px 0 7px;
+}
+.pagination ul li .next {
+    padding: 0 0 0 9px;
+}
+
+.pagination ul li a .next,
+.pagination ul li a .prev {
+    background: #d4374a;
+    color: #fff;
+    background: none repeat scroll 0 0 #D4374A;
+    color: #FFFFFF;
+}
+
+.pagination ul li > a:hover{
+    background: #d3ded2;
+    color: #fff;
+    background: none repeat scroll 0 0 #d3ded2;
+    color: #383735;
+    text-decoration: none;
+}
+
+.pagination ul .active span,
+.pagination ul .active a {
+    color: #fff;
+    background-color: #22211f;
+}
+
+.hidden-text{
+    display: none;
+}
+
+form.filter-form label {font-weight: bold}
+form.filter-form input {width: 100%}
+/* Filters */
+.filterline {
+    margin-bottom: 0.5em;
+    margin-left: 0;
+    text-indent: 0;
+    line-height: 1.8em;
+}
+
+.filterline .filterlabel {
+    font-weight: bold;
+}
+.removefilter a:link,
+.removefilter a:visited,
+.addfilter a:link,
+.addfilter a:visited {
+    text-decoration: none;
+}
+
+.removefilter a:link,
+.removefilter a:visited {
+    border-radius: 4px;
+    padding: 0px 1px 2px 3px;
+    border: 1px solid #113399;
+    background-color: #113399;
+    color: white;
+}
+
+.addfilter a:link,
+.addfilter a:visited {
+    border-radius: 4px;
+    padding: 0px 1px 2px 3px;
+    border: 1px solid #f0f0f0;
+    background-color: #f0f0f0;
+    color: black;
+}
+
+/* :hover come after to override */
+.addfilter a:hover,
+.removefilter a:hover {
+    text-decoration: none;
+    border-radius: 4px;
+    padding: 0px 1px 2px 3px;
+    border: 1px solid #3355bb;
+    background-color: #3355bb;
+    color: white;
+}
+
+.displayfilter {
+    border-radius: 4px;
+    padding: 0px 1px 2px 3px;
+    border: 1px solid black;
+    background-color: black;
+    color: white;
+}
+/* Within each row, columns are floated (all floated left, except for the last one which is floated right. We need the row to expand downwards to the bottom of the columns it contains, and it won't do this automatically because the columns are floated. So, this is a technique to insert some invisible content after the elements, and which pull down the bottom of the row. */
+
+div.row:after	{
+		content: ".";
+		display: block;
+		height: 0;
+		clear: both;
+		visibility: hidden;
+}
+
+.column {
+	float: left;
+	margin-left: 3%;
+	}
+
+.column.firstcolumn	{
+	margin-left: 0;
+	}
+		
+.column.lastcolumn	{
+	float: right;
+	margin-left: 0 !important; 
+	} 
+
+/* This controls the vertical margins on each row - adjust to taste */
+
+div.row {margin: .3em 0 .8em;}
+
+/* A tint is a background colour on an item - it could be a row, column, paragraph, list or other block element. When such a background colour is applied, it looks better if it pads out the element. If you want to add more tints, just name the classes appropriately, and add them to the selector below (e.g. tint, tint1, tint2 etc) */
+
+.tint1,
+.outline	{
+	padding-top: 1.5%; 
+	padding-right: 1.5%;
+	padding-left: 1.5%;
+	padding-bottom: 0;
+	}
+
+.tint1   {background: #def;}
+
+.outline   {outline: 1px solid gray;}
+
+
+/* Because IE 6 is shit - in a sane world this wouldn't be necessary */
+	
+h2, h3, h4, h5, h6 {clear: left;} 
+.row	{height: 0%; }
+
+
+
+/* The basic row/column system works as in the following example for three columns of equal size:
+
+<div class="row columns3">
+    <div class="columns firstcolumn"></div>
+    <div class="columns column"></div>
+    <div class="columns lastcolumn"></div>
+</div> 
+
+Here we set the widths for columns, according to how many columns the parent row has. Feel free to adjust the widths to taste. 
+
+We have a class for double-width columns (note that a double-width column is as wide as two normal ones, so it counts for two in as far as the row is concerned - a normal-width column and a double-width column require a three-column row; similarly for triple-width columns.
+
+We also need to add classes for the tinted columns, to reduce those widths.  IE 6 can't distinguish between .tint.doublecolumn and .doublecolunm, so it won't reduce them. We can't do much about that. */ 
+
+
+
+
+/* 1/3 width columns */
+.columns3 .column       {width: 31.4%; }
+.columns3 .column.tint1,
+.columns3 .column.outline	{width: 28.4%; }
+
+/* 1/4 width columns */
+.columns4 .column	{width: 22.85%;}
+.columns4 .column.tint1,
+.columns4 .column.outline	{width: 19.85%;}
+
+/* 1/5 width columns */
+.columns5 .column	{width: 17.72%;}
+.columns5 .column.tint1	{width: 14.72%;}
+
+/* 1/6 width columns */
+.columns6 .column	{width: 14.23%;}
+.columns6 .column.tint1	{width: 11.23%;}
+
+/* 2/3 width columns */
+.columns3 .doublecolumn	{width: 65.7%;}
+.columns3 .tint1.doublecolumn,
+.columns3 .outline.doublecolumn	{width: 62.7%;}
+
+/* 1/2 width columns */
+.columns2 .column,
+.columns4 .doublecolumn,
+.columns6 .triplecolumn       {width: 48.5%;}
+
+.columns2 .column.tint1,
+.columns2 .column.outline,
+.columns4 .tint1.doublecolumn,
+.columns4 .outline.doublecolumn,
+.columns6 .tint1.triplecolumn,
+.columns6 .outline.triplecolumn    {width: 45.5%;}
+
+/* 3/4 width columns */
+.columns4 .triplecolumn	        {width: 74.5%;}
+.columns4 .tint1.triplecolumn	{width: 71.2%;}
+
+/* 2/5 width columns */
+.columns5 .doublecolumn	        {width: 38.5%;}
+.columns5 .tint1.doublecolumn	{width: 38.2%;}
+
+/* 3/5 width columns */
+.columns5 .triplecolumn      {width: 58.9%;}
+.columns5 .tint1.doublecolumn	{width: 35.2%;}
+
+/* 2/6 width columns */
+.columns6 .doublecolumn         {width: 31.4%;}
+.columns6 .tint1.doublecolumn	{width: 31.4%;}
+
+/* non-layout styling */
+
+
+/* An example of a style for link icons, when in lists */
+
+ul.linkicon {
+	margin: 0 0 .5em 0;
+	padding:0;
+	list-style:none;
+	}
+ul.linkIcon li {
+	margin:0;
+	list-style:none;
+	}
+
+/* To make a list item stand out */
+
+li.key	{font-weight: bold;}	
+
+/* inline lists */
+
+ul.horizontal li  {
+    display: inline;
+    }
+div.linkIcon ul li	a {
+	background: url(/media/images/arrow_cu_right.gif) left 1px no-repeat;
+	padding: 0 0 0 15px;
+	}
+	
+div.linkIcon ul li {
+	list-style: none;
+	margin-left: 0; padding-left: 0;}	body	{
+	background: white ;
+    margin: 10%;
+	font-family: "Optima", "Gill Sans", "gill sans mt", helvetica, sans-serif ;
+	}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: "Gill Sans", "gill sans mt", "Optima", helvetica, sans-serif ;
+    }
+    
+h1  {font-size: 150%;}
+h2  {font-size: 140%;}
+h3  {font-size: 130%;}
+h4  {font-size: 120%;}
+h5  {font-size: 110%;}
+h6  {font-size: 100%;}
