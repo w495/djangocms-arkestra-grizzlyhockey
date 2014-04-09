@@ -1,0 +1,60 @@
+{% load thumbnail %}
+{% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
+
+
+<section>
+    <header>
+        <h3>
+            Положение команд
+        </h3>
+    </header>
+    <table class="table table-bordered table-striped sortable">
+        <thead>
+            <tr>
+                <th class="right"  >Команды</th>
+                <th class="center" > Игр </th>
+                <th class="center"> Выиграли </th>
+                <th class="center"> Ничьи </th>
+                <th class="center"> Проиграли </th>
+                <th class="center"> Забитые </th>
+                <th class="center"> Пропущенные </th>
+                <th class="center" > Очки </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for team in gametournamentregular.teams.all %}
+                <tr>
+                    <td class="right" >
+                        <a href="{% url team-detail pk=team.id %}">
+                            «{{team.name}}»
+                        </a>
+                    </td>
+                    <td class="center" >
+                        {{team.ngames}}
+                    </td>
+                    <td class="center">
+                        {{team.nwins}}
+                    </td>
+                    <td class="center">
+                        {{team.ndraws}}
+                    </td>
+                    <td class="center">
+                        {{team.nloses}}
+                    </td>
+                    <td class="center">
+                        {{team.ngoals}}
+                    </td>
+                    <td class="center">
+                        {{team.nmisses}}
+                    </td>
+                    <td class="center">
+                        {{team.npoints}}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</section>
+
+
