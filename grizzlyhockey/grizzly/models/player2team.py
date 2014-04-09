@@ -44,7 +44,7 @@ class Player2Team(AbsObj):
 
     #alter table grizzly_player2team add ngames int(11) default null;
     ngames = models.IntegerField(
-        verbose_name=u"Количество игр (Ч)",
+        verbose_name=u"Игры",
         blank=True,
         null=True,
         default=0
@@ -52,7 +52,7 @@ class Player2Team(AbsObj):
 
     # alter table grizzly_player2team add nfines int(11) default null;
     nfines = models.IntegerField(
-        verbose_name=u"Количество игр (Ч)",
+        verbose_name=u"Штрафы",
         blank=True,
         null=True,
         default=0
@@ -61,7 +61,7 @@ class Player2Team(AbsObj):
 
     # alter table grizzly_player2team add ngoals int(11) default null;
     ngoals = models.IntegerField(
-        verbose_name=u"Количество игр (Ч)",
+        verbose_name=u"Голы",
         blank=True,
         null=True,
         default=0
@@ -69,7 +69,7 @@ class Player2Team(AbsObj):
 
     # alter table grizzly_player2team add ntrans int(11) default null;
     ntrans = models.IntegerField(
-        verbose_name=u"Количество игр (Ч)",
+        verbose_name=u"Передачи",
         blank=True,
         null=True,
         default=0
@@ -77,7 +77,7 @@ class Player2Team(AbsObj):
 
     # alter table grizzly_player2team add npoints int(11) default null;
     npoints = models.IntegerField(
-        verbose_name=u"Количество очков (Ч)",
+        verbose_name=u"Очки",
         blank=True,
         null=True,
         default=0

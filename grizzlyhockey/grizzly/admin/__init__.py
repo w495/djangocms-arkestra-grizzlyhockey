@@ -66,6 +66,13 @@ class JudgeAdmin(AbsPersAdmin):
 
 
 class Player2TeamAdminInline(AbsObjTabularInline):
+    readonly_fields = (
+        'ngames',
+        'ngoals',
+        'nfines',
+        'ntrans',
+        'npoints',
+    )
     model = Player2Team
     exclude = ('description', 'detail', 'name')
 
@@ -137,6 +144,16 @@ class Player2TeamAdmin(AbsObjAdmin):
     )
 
 class TeamAdmin(AbsObjAdmin):
+    readonly_fields = (
+        'ngames',
+        'nwins',
+        'ndraws',
+        'nloses',
+        'ngoals',
+        'nmisses',
+        'npoints',
+    )
+
     list_display = (
         'id',
         'name',

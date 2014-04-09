@@ -43,7 +43,7 @@
                     </span>
                 </th>
             </tr>
-        {% for team in gamedivision.teams.all|dictsort:"ctime" %}
+        {% for team in gamedivision.teams.all %}
             <tr>
                 <td class="game-division-plugin-table-name">
                     <a href="{% url team-detail pk=team.id %}">

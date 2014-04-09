@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-lg-12">
             <ul class="row">
-                {% for team in team_list|dictsort:"ctime" %}
+                {% for team in team_list %}
                         {% include "grizzly/includes/team-list-li.html" %}
                 {% endfor %}
             </ul>

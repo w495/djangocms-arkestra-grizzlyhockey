@@ -36,16 +36,32 @@
                     {% endwith %}
                 </td>
                 <td class="col-md-4 center">
-                    {% if gamematch.start_datetime %}
-                        <div class="small-text datetime-mark" title="Дата">
-                            <span>{{gamematch.start_datetime|date:"d M Y"}}&nbsp;</span>
-                            <span>{{gamematch.start_datetime|date:"H:i"}}</span>
-                        </div>
-                    {% endif %}
+                    <a href="{% url game-match-detail pk=gamematch.id %}">
+                        {% if gamematch.start_datetime %}
+                            <div class="small-text datetime-mark" title="Дата">
+                                <span>{{gamematch.start_datetime|date:"d M Y"}}&nbsp;</span>
+                                <span>{{gamematch.start_datetime|date:"H:i"}}</span>
+                            </div>
+                        {% else %}
+                            Матч
+                        {% endif %}
+                    </a>
+
                     {% if gamematch.rink %}
                         <p>
                             <a href="{% url rink-detail pk=gamematch.rink.id %}"> {{gamematch.rink}} </a>
                         </p>
+                    {% endif %}
+                    {% if gamematch.score_a %}
+                        <span>
+                            {{gamematch.score_a}}
+                        </span>
+                    {% endif %}
+                    <span>&nbsp;:&nbsp;</span>
+                    {% if gamematch.score_b %}
+                        <span>
+                            {{gamematch.score_b}}
+                        </span>
                     {% endif %}
                 </td>
                 <td class="col-md-4 center">

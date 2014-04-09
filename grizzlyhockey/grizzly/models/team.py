@@ -41,34 +41,53 @@ class Team(AbsObj):
     )
 
     ngames = models.IntegerField(
-        verbose_name=u"Количество игр (Ч)",
+        verbose_name=u"Игры",
         blank=True,
         null=True,
     )
 
     nwins = models.IntegerField(
-        verbose_name=u"Количество побед (Ч)",
+        verbose_name=u"Выиграли",
         blank=True,
         null=True,
     )
 
     nloses = models.IntegerField(
-        verbose_name=u"Количество поражений (Ч)",
+        verbose_name=u"Проиграли",
         blank=True,
         null=True,
     )
 
     ndraws = models.IntegerField(
-        verbose_name=u"Количество ничьих (Ч)",
+        verbose_name=u"Ничьи",
         blank=True,
         null=True,
     )
 
     npoints = models.IntegerField(
-        verbose_name=u"Количество очков (Ч)",
+        verbose_name=u"Очки",
         blank=True,
         null=True,
     )
+
+
+    # alter table grizzly_team add ngoals int(11) default null;
+    ngoals = models.IntegerField(
+        verbose_name=u"Голы",
+        blank=True,
+        null=True,
+    )
+
+
+    # alter table grizzly_team add nmisses int(11) default null;
+    nmisses = models.IntegerField(
+        verbose_name=u"Пропуски",
+        blank=True,
+        null=True,
+    )
+
+
+
 
     def get_nwins(self):
         wa = self.gamematch_a.filter(score_a__gt = models.F('score_b')).count()
@@ -99,13 +118,17 @@ class Team(AbsObj):
             wa = 0
         if(not wb):
             wb = 0
+        n = (wa + wb);
+        return n
+
+    def get_nmisses(self):
         la =  self.gamematch_a.aggregate(models.Sum('score_b')).get('score_b__sum', 0)
         lb =  self.gamematch_b.aggregate(models.Sum('score_a')).get('score_a__sum', 0)
         if(not la):
             la = 0
         if(not lb):
             lb = 0
-        n = (wa + wb);
+        n = (la + lb);
         return n
 
     def get_npoints(self):
@@ -118,6 +141,8 @@ class Team(AbsObj):
         self.ndraws = self.get_ndraws()
         self.ngames = self.get_ngames()
         self.npoints = self.get_npoints()
+        self.nmisses = self.get_nmisses()
+        self.ngoals = self.get_ngoals()
         [p2t.reindex() for p2t in self.player2team_set.all()]
 
 
@@ -135,7 +160,12 @@ class Team(AbsObj):
 
 
     class Meta:
-        ordering = ('name',)
+        ordering = [
+            '-npoints',
+            '-nwins',
+            '-ndraws',
+            '-ngames',
+        ]
         app_label = "grizzly"
         verbose_name = "команду"
         verbose_name_plural = "команды"
