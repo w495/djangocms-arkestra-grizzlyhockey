@@ -1,4 +1,5 @@
 {% load thumbnail %}
+{% load sekizai_tags %}
 {% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
 
 <section>
@@ -6,103 +7,78 @@
     <h{{IN_BODY_HEADING_LEVEL}}>Дивизион «{{ gamedivision.name }}»</h{{IN_BODY_HEADING_LEVEL}}>
 
     <div class="row">
-        <div class="col-lg-6">
-            <section>
-                <h3>Команды</h3>
-                <ul class="media-list">
+        <div class="col-lg-12">
+    <section>
+        <header>
+            <h3>
+                Положение команд
+            </h3>
+        </header>
+        <table class="table table-bordered table-striped sortable">
+            <thead>
+                <tr>
+                    <th class="right"  >Команды</th>
+                    <th class="center" > Игр </th>
+                    <th class="center"> Выиграли </th>
+                    <th class="center"> Ничьи </th>
+                    <th class="center"> Проиграли </th>
+                    <th class="center"> Забитые </th>
+                    <th class="center"> Пропущенные </th>
+                    <th class="center" > Очки </th>
+                </tr>
+            </thead>
+            <tbody>
                 {% for team in gamedivision.teams.all %}
-                    <li class="media">
-                        <div class="pull-left" href="#">
-                            {% if team.image %}
-                                <a href="{% url team-detail pk=team.id %}">
-                                    <img  class="img-thumbnail" src="{% thumbnail team.image 64x64 %}"
-                                        {% if team.image.alt %}
-                                            alt="{{ team.image.alt }}"
-                                        {% endif %}
-                                    />
-                                </a>
-                            {% endif %}
-                        </div>
-                        <div class="media-body">
-                            <h4 class="media-heading">
-                                <a href="{% url team-detail pk=team.id %}">
-                                    Команда «{{team.name}}»
-                                </a>
-                            </h4>
-
-                            <span title="Игры" class="text-default">
-                                {{team.ngames}}
-                            </span>
-                            &nbsp;
-                            <span title="Победы" class="text-success">
-                                {{team.nwins}}
-                            </span>
-                            &nbsp;
-                            <span title="Поражения" class="text-danger">
-                                {{team.nloses}}
-                            </span>
-                            &nbsp;
-                            <span title="Ничьи" class="text-info">
-                                {{team.ndraws}}
-                            </span>
-                            &nbsp;
-                            <span title="Очки" class="text-warning">
-                                {{team.npoints}}
-                            </span>
-
-                            {% if team.detail %}
-                                <p>{{team.detail}}</p>
-                            {% endif %}
-                        </div>
-                    </li>
+                    <tr>
+                        <td class="right" >
+                            <a href="{% url team-detail pk=team.id %}">
+                                «{{team.name}}»
+                            </a>
+                        </td>
+                        <td class="center" >
+                            {{team.ngames}}
+                        </td>
+                        <td class="center">
+                            {{team.nwins}}
+                        </td>
+                        <td class="center">
+                            {{team.ndraws}}
+                        </td>
+                        <td class="center">
+                            {{team.nloses}}
+                        </td>
+                        <td class="center">
+                            {{team.ngoals}}
+                        </td>
+                        <td class="center">
+                            {{team.nmisses}}
+                        </td>
+                        <td class="center">
+                            {{team.npoints}}
+                        </td>
+                    </tr>
                 {% endfor %}
-                </ul>
-            </section>
-        </div>
-
-        <div class="col-lg-6">
+            </tbody>
+        </table>
+    </section>
+    </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
             <section>
-                <h3>Чемпионаты</h3>
                 <ul class="media-list">
                 {% for tournament in gamedivision.gametournamentregulars.all %}
-                    <li class="media">
-                        <div class="pull-left" href="#">
-                            {% if tournament.image %}
-                                <a href="{% url game-tournament-regular-detail pk=tournament.id %}">
-                                    <img  class="img-thumbnail" src="{% thumbnail tournament.image 64x64 %}"
-                                        {% if tournament.image.alt %}
-                                            alt="{{ tournament.image.alt }}"
-                                        {% endif %}
-                                    />
-                                </a>
-                            {% endif %}
-                            <div class="team-human-metrics">
-                                {% if player.birthday %}
-                                    <div title="Дата рождения">
-                                        <!--
-                                            <span class="text-muted">
-                                                &nbsp;Дата рождения:&nbsp;
-                                            </span>
-                                        -->
-                                        <span title="Дата рождения">
-                                            <date>{{player.birthday}}</date>
-                                        </span>
-                                    </div>
-                                {% endif %}
+                    <li>
+                        <h4 class="media-heading">
+                            <a href="{% url game-tournament-regular-detail pk=tournament.id %}">
+                                {{tournament.name}}
+                            </a>
+                        </h4>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                {% include "grizzly/includes/game-tournament-regular-detail-table.html" with gametournamentregular=tournament  %}
                             </div>
                         </div>
-
-                        <div class="media-body">
-                            <h4 class="media-heading">
-                                <a href="{% url game-tournament-regular-detail pk=tournament.id %}">
-                                    Чемпионат «{{tournament.name}}»
-                                </a>
-                            </h4>
-                            {% if tournament.detail %}
-                                <p>{{tournament.detail}}</p>
-                            {% endif %}
-                        </div>
-
                     </li>
                 {% endfor %}
                 </ul>
@@ -113,3 +89,12 @@
 
 </section>
 
+
+{% addtoblock "js" %}
+<script src="{{ STATIC_URL }}j/moment.min.js" ></script>
+<script src="{{ STATIC_URL }}j/bootstrap-sortable.js" ></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $.bootstrapSortable(true)
+});
+{% endaddtoblock %}

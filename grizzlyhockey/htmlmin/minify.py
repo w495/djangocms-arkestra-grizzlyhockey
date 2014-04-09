@@ -10,7 +10,7 @@ import bs4
 
 from .util import force_decode
 
-EXCLUDE_TAGS = ("pre", "script", "textarea")
+EXCLUDE_TAGS = ("pre", "textarea")
 # element list coming from
 # https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/HTML5_element_list
 # combining text-level semantics & edits

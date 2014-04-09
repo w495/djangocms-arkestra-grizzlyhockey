@@ -1,5 +1,6 @@
 {% load sekizai_tags %}
 {% addtoblock "js" %}
+
 <script type="text/javascript">
 $(document).ready(function(){
     $("#{{ instance.domid }}").carousel({interval: {{ instance.interval }}});
@@ -15,6 +16,7 @@ $(window).load(function() {
 });
 </script>
 {% endaddtoblock %}
+
 <div id="{{ instance.domid }}" class="carousel slide">
     <ol class="carousel-indicators">
         {% for item in instance.carouselitem_set.all %}

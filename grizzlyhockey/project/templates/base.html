@@ -28,34 +28,33 @@
     {% endblock %}
 
     {% block favicon %}
-        <link rel="icon"
-            type="image/png"
-            href="{{ STATIC_URL }}arkestra/images/arkestra-favicon.png">
+        <link rel="icon" type="image/png" href="/favicon.png">
     {% endblock favicon %}
 
-
     {% block styles %}
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/arkestra.css" />
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/arkestra_lists.css" />
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/arkestra_images.css" />
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/arkestra_layout.css" />
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/arkestra_navigation.css" />
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/arkestra_presentation_editor.css" />
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/temporaryhacks.css" />
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/carousel.css" />
 
-        <!--[if lte IE 8]><link href="{{ STATIC_URL }}arkestra/css/ie-fixes/ie-lte-8.css" rel="stylesheet" type="text/css" /><![endif]-->
-        <!--[if lte IE 7]><link href="{{ STATIC_URL }}arkestra/css/ie-fixes/ie-lte-7.css" rel="stylesheet" type="text/css" /><![endif]-->
-        <!--[if lte IE 6]><link href="{{ STATIC_URL }}arkestra/css/ie-fixes/ie-lte-6.css" rel="stylesheet" type="text/css" /><![endif]-->
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}c/0.css" />
+        <link rel="stylesheet" type="text/css" href="http://getbootstrap.com/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}c/bootstrap-sortable.css" />
+
+        {% comment %}
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/arkestra.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/arkestra_lists.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/arkestra_images.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/arkestra_layout.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/arkestra_navigation.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/arkestra_presentation_editor.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/temporaryhacks.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}arkestra/css/carousel.css" />
+        {% endcomment %}
+
+        <!--[if lte IE 8]><link href="{{ STATIC_URL }}c/8.css" rel="stylesheet" type="text/css" /><![endif]-->
+        <!--[if lte IE 7]><link href="{{ STATIC_URL }}c/7.css" rel="stylesheet" type="text/css" /><![endif]-->
+        <!--[if lte IE 6]><link href="{{ STATIC_URL }}c/6.css" rel="stylesheet" type="text/css" /><![endif]-->
 
         {% block extrastyles %}
-            <link rel="stylesheet" type="text/css" href="http://getbootstrap.com/dist/css/bootstrap.min.css" />
-            <link rel="stylesheet" type="text/css" href="http://getbootstrap.com/examples/offcanvas/offcanvas.css" />
-
-
-
-
         {% endblock extrastyles %}
+
 
         {% block site_styles %}
             <style>
@@ -258,11 +257,7 @@
         {% endblock site_styles %}
     {% endblock styles %}
 
-    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-    <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
-
     <!-- \/ -->{% render_block "css" %}<!-- \/ -->
-    <!-- \/ -->{% render_block "js" %}<!-- \/ -->
 
 </head>
 
@@ -326,6 +321,13 @@
     {% endwith %}
 </body>
 
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
 
-{% block post_body_scripts %}{% endblock post_body_scripts %}
+</script>
+
+<!-- \/ -->{% render_block "js" %}<!-- \/ -->
+
+{% block post_body_scripts %}
+{% endblock post_body_scripts %}
 </html>

@@ -1,4 +1,5 @@
 {% load thumbnail %}
+{% load sekizai_tags %}
 {% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
 
 <section>
@@ -38,9 +39,35 @@
         </div>
     </section>
     <br/>
+
+
+    {% include "grizzly/includes/game-tournament-regular-detail-rating.html" %}
+
+    <hr/>
     <br/>
 
 
-    {% include "grizzly/includes/game-tournament-regular-detail-table.html" %}
+    <section>
+        <header>
+            <h3>
+                Матчи
+            </h3>
+        </header>
+
+        {% include "grizzly/includes/game-tournament-regular-detail-table.html" %}
+
+    </section>
 
 </section>
+
+
+
+
+{% addtoblock "js" %}
+<script src="{{ STATIC_URL }}j/moment.min.js" ></script>
+<script src="{{ STATIC_URL }}j/bootstrap-sortable.js" ></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $.bootstrapSortable(true)
+});
+{% endaddtoblock %}
