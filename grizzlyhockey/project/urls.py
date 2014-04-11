@@ -9,9 +9,9 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
 
-    url(r'^c5ALn2U6/doc/', include('django.contrib.admindocs.urls')),
+    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
-    url(r'^c5ALn2U6/', include(admin.site.urls)),
+    url(r'^admin/', include(admin.site.urls)),
 
     url(r'^grizzly/', include('grizzly.urls')),
 
