@@ -33,12 +33,12 @@
                 <tr>
                     <td>
                         {% if fine.start_time%}
-                            {{fine.start_time}}
+                            {{fine.start_time|time:"i:s"}}
                         {% endif %}
                     </td>
                     <td>
                         {% if fine.stop_time%}
-                            {{fine.stop_time}}
+                            {{fine.stop_time|time:"i:s"}}
                         {% endif %}
                     </td>
                     <td>

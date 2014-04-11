@@ -36,7 +36,7 @@
                 <tr>
                     <td>
                         {% if goal.time%}
-                            {{goal.time}}
+                            {{goal.time|time:"i:s"}}
                         {% endif %}
                     </td>
                     <td>
