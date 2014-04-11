@@ -188,10 +188,10 @@
                                 {{gtime.time}}
                             </td>
                             <td>
-                                {{gtime.a}}
+                                {{gtime.player}}
                             </td>
                             <td>
-                                {{gtime.b}}
+                                {{gtime.team}}
                             </td>
                         </tr>
                     {% endfor %}
@@ -210,16 +210,13 @@
                 <table class="table table-striped">
                     <tr class="center">
                         <th class="center">
-                            «{{gamematch.team_a}}»
+                            Команда
                         </th>
                         <th class="center">
-                            «{{gamematch.team_b}}»
+                            Игрок
                         </th>
                         <th class="center">
-                            Вр «{{gamematch.team_a}}»
-                        </th>
-                        <th class="center">
-                            Вр «{{gamematch.team_b}}»
+                            Вратарь
                         </th>
                         <th>
                             Результат
@@ -228,16 +225,13 @@
                     {% for penalty in gamematch.gamematchpenalty_set.all  %}
                         <tr>
                             <td>
-                                {{penalty.a}}
+                                {{penalty.team}}
                             </td>
                             <td>
-                                {{penalty.b}}
+                                {{penalty.player}}
                             </td>
                             <td>
-                                {{penalty.gla}}
-                            </td>
-                            <td>
-                                {{penalty.glb}}
+                                {{penalty.gl_player}}
                             </td>
                             <td>
                                 {{penalty.result}}
