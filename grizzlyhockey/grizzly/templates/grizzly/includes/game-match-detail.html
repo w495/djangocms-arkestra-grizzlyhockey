@@ -189,7 +189,7 @@
                                     {% if gtime.time|date:"f" == "1" %}
                                         60:00
                                     {% else %}
-                                        {{ gtime.time|date:"|i-s|" }}
+                                        {{ gtime.time|date:"i" }}
                                     {% endif %}
                                 </td>
                                 <td>
