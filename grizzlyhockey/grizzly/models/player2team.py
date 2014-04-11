@@ -93,7 +93,7 @@ class Player2Team(AbsObj):
 
     def get_ngoals(self):
         if (self.player):
-            x = self.player.gamematchgoal_goal.filter(team = self.team).count()
+            x = self.player.gamematchgoal_goal.filter().count()
             return x
         return 0
 
