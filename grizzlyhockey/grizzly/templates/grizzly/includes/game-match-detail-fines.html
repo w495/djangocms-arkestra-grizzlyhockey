@@ -43,7 +43,7 @@
                     </td>
                     <td>
                         {% with player=fine.fine_player  %}
-                            <div class="small-text">
+                            <div>
                                 {% for player2team in player.player2team_set.all %}
                                     {% if player2team.team == team %}
                                         <a href="{% url player-detail pk=player.id %}">

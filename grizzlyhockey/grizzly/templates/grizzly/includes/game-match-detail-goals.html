@@ -46,7 +46,7 @@
                     </td>
                     <td>
                         {% with player=goal.goal_player  %}
-                            <div class="small-text">
+                            <div>
                                 {% for player2team in player.player2team_set.all %}
                                     {% if player2team.player == player %}
                                         <a href="{% url player-detail pk=player.id %}">
@@ -62,7 +62,7 @@
                     </td>
                     <td>
                         {% for player in goal.trans_players.all %}
-                            <div class="small-text">
+                            <div>
                                 {% for player2team in player.player2team_set.all %}
                                     {% if player2team.player == player %}
                                         <a href="{% url player-detail pk=player.id %}">
