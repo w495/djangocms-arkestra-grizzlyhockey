@@ -190,7 +190,7 @@
                             <td>
                                 {% with player=gtime.player  %}
                                     {% for player2team in player.player2team_set.all %}
-                                        {% if player2team.team == gtime %}
+                                        {% if player2team.team == gtime.team %}
                                             <a href="{% url player-detail pk=player.id %}">
                                                 {{player2team.game_number}}&nbsp;
                                                 {{player.second_name}}&nbsp;
