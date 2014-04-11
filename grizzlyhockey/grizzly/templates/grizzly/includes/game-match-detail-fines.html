@@ -45,7 +45,7 @@
                         {% with player=fine.fine_player  %}
                             <div class="small-text">
                                 {% for player2team in player.player2team_set.all %}
-                                    {% if player2team.player == player %}
+                                    {% if player2team.team == team %}
                                         <a href="{% url player-detail pk=player.id %}">
                                             {{player2team.game_number}}&nbsp;
                                             {{player.second_name}}&nbsp;

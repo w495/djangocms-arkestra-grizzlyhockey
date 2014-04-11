@@ -176,10 +176,10 @@
                             Время
                         </th>
                         <th class="center">
-                             «{{gamematch.team_a}}»
+                            Игрок
                         </th>
                         <th class="center">
-                            «{{gamematch.team_b}}»
+                            Команда
                         </th>
                     </tr>
                     {% for gtime in gamematch.gamematchgtime_set.all  %}
@@ -188,10 +188,23 @@
                                 {{gtime.time}}
                             </td>
                             <td>
-                                {{gtime.player}}
+                                {% with player=gtime.player  %}
+                                    {% for player2team in player.player2team_set.all %}
+                                        {% if player2team.team == team %}
+                                            <a href="{% url player-detail pk=player.id %}">
+                                                {{player2team.game_number}}&nbsp;
+                                                {{player.second_name}}&nbsp;
+                                                {{player.first_name}}&nbsp;
+                                                {{player.patronymic}}
+                                            </a>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endwith %}
                             </td>
                             <td>
-                                {{gtime.team}}
+                                <a href="{% url team-detail pk=gtime.team.id %}">
+                                    «{{gtime.team.name}}»
+                                </a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -228,10 +241,32 @@
                                 {{penalty.team}}
                             </td>
                             <td>
-                                {{penalty.player}}
+                                {% with player=penalty.player  %}
+                                    {% for player2team in player.player2team_set.all %}
+                                        {% if player2team.team == team %}
+                                            <a href="{% url player-detail pk=player.id %}">
+                                                {{player2team.game_number}}&nbsp;
+                                                {{player.second_name}}&nbsp;
+                                                {{player.first_name}}&nbsp;
+                                                {{player.patronymic}}
+                                            </a>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endwith %}
                             </td>
                             <td>
-                                {{penalty.gl_player}}
+                                {% with player=penalty.gl_player  %}
+                                    {% for player2team in player.player2team_set.all %}
+                                        {% if player2team.team == team %}
+                                            <a href="{% url player-detail pk=player.id %}">
+                                                {{player2team.game_number}}&nbsp;
+                                                {{player.second_name}}&nbsp;
+                                                {{player.first_name}}&nbsp;
+                                                {{player.patronymic}}
+                                            </a>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endwith %}
                             </td>
                             <td>
                                 {{penalty.result}}
