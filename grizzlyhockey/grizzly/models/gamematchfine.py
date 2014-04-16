@@ -61,8 +61,8 @@ class GameMatchFine (AbsObj):
 
 
     def save(self, *args, **kwargs):
-        #self.team.reindex()
-        #self.fine_player.reindex()
+        self.team.reindex()
+        self.fine_player.reindex()
         return super(GameMatchFine, self).save(*args, **kwargs)
 
 
