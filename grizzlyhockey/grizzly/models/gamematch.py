@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
+import gevent
+import gevent.socket
+import uuid
 
 from django.db import models
 from absgameobj import AbsGameObj
 
+
+import time
 
 class GameMatch (AbsGameObj):
 
@@ -82,9 +87,21 @@ class GameMatch (AbsGameObj):
 
     def save(self, *args, **kwargs):
         res = super(GameMatch, self).save(*args, **kwargs)
+
+
+        gevent.spawn(lambda: self.reindex(word=uuid.uuid4()))
+
+        return res
+
+
+    def reindex(self, word, *args, **kwargs):
+
+        f = open('x', 'w')
+        f.write("x-%s"%word)
+
         self.team_a.reindex()
         self.team_b.reindex()
-        return res
+
 
     #def __str__(self):
         #rink = ""
