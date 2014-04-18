@@ -20,9 +20,9 @@ ADDRESS="${IP}:${PORT}";
 ## Узел
 ##
 
-HTTP_WORKERS="100"
+HTTP_WORKERS="10"
 
-PROCESSES="100"
+PROCESSES="10"
 
 XUID="1000"
 
@@ -55,11 +55,21 @@ PROJECT_NAME="project"
 ## Папка статических объектов
 ##
 
-STATIC_SUBDIR="project/media"
+STATIC_SUBDIR="project/static"
 
 STATIC_DIR="${PROJECT_DIR}/${STATIC_SUBDIR}"
 
-STATIC_URL="/media"
+STATIC_URL="/static"
+
+
+MEDIA_SUBDIR="project/media"
+
+MEDIA_DIR="${PROJECT_DIR}/${MEDIA_SUBDIR}"
+
+MEDIA_URL="/media"
+
+
+
 
 ##
 ## Pid проекта
@@ -165,6 +175,7 @@ do_start () {
         --harakiri="${HARAKIRI}"                                    \
         --max-requests="${MAX_REQUESTS}"                            \
         --static-map "${STATIC_URL}/=${STATIC_DIR}/"                \
+        --static-map "${MEDIA_URL}/=${MEDIA_DIR}/"                  \
         --vacuum
     #popd;
 }

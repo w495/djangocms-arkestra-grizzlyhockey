@@ -75,9 +75,9 @@ class Player(AbsPers):
         verbose_name=u"игроки, сделавшие результативную передачу"
     )
 
+    def resave_player2team_set(self):
+        [p2t.async_resave() for p2t in self.player2team_set.all()]
 
-    def reindex(self):
-        [p2t.reindex() for p2t in self.player2team_set.all()]
 
     def __str__(self):
         return u"%s, %s %s %s"%(self.game_number, self.second_name, self.first_name, self.patronymic)

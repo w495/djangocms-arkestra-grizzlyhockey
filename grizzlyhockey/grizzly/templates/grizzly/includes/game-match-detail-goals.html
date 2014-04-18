@@ -35,14 +35,10 @@
             {% if goal.team == team  %}
                 <tr>
                     <td>
-                        {% if goal.time%}
-                            {{goal.time|time:"i:s"}}
-                        {% endif %}
+                        {{goal.minute|stringformat:"02d"}}:{{goal.second|stringformat:"02d"}}
                     </td>
                     <td>
-                        {% if goal.time%}
-                            {{goal.goalno}}
-                        {% endif %}
+                        {{goal.goalno}}
                     </td>
                     <td>
                         {% with player=goal.goal_player  %}

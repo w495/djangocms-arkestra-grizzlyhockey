@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
-import gevent
-import gevent.socket
-import uuid
+import logging
 
 from django.db import models
 from absgameobj import AbsGameObj
 
-
-import time
 
 class GameMatch (AbsGameObj):
 
@@ -84,23 +80,9 @@ class GameMatch (AbsGameObj):
         verbose_name=u"Турнир"
     )
 
-
-    def save(self, *args, **kwargs):
-        res = super(GameMatch, self).save(*args, **kwargs)
-
-
-        gevent.spawn(lambda: self.reindex(word=uuid.uuid4()))
-
-        return res
-
-
-    def reindex(self, word, *args, **kwargs):
-
-        f = open('x', 'w')
-        f.write("x-%s"%word)
-
-        self.team_a.reindex()
-        self.team_b.reindex()
+    def async_save_action(self):
+        self.team_a.resave()
+        self.team_b.resave()
 
 
     #def __str__(self):
@@ -137,3 +119,4 @@ class GameMatch (AbsGameObj):
         app_label = "grizzly"
         verbose_name = "Игры: матч"
         verbose_name_plural = "Игры: матчи"
+

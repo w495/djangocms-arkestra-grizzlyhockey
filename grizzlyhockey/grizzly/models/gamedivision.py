@@ -6,6 +6,8 @@ from team import Team
 from gameseason import GameSeason
 
 from gametournamentregular import GameTournamentRegular
+from player2team import Player2Team
+
 
 class GameDivision(AbsGameObj):
 
@@ -25,7 +27,6 @@ class GameDivision(AbsGameObj):
         verbose_name=u"команды"
     )
 
-
     gametournamentregulars = models.ManyToManyField(
         'GameTournamentRegular',
         blank=True,
@@ -33,6 +34,40 @@ class GameDivision(AbsGameObj):
         through=GameTournamentRegular.gamedivisions.through,
         verbose_name=u"регулярные чемпионаты"
     )
+
+
+    def get_some_p2t(self, *args):
+        teams = [team for team  in self.teams.all()]
+        objs = [x for x in Player2Team.objects.filter(team__in = teams).order_by(*args)]
+        return objs
+
+    def get_max_some_p2t(self, *args):
+        objs = self.get_some_p2t(*args)
+        if(objs):
+            return objs[0]
+        return None
+
+    def get_max_ngoalsntrans_p2t(self):
+        return self.get_max_some_p2t('-ngoalsntrans')
+
+    def get_max_ngoals_p2t(self):
+        return self.get_max_some_p2t('-ngoals')
+
+    def get_max_ntrans_p2t(self):
+        return self.get_max_some_p2t('-ntrans')
+
+    def get_min_nmisses_p2t(self):
+         return self.get_max_some_p2t('nmisses')
+
+
+    def get_max_safety_factor_p2t(self):
+         return self.get_max_some_p2t('-safety_factor')
+
+
+
+
+
+
 
     class Meta:
         ordering = ('ctime',)

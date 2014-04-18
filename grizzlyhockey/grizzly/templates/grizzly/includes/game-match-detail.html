@@ -186,11 +186,7 @@
                         {% for gtime in gamematch.gamematchgtime_set.all  %}
                             <tr>
                                 <td>
-                                    {% if gtime.time|date:"f" == "1" %}
-                                        60:00
-                                    {% else %}
-                                        {{ gtime.time|time:"i:s" }}
-                                    {% endif %}
+                                    {{gtime.minute|stringformat:"02d"}}:{{gtime.second|stringformat:"02d"}}
                                 </td>
                                 <td>
                                     {% with player=gtime.player  %}

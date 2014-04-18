@@ -268,11 +268,8 @@ if not ('LOGDIRTIME' in vars()):
     #LOGDIRTIME = strftime("%Y-%m-%d/%H-%M-%S", gmtime())
     LOGDIRTIME = strftime("%Y-%m-%d", gmtime())
 
-LOGDIR =  "/var/log/pybsadm/%s/%s" % (NODENAME, LOGDIRTIME)
+LOGDIR =  "/var/log/grizzlyhockey/%s/%s" % (NODENAME, LOGDIRTIME)
 
-#if DEBUG:
-
-LOGDIR =  "priv/logs/%s/%s" % (NODENAME, LOGDIRTIME)
 
 if not os.path.exists(LOGDIR):
     os.makedirs(LOGDIR)
@@ -287,7 +284,7 @@ LOGGING = {
     },
     'formatters': {
         'pybsadm_formater': {
-            'format':   '%(asctime)s %(levelname)s <%(process)d> '
+            'format':   '%(asctime)s %(levelname)s <%(process)d %(threadName)s> '
                         '%(message)s '
             #'format':   '%(levelname)s [%(asctime)s ] \n'
                         #'*  logger   = %(name)s \n'

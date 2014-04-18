@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 
 from django.db import models
 from abspers import AbsPers
@@ -67,9 +68,46 @@ class Player2Team(AbsObj):
         default=0
     )
 
+
+    # alter table grizzly_player2team add nmisses int(11) default null;
+    nmisses = models.IntegerField(
+        verbose_name=u"Голы",
+        blank=True,
+        null=True,
+        default=0
+    )
+
+
+    # alter table grizzly_player2team add goalminutes int(11) default null;
+    goalminutes = models.IntegerField(
+        verbose_name=u"",
+        blank=True,
+        null=True,
+        default=0
+    )
+
+
+
+    # alter table grizzly_player2team add safety_factor int(11) default null;
+    safety_factor = models.IntegerField(
+        verbose_name=u"safety_factor",
+        blank=True,
+        null=True,
+        default=0
+    )
+
     # alter table grizzly_player2team add ntrans int(11) default null;
     ntrans = models.IntegerField(
         verbose_name=u"Передачи",
+        blank=True,
+        null=True,
+        default=0
+    )
+
+
+    # alter table grizzly_player2team add ngoalsntrans int(11) default null;
+    ngoalsntrans = models.IntegerField(
+        verbose_name=u"Голы и Передачи",
         blank=True,
         null=True,
         default=0
@@ -97,6 +135,22 @@ class Player2Team(AbsObj):
             return x
         return 0
 
+    def get_nmisses(self):
+        if (self.player):
+            x = self.player.gamematchgoal_miss.filter().count()
+            return x
+        return 0
+
+
+    def get_goalminutes(self):
+        if (self.player):
+            minutes = sum([
+                gtime.get_diff_minute()
+                for gtime in self.player.gamematchgtime_set.all()
+            ])
+            return minutes
+        return 0
+
     def get_nfines(self):
         if (self.player):
             x = self.player.gamematchfine_set.filter(team = self.team).count()
@@ -109,13 +163,25 @@ class Player2Team(AbsObj):
             return x
         return 0
 
+    def get_safety_factor(self):
+        if(not self.goalminutes):
+            return None
+        return (self.nmisses / self.goalminutes) * 60
 
-    def reindex(self):
+
+    def pre_save_action(self):
         self.ngoals = self.get_ngoals()
+        self.nmisses =  self.get_nmisses()
+
         self.ntrans = self.get_ntrans()
         self.nfines = self.get_nfines()
         self.ngames = self.get_ngames()
-        self.save()
+        self.goalminutes = self.get_goalminutes()
+
+        self.safety_factor =  self.get_safety_factor()
+
+        self.ngoalsntrans = self.ngoals + self.ntrans
+
 
 
     class Meta:

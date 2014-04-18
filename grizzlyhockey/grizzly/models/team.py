@@ -135,7 +135,7 @@ class Team(AbsObj):
         res = self.nwins * 2 + self.ndraws
         return res
 
-    def _reindex(self):
+    def pre_save_action(self):
         self.nwins  = self.get_nwins()
         self.nloses = self.get_nloses()
         self.ndraws = self.get_ndraws()
@@ -143,20 +143,9 @@ class Team(AbsObj):
         self.npoints = self.get_npoints()
         self.nmisses = self.get_nmisses()
         self.ngoals = self.get_ngoals()
-        [p2t.reindex() for p2t in self.player2team_set.all()]
 
-
-    def reindex(self):
-        #>>> from grizzly.models import Team
-        #>>> [x.reindex() for x in Team.objects.all()]
-        
-        self._reindex()
-        self.save()
-
-
-    def save(self, *args, **kwargs):
-        self._reindex()
-        return super(Team, self).save(*args, **kwargs)
+    def async_save_action(self):
+        [p2t.async_resave() for p2t in self.player2team_set.all()]
 
 
     class Meta:

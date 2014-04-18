@@ -1,89 +1,218 @@
 {% load thumbnail %}
 {% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
-{% load cache %}
+
 {% with gamedivision=instance.gamedivision %}
 
-{% cache 500 gamedivision-plugin gamedivision %}
+
 <section>
     <a href="{% url game-division-detail pk=gamedivision.id %}">
         <h4>Дивизион «{{ gamedivision.name }}»</h4>
     </a>
-    Команды:
-    <table class="game-division-plugin-table">
-            <tr>
-                <th>&nbsp;
-                </th>
-                <th class="right">
-                    <span title="Игры"  class="text-default">
-                        И
-                    </span>
-                    &nbsp;
-                </th>
-                <th class="right">
-                    <span title="Победы" class="text-success">
-                        В
-                    </span>
-                    &nbsp;
-                </th>
-                <th class="right">
-                    <span title="Ничьи" class="text-info">
-                        Н
-                    </span>
-                    &nbsp;
-                </th>
-                <th class="right">
-                    <span title="Поражения" class="text-danger">
-                        П
-                    </span>
-                    &nbsp;
-                </th>
-                <th class="right">
-                    <span title="Очки" class="text-warning">
-                        О
-                    </span>
-                </th>
-            </tr>
-        {% for team in gamedivision.teams.all %}
-            <tr>
-                <td class="game-division-plugin-table-name">
-                    <a href="{% url team-detail pk=team.id %}">
-                        «{{team.name}}»
-                    </a>
-                    &nbsp;
-                </td>
-                <td class="right">
-                    <span title="Игры"  class="text-default">
-                        {{team.ngames}}
-                    </span>
-                    &nbsp;
-                </td>
-                <td class="right">
-                    <span title="Победы" class="text-success">
-                        {{team.nwins}}
-                    </span>
-                    &nbsp;
-                </td>
-                <td class="right">
-                    <span title="Ничьи" class="text-info">
-                        {{team.ndraws}}
-                    </span>
-                    &nbsp;
-                </td>
-                <td class="right">
-                    <span title="Поражения" class="text-danger">
-                        {{team.nloses}}
-                    </span>
-                    &nbsp;
-                </td>
-                <td class="right">
-                    <span title="Очки" class="text-warning">
-                        {{team.npoints}}
-                    </span>
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
+
+
+    <div class="row">
+        <div class="col-md-12 col-lg-12">
+            Команды:
+            <table class="game-division-plugin-table">
+                <tr>
+                    <th>&nbsp;
+                    </th>
+                    <th class="center">
+                        <span title="Игры"  class="text-default visible-lg">
+                            Игр
+                        </span>
+                        <span title="Игры"  class="text-default hidden-lg">
+                            И
+                        </span>
+                        &nbsp;
+                    </th>
+                    <th class="center">
+                        <span title="Победы" class="text-success visible-lg">
+                            Выиграли
+                        </span>
+                        <span title="Игры"  class="text-success hidden-lg">
+                            В
+                        </span>
+                        &nbsp;
+                    </th>
+                    <th class="center">
+                        <span title="Ничьи" class="text-info visible-lg">
+                            Ничьи
+                        </span>
+                        <span title="Игры"  class="text-info hidden-lg">
+                            Н
+                        </span>
+                        &nbsp;
+                    </th>
+                    <th class="center">
+                        <span title="Поражения" class="text-danger visible-lg">
+                            Проиграли
+                        </span>
+                        <span title="Игры"  class="text-danger hidden-lg">
+                            П
+                        </span>
+                        &nbsp;
+                    </th>
+                    <th class="center">
+                        <span title="Очки" class="text-warning visible-lg">
+                            Очки
+                        </span>
+                        <span title="Игры"  class="text-warning hidden-lg">
+                            O
+                        </span>
+                    </th>
+                </tr>
+                {% for team in gamedivision.teams.all %}
+                    <tr>
+                        <td class="game-division-plugin-table-name">
+                            <a href="{% url team-detail pk=team.id %}">
+                                «{{team.name}}»
+                            </a>
+                            &nbsp;
+                        </td>
+                        <td class="center">
+                            <span title="Игры"  class="text-default">
+                                {{team.ngames}}
+                            </span>
+                            &nbsp;
+                        </td>
+                        <td class="center">
+                            <span title="Победы" class="text-success">
+                                {{team.nwins}}
+                            </span>
+                            &nbsp;
+                        </td>
+                        <td class="center">
+                            <span title="Ничьи" class="text-info">
+                                {{team.ndraws}}
+                            </span>
+                            &nbsp;
+                        </td>
+                        <td class="center">
+                            <span title="Поражения" class="text-danger">
+                                {{team.nloses}}
+                            </span>
+                            &nbsp;
+                        </td>
+                        <td class="center">
+                            <span title="Очки" class="text-warning">
+                                {{team.npoints}}
+                            </span>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-md-12 col-lg-12">
+            <hr/>
+        </div>
+        <div class="col-md-12 col-lg-12">
+            <p class="row">
+                <div class="col-md-6 col-lg-3">
+                    {% with player=gamedivision.get_max_ngoalsntrans_p2t.player %}
+                        <p class="center">
+                            Лучший бомбардир
+                            <a title="Лучший бомбардир" href="{% url player-detail pk=player.id %}">
+                                <div class="center" >
+                                    {% if player.image %}
+                                        <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 crop %}"
+                                            {% if player.image.alt %}
+                                                alt="{{ player.image.alt }}"
+                                            {% endif %}
+                                        />
+                                    {% else %}
+                                        <div class="img-null p128x128 img-thumbnail">
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="center" >
+                                    {{player.second_name}}
+                                    {{player.first_name}}
+                                </div>
+                            </a>
+                        </p>
+                    {% endwith %}
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    {% with player=gamedivision.get_max_ngoals_p2t.player %}
+                        <p class="center">
+                            Лучший снайпер
+                            <a title="Лучший снайпер" href="{% url player-detail pk=player.id %}">
+                                <div class="center" >
+                                    {% if player.image %}
+                                        <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 crop %}"
+                                            {% if player.image.alt %}
+                                                alt="{{ player.image.alt }}"
+                                            {% endif %}
+                                        />
+                                    {% else %}
+                                        <div class="img-null p128x128 img-thumbnail">
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="center" >
+                                    {{player.second_name}}
+                                    {{player.first_name}}
+                                </div>
+                            </a>
+                        </p>
+                    {% endwith %}
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    {% with player=gamedivision.get_max_ntrans_p2t.player %}
+                        <p class="center">
+                            Лучший ассистент
+                            <a title="Лучший ассистент" href="{% url player-detail pk=player.id %}">
+                                <div class="center" >
+                                    {% if player.image %}
+                                        <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 crop %}"
+                                            {% if player.image.alt %}
+                                                alt="{{ player.image.alt }}"
+                                            {% endif %}
+                                        />
+                                    {% else %}
+                                        <div class="img-null p128x128 img-thumbnail">
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="center" >
+                                    {{player.second_name}}
+                                    {{player.first_name}}
+                                </div>
+                            </a>
+                        </p>
+                    {% endwith %}
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    {% with player=gamedivision.get_min_nmisses_p2t.player %}
+                        <p class="center">
+                            Лучший вратарь
+                            <a title="Лучший вратарь" href="{% url player-detail pk=player.id %}">
+                                <div class="center" >
+                                    {% if player.image %}
+                                        <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 crop %}"
+                                            {% if player.image.alt %}
+                                                alt="{{ player.image.alt }}"
+                                            {% endif %}
+                                        />
+                                    {% else %}
+                                        <div class="img-null p128x128 img-thumbnail">
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="center" >
+                                    {{player.second_name}}
+                                    {{player.first_name}}
+                                </div>
+                            </a>
+                        </p>
+                    {% endwith %}
+                </div>
+            </p>
+        </div>
+    </div>
 </section>
-{% endcache %}
+
+
 
 {% endwith %}

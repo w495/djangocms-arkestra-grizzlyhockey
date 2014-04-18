@@ -3,7 +3,6 @@
 from django.db import models
 from absobj import AbsObj
 
-
 class GameMatchFine (AbsObj):
 
     gamematch = models.ForeignKey(
@@ -59,11 +58,10 @@ class GameMatchFine (AbsObj):
         verbose_name=u"тип"
     )
 
+    def async_save_action(self, *args, **kwargs):
+        self.fine_player.resave_player2team_set()
 
-    def save(self, *args, **kwargs):
-        self.team.reindex()
-        self.fine_player.reindex()
-        return super(GameMatchFine, self).save(*args, **kwargs)
+
 
 
     class Meta:
@@ -71,3 +69,5 @@ class GameMatchFine (AbsObj):
         app_label = "grizzly"
         verbose_name = "Игра: матч: штраф"
         verbose_name_plural = "Игры: матчи: штрафы"
+
+

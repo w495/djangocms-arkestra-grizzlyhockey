@@ -248,6 +248,10 @@ class GameMatchGoalAdminInline(AbsObjTabularInline):
     model = GameMatchGoal
     exclude = ('description', 'detail', 'image', 'name')
 
+
+    readonly_fields = ('goal_keeper',)
+
+
     related_search_fields = {
         'team': ('name',),
         'gamematch': {
@@ -336,6 +340,7 @@ class GameMatchFineAdminInline(AbsObjTabularInline):
 class GameMatchGTimeAdminInline(AbsObjTabularInline):
     model = GameMatchGTime
     exclude = ('description', 'detail', 'image', 'name', 'a', 'b')
+    readonly_fields = ('start_minute','start_second','stop_minute','stop_second')
 
 
     def formfield_for_foreignkey(self, db_field, request=None, **kwargs):
@@ -466,7 +471,6 @@ class GameMatchGoalAdmin(AbsObjAdmin):
     list_display = (
         'id',
         'team',
-        'time',
         'goalno',
         'gamematch',
         'goal_player',
@@ -479,7 +483,6 @@ class GameMatchGoalAdmin(AbsObjAdmin):
     )
     search_fields = (
         'team',
-        'time',
         'goalno',
         'gamematch',
         'goal_player',
@@ -493,17 +496,11 @@ class GameMatchGoalAdmin(AbsObjAdmin):
 class GameMatchGTimeAdmin(AbsObjAdmin):
     list_display = (
         'id',
-        'gamematch',
-        'a',
-        'b',
-        'time'
+        'gamematch'
     )
     list_filter = tuple()
     search_fields = (
-        'gamematch'
-        'a',
-        'b',
-        'time'
+        'gamematch',
     )
 
 class GameMatchPenaltyAdmin(AbsObjAdmin):
