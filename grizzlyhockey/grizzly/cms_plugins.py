@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+import operator
+import datetime
+
+from django.db.models import Q
+
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 
@@ -20,6 +25,9 @@ from grizzly.models import GameMatchPlugin      as GameMatchPluginModel
 from grizzly.models import GameMatchPluginMany  as GameMatchPluginManyModel
 
 from grizzly.models import GameMatch
+
+from grizzly.models import Player
+
 
 
 from django.utils.translation import ugettext as _
@@ -111,8 +119,6 @@ class GameMatchPlugin(CMSPluginBase):
         context.update({'instance':instance})
         return context
 
-import datetime
-
 class GameMatchSchedulePlugin(CMSPluginBase):
     name = _(u"Гризли: расписание матчей") #
     render_template = "grizzly/plugins/gamematchschedule.html"
@@ -132,6 +138,50 @@ class GameMatchSchedulePlugin(CMSPluginBase):
         context['instance'] = instance
         return context
 
+
+class PlayerBirthdayPlugin(CMSPluginBase):
+    name = _(u"Гризли: Дни рождения") #
+    render_template = "grizzly/plugins/playerbirthday.html"
+    def render(self, context, instance, placeholder):
+        context.update({'instance':instance})
+        return context
+
+    def render(self, context, instance, placeholder):
+        players =  self.birthdays_within()
+        instance.players = players
+        context['instance'] = instance
+        return context
+
+    def birthdays_within(self, days = 10):
+
+        date = datetime.datetime.now()
+
+        now = date - datetime.timedelta(1)
+        then = date + datetime.timedelta(days)
+
+        # Build the list of month/day tuples.
+        monthdays = [(now.month, now.day)]
+        while now <= then:
+            monthdays.append((now.month, now.day))
+            now += datetime.timedelta(days=1)
+
+        # Tranform each into queryset keyword args.
+        monthdays = (dict(zip(("birthday__month", "birthday__day"), t))
+                    for t in monthdays)
+
+        # Compose the djano.db.models.Q objects together for a single query.
+        query = reduce(operator.or_, (Q(**d) for d in monthdays))
+
+        # Run the query.
+
+        players = [player for player in Player.objects.filter(query)]
+
+        players = sorted(players, key = lambda x: x.birthday.month * 100 +  x.birthday.day)
+
+        return players
+
+
+plugin_pool.register_plugin(PlayerBirthdayPlugin)
 plugin_pool.register_plugin(TeamPlugin)
 plugin_pool.register_plugin(TeamPluginMany)
 plugin_pool.register_plugin(PlayerPlugin)
