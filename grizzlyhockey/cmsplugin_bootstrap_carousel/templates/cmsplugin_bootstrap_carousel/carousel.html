@@ -17,7 +17,7 @@ $(window).load(function() {
 </script>
 {% endaddtoblock %}
 
-<div id="{{ instance.domid }}" class="carousel slide">
+<div id="{{ instance.domid }}" class="carousel slide hidden-xs">
     <ol class="carousel-indicators">
         {% for item in instance.carouselitem_set.all %}
             <li data-target="#{{ instance.domid }}" data-slide-to="{{forloop.counter0}}"  class="{% if forloop.first %}active {% endif %}" ></li>
@@ -38,9 +38,9 @@ $(window).load(function() {
         {% endfor %}
     </div>
     <a class="left carousel-control" href="#{{ instance.domid }}" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left"></span>
+        <span class="glyphicon"></span>
     </a>
     <a class="right carousel-control" href="#{{ instance.domid }}" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right"></span>
+        <span class="glyphicon"></span>
     </a>
 </div>

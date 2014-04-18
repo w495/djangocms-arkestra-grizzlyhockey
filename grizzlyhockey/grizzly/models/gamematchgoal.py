@@ -94,16 +94,25 @@ class GameMatchGoal (AbsObj):
 
     def pre_save_action(self, *args, **kwargs):
 
-        gtimes = [
-            gtime
-            for gtime in self.gamematch.gamematchgtime_set.filter(
-                start_minute__lt = self.minute,
-                stop_minute__gt = self.minute,
-            ).exclude(team = self.team)
-        ]
-
-        if gtimes:
-            self.goal_keeper = gtimes[0].player
+        if(self.minute):
+            if(self.team):
+                gtimes = [
+                    gtime
+                    for gtime in self.gamematch.gamematchgtime_set.filter(
+                        start_minute__lt = self.minute,
+                        stop_minute__gt = self.minute,
+                    ).exclude(team = self.team)
+                ]
+            else:
+                gtimes = [
+                    gtime
+                    for gtime in self.gamematch.gamematchgtime_set.filter(
+                        start_minute__lt = self.minute,
+                        stop_minute__gt = self.minute,
+                    )
+                ]
+            if gtimes:
+                self.goal_keeper = gtimes[0].player
 
 
     def async_save_action(self, *args, **kwargs):
