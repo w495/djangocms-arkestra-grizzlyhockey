@@ -22,7 +22,7 @@ class GameMatchGoal (AbsObj):
     )
 
     #alter table  grizzly_gamematchgoal add `minute` int(11) default null;
-    #update grizzly_gamematchgoal ste minute = minute(time);
+    #update grizzly_gamematchgoal set minute = minute(time);
     minute = models.IntegerField(
         blank = True,
         null = True,
