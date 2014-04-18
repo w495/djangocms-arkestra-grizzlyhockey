@@ -1,0 +1,37 @@
+{% load thumbnail %}
+
+<aside class="hidden-sm hidden-xs birthday-plugin">
+    <header>
+        <h4>Дни рождения</h4>
+    </header>
+    <hr/>
+    <section class="row">
+        <ul>
+        {% for player in instance.players %}
+            <li class="col-lg-12 center birthday-item">
+                <a  href="{% url player-detail pk=player.id %}">
+                    <div class="center" >
+                        {% if player.image %}
+                            <img  class="img-circle img-thumbnail" src="{% thumbnail player.image 150x150 crop %}"
+                                {% if player.image.alt %}
+                                    alt="{{ player.image.alt }}"
+                                {% endif %}
+                            />
+                        {% else %}
+                            <div class="img-null p150x150 img-thumbnail">
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="center" >
+                        {{player.birthday}}
+                    </div>
+                    <div class="center" >
+                        {{player.second_name}}
+                        {{player.first_name}}
+                    </div>
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+    </section>
+</aside>
