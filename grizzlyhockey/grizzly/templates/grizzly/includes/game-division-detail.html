@@ -8,61 +8,63 @@
 
     <div class="row">
         <div class="col-lg-12">
-    <section>
-        <header>
-            <h3>
-                Положение команд
-            </h3>
-        </header>
-        <table class="table table-bordered table-striped sortable">
-            <thead>
-                <tr>
-                    <th class="right"  >Команды</th>
-                    <th class="center" > Игр </th>
-                    <th class="center"> Выиграли </th>
-                    <th class="center"> Ничьи </th>
-                    <th class="center"> Проиграли </th>
-                    <th class="center"> Забитые </th>
-                    <th class="center"> Пропущенные </th>
-                    <th class="center" > Очки </th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for team in gamedivision.teams.all %}
-                    <tr>
-                        <td class="right" >
-                            <a href="{% url team-detail pk=team.id %}">
-                                «{{team.name}}»
-                            </a>
-                        </td>
-                        <td class="center" >
-                            {{team.ngames}}
-                        </td>
-                        <td class="center">
-                            {{team.nwins}}
-                        </td>
-                        <td class="center">
-                            {{team.ndraws}}
-                        </td>
-                        <td class="center">
-                            {{team.nloses}}
-                        </td>
-                        <td class="center">
-                            {{team.ngoals}}
-                        </td>
-                        <td class="center">
-                            {{team.nmisses}}
-                        </td>
-                        <td class="center">
-                            {{team.npoints}}
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </section>
+            <section>
+                <header>
+                    <h3>
+                        Положение команд
+                    </h3>
+                </header>
+                <table class="table table-bordered table-striped sortable">
+                    <thead>
+                        <tr>
+                            <th class="right"  >Команды</th>
+                            <th class="center" > Игр </th>
+                            <th class="center"> Выиграли </th>
+                            <th class="center"> Ничьи </th>
+                            <th class="center"> Проиграли </th>
+                            <th class="center"> Забитые </th>
+                            <th class="center"> Пропущенные </th>
+                            <th class="center" > Очки </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for team in gamedivision.teams.all %}
+                            <tr>
+                                <td class="right" >
+                                    <a href="{% url team-detail pk=team.id %}">
+                                        «{{team.name}}»
+                                    </a>
+                                </td>
+                                <td class="center" >
+                                    {{team.ngames}}
+                                </td>
+                                <td class="center">
+                                    {{team.nwins}}
+                                </td>
+                                <td class="center">
+                                    {{team.ndraws}}
+                                </td>
+                                <td class="center">
+                                    {{team.nloses}}
+                                </td>
+                                <td class="center">
+                                    {{team.ngoals}}
+                                </td>
+                                <td class="center">
+                                    {{team.nmisses}}
+                                </td>
+                                <td class="center">
+                                    {{team.npoints}}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        </div>
     </div>
-    </div>
+
+
     <div class="row">
         <div class="col-lg-12">
             <section>
@@ -83,6 +85,131 @@
                 {% endfor %}
                 </ul>
             </section>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <header>
+                <h3>
+                    Положение игроков
+                </h3>
+            </header>
+
+
+            <table class="table table-bordered table-striped sortable">
+                <thead>
+                    <tr>
+                        <th class="center" >Игрок</th>
+                        <th class="center" >Игры</th>
+                        <th class="center" >Голы</th>
+                        <th class="center" >Передачи</th>
+                        <th class="center visible-lg" >Голы и Передачи</th>
+                        <!--
+                            <th class="center visible-lg visible-md" >Пропущенных голов</th>
+                            <th class="center visible-lg visible-md" >Минут на воротах</th>
+                            <th class="center visible-lg visible-md" >Фактор надежности</th>
+                        -->
+                        <th class="center visible-lg" >Удаления</th>
+                        <th class="center">Амплуа</th>
+                        <th class="center" >Команда</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p2t in gamedivision.get_p2t %}
+                        <tr>
+                            <td class="players-table-detail-text">
+                                <a href="{% url player-detail pk=p2t.player.id %}">
+                                    {{p2t.game_number}},
+                                    {{p2t.player.second_name}}
+                                    {{p2t.player.first_name}}
+                                </a>
+                                <div>
+                                {% if p2t.image %}
+                                    <a href="{% url player-detail pk=p2t.player.id %}">
+                                        <img  class="img-thumbnail" src="{% thumbnail p2t.image 48x48  crop %}"
+                                            {% if player.image.alt %}
+                                                alt="{{ p2t.image.alt }}"
+                                            {% endif %}
+                                        />
+                                    </a>
+                                {% else %}
+                                    <div class="img-null p48x48 img-thumbnail">
+                                    </div>
+                                {% endif %}
+                                </div>
+
+                            </td>
+
+
+                            <td class="players-table-detail-number">
+                                {{p2t.ngames}}
+                            </td>
+
+                            <td class="players-table-detail-number">
+                                {{p2t.ngoals}}
+                            </td>
+                            <td class="players-table-detail-number">
+                                {{p2t.ntrans}}
+                            </td>
+
+
+                            <td class="players-table-detail-number visible-lg">
+                                {{p2t.ngoalsntrans}}
+                            </td>
+
+                            <!--
+                                <td class="players-table-detail-number visible-lg visible-md">
+                                    {% if p2t.safety_factor %}
+                                        {{p2t.nmisses}}
+                                    {% endif%}
+                                </td>
+                                <td class="players-table-detail-number visible-lg visible-md">
+                                    {% if p2t.safety_factor %}
+                                        {{p2t.goalminutes}}
+                                    {% endif%}
+                                </td>
+                                <td class="players-table-detail-number visible-lg visible-md">
+                                    {{p2t.safety_factor|default_if_none:""}}
+                                </td>
+                            -->
+
+                            <td class="players-table-detail-number visible-lg">
+                                {{p2t.nfines}}
+                            </td>
+
+                            <td class="players-table-detail-text" >
+                                {{p2t.role}}
+                            </td>
+                            <td class="players-table-detail-text">
+                                {% with team=p2t.team %}
+                                    <a href="{% url team-detail pk=team.id %}">
+                                        <div>
+                                            {{team.name}}
+                                        </div>
+                                        <div>
+                                            {% if team.image %}
+                                                <img  class="img-thumbnail" src="{% thumbnail team.image 48x48 %}"
+                                                    {% if team.image.alt %}
+                                                        alt="{{ team.image.alt }}"
+                                                    {% endif %}
+                                                />
+                                            {% else %}
+                                                <div class="img-null p48x48 img-thumbnail">
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </a>
+                                {% endwith %}
+
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 

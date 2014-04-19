@@ -1,88 +1,180 @@
 {% load thumbnail %}
+{% load sekizai_tags %}
 {% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
 
 <section>
-
+    <br/>
     <ul class="media-list">
     {% for gamedivision in gamedivision_list %}
         <li class="media">
             <div class="media-body">
-                <h4 class="media-heading">
-                    <a href="{% url game-division-detail pk=gamedivision.id %}">
-                        {{gamedivision.name}}
-                    </a>
-                </h4>
-                Команды:
-                <table class="game-division-list-table">
-                    <tr>
-                        <th>&nbsp;
-                        </th>
-                        <th class="right">
-                            <span title="Игры"  class="text-default">
-                                И
-                            </span>
-                            &nbsp;
-                        </th>
-                        <th class="right">
-                            <span title="Победы" class="text-success">
-                                В
-                            </span>
-                            &nbsp;
-                        </th>
-                        <th class="right">
-                            <span title="Ничьи" class="text-info">
-                                Н
-                            </span>
-                            &nbsp;
-                        </th>
-                        <th class="right">
-                            <span title="Поражения" class="text-danger">
-                                П
-                            </span>
-                            &nbsp;
-                        </th>
-                        <th class="right">
-                            <span title="Очки" class="text-warning">
-                                О
-                            </span>
-                        </th>
-                    </tr>
-                    {% for team in gamedivision.teams.all|dictsort:"ctime" %}
-                        <tr>
-                            <td>
-                                <a href="{% url team-detail pk=team.id %}">
-                                    «{{team.name}}»
-                                </a>
-                                &nbsp;
-                            </td>
-                            <td class="right">
-                                <span title="Игры"  class="text-default">
-                                    {{team.ngames}}
-                                </span>
-                                &nbsp;
-                            </td>
-                            <td class="right">
-                                <span title="Победы" class="text-success">
-                                    {{team.nwins}}
-                                </span>
-                                &nbsp;
-                            </td>
-                            <td class="right">
-                                <span title="Ничьи" class="text-info">
-                                    {{team.ndraws}}
-                                </span>
-                                &nbsp;
-                            </td>
-                            <td class="right">
-                                <span title="Поражения" class="text-danger">{{team.nloses}}</span>
-                                &nbsp;
-                            </td>
-                            <td class="right">
-                                <span title="Очки" class="text-warning">{{team.npoints}}</span>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </table>
+                <header>
+                    <h3 class="media-heading">
+                        <a href="{% url game-division-detail pk=gamedivision.id %}">
+                            {{gamedivision.name}}
+                        </a>
+                    </h3>
+                </header>
+                <br/>
+                <div class="row">
+                    <div class="col-md-12 col-lg-12">
+
+                        <table class="table table-bordered table-striped sortable">
+                            <thead>
+                                <tr>
+                                    <th class="right"  >Команды</th>
+                                    <th class="center" > Игр </th>
+                                    <th class="center"> Выиграли </th>
+                                    <th class="center"> Ничьи </th>
+                                    <th class="center"> Проиграли </th>
+                                    <th class="center"> Забитые </th>
+                                    <th class="center"> Пропущенные </th>
+                                    <th class="center" > Очки </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for team in gamedivision.teams.all %}
+                                    <tr>
+                                        <td class="right" >
+                                            <a href="{% url team-detail pk=team.id %}">
+                                                «{{team.name}}»
+                                            </a>
+                                        </td>
+                                        <td class="center" >
+                                            {{team.ngames}}
+                                        </td>
+                                        <td class="center">
+                                            {{team.nwins}}
+                                        </td>
+                                        <td class="center">
+                                            {{team.ndraws}}
+                                        </td>
+                                        <td class="center">
+                                            {{team.nloses}}
+                                        </td>
+                                        <td class="center">
+                                            {{team.ngoals}}
+                                        </td>
+                                        <td class="center">
+                                            {{team.nmisses}}
+                                        </td>
+                                        <td class="center">
+                                            {{team.npoints}}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div class="col-md-12 col-lg-12">
+                        <hr/>
+                    </div>
+                    <div class="col-md-12 col-lg-12">
+                        <p class="row">
+                            <div class="col-lg-3 col-md-6  col-sm-12 col-xs-6">
+                                {% with player=gamedivision.get_max_ngoalsntrans_p2t.player %}
+                                    <p class="center">
+                                        Лучший бомбардир
+                                        <a title="Лучший бомбардир" href="{% url player-detail pk=player.id %}">
+                                            <div class="center" >
+                                                {% if player.image %}
+                                                    <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 crop %}"
+                                                        {% if player.image.alt %}
+                                                            alt="{{ player.image.alt }}"
+                                                        {% endif %}
+                                                    />
+                                                {% else %}
+                                                    <div class="img-null p128x128 img-thumbnail">
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="center" >
+                                                {{player.second_name}}
+                                                {{player.first_name}}
+                                            </div>
+                                        </a>
+                                    </p>
+                                {% endwith %}
+                            </div>
+                            <div class="col-lg-3 col-md-6  col-sm-12 col-xs-6">
+                                {% with player=gamedivision.get_max_ngoals_p2t.player %}
+                                    <p class="center">
+                                        Лучший снайпер
+                                        <a title="Лучший снайпер" href="{% url player-detail pk=player.id %}">
+                                            <div class="center" >
+                                                {% if player.image %}
+                                                    <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 crop %}"
+                                                        {% if player.image.alt %}
+                                                            alt="{{ player.image.alt }}"
+                                                        {% endif %}
+                                                    />
+                                                {% else %}
+                                                    <div class="img-null p128x128 img-thumbnail">
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="center" >
+                                                {{player.second_name}}
+                                                {{player.first_name}}
+                                            </div>
+                                        </a>
+                                    </p>
+                                {% endwith %}
+                            </div>
+                            <div class="col-lg-3 col-md-6  col-sm-12 col-xs-6">
+                                {% with player=gamedivision.get_max_ntrans_p2t.player %}
+                                    <p class="center">
+                                        Лучший ассистент
+                                        <a title="Лучший ассистент" href="{% url player-detail pk=player.id %}">
+                                            <div class="center" >
+                                                {% if player.image %}
+                                                    <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 crop %}"
+                                                        {% if player.image.alt %}
+                                                            alt="{{ player.image.alt }}"
+                                                        {% endif %}
+                                                    />
+                                                {% else %}
+                                                    <div class="img-null p128x128 img-thumbnail">
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="center" >
+                                                {{player.second_name}}
+                                                {{player.first_name}}
+                                            </div>
+                                        </a>
+                                    </p>
+                                {% endwith %}
+                            </div>
+                            <div class="col-lg-3 col-md-6  col-sm-12 col-xs-6">
+                                {% with player=gamedivision.get_min_nmisses_p2t.player %}
+                                    <p class="center">
+                                        Лучший вратарь
+                                        <a title="Лучший вратарь" href="{% url player-detail pk=player.id %}">
+                                            <div class="center" >
+                                                {% if player.image %}
+                                                    <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 crop %}"
+                                                        {% if player.image.alt %}
+                                                            alt="{{ player.image.alt }}"
+                                                        {% endif %}
+                                                    />
+                                                {% else %}
+                                                    <div class="img-null p128x128 img-thumbnail">
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="center" >
+                                                {{player.second_name}}
+                                                {{player.first_name}}
+                                            </div>
+                                        </a>
+                                    </p>
+                                {% endwith %}
+                            </div>
+                        </p>
+                    </div>
+                </div>
                 {% if gamedivision.detail %}
                     <p>{{gamedivision.detail}}</p>
                 {% endif %}
@@ -94,3 +186,13 @@
 
 </section>
 
+
+
+{% addtoblock "js" %}
+<script src="{{ STATIC_URL }}j/moment.min.js" ></script>
+<script src="{{ STATIC_URL }}j/bootstrap-sortable.js" ></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $.bootstrapSortable(true)
+});
+{% endaddtoblock %}

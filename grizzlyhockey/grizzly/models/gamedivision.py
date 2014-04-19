@@ -41,6 +41,10 @@ class GameDivision(AbsGameObj):
         objs = [x for x in Player2Team.objects.filter(team__in = teams).order_by(*args)]
         return objs
 
+    def get_p2t(self):
+        objs = self.get_some_p2t('-ngoalsntrans')
+        return objs
+
     def get_max_some_p2t(self, *args):
         objs = self.get_some_p2t(*args)
         if(objs):

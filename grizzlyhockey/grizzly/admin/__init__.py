@@ -24,6 +24,9 @@ from grizzly.models import GameDivision
 from grizzly.models import GameTournamentFormat
 from grizzly.models import GameTournamentSystem
 from grizzly.models import GameTournamentRegular
+
+from grizzly.models import GameTournamentPlayOff
+
 from grizzly.models import GameMatch
 
 from grizzly.models import GameMatch
@@ -548,9 +551,30 @@ class GameMatchFineAdmin(AbsObjAdmin):
     )
 
 
-class GameMatchAdminInline(AbsObjTabularInline):
+class GameMatchAdminInlineR(AbsObjTabularInline):
     model = GameMatch
-    exclude = ('description', 'detail', 'image', 'name', 'stop_datetime')
+    exclude = (
+        'description',
+        'detail',
+        'image',
+        'name',
+        'stop_datetime',
+        'gametournamentplayoff',
+        'finaltype'
+    )
+
+
+class GameMatchAdminInlineP(AbsObjTabularInline):
+    model = GameMatch
+    exclude = (
+        'description',
+        'detail',
+        'image',
+        'name',
+        'stop_datetime',
+        'gametournamentregular',
+        'tourno'
+    )
 
 
 class GameTournamentRegularAdmin(AbsButtonableModelAdmin, AbsObjAdmin):
@@ -582,7 +606,7 @@ class GameTournamentRegularAdmin(AbsButtonableModelAdmin, AbsObjAdmin):
     ]
 
     inlines = [
-        GameMatchAdminInline,
+        GameMatchAdminInlineR,
     ]
 
 
@@ -744,6 +768,38 @@ class GameTournamentRegularAdmin(AbsButtonableModelAdmin, AbsObjAdmin):
                         S[i] = {s: j}
             print
 
+
+
+
+class GameTournamentPlayOffAdmin(AbsObjAdmin):
+    list_display = (
+        'id',
+        'name',
+        'description',
+        'start_datetime',
+        'stop_datetime',
+    )
+
+
+    list_filter = tuple()
+
+    search_fields = (
+        'id',
+        'name',
+        'description',
+        'start_datetime',
+        'stop_datetime',
+    )
+    filter_horizontal = (
+        'teams',
+        'gamedivisions',
+    )
+
+    inlines = [
+        GameMatchAdminInlineP,
+    ]
+
+
 admin.site.register(JudgeType, JudgeTypeAdmin)
 admin.site.register(Judge, JudgeAdmin)
 admin.site.register(InsuranceType, InsuranceTypeAdmin)
@@ -777,6 +833,9 @@ admin.site.register(GameSeason,             GameSeasonAdmin)
 admin.site.register(GameDivision,           GameDivisionAdmin)
 
 admin.site.register(GameTournamentRegular,  GameTournamentRegularAdmin)
+
+admin.site.register(GameTournamentPlayOff,  GameTournamentPlayOffAdmin)
+
 
 admin.site.register(GameTournamentSystem,   GameTournamentSystemAdmin)
 admin.site.register(GameTournamentFormat,   GameTournamentFormatAdmin)

@@ -52,17 +52,15 @@
                             <a href="{% url rink-detail pk=gamematch.rink.id %}"> {{gamematch.rink}} </a>
                         </p>
                     {% endif %}
-                    {% if gamematch.score_a %}
+                    <a href="{% url game-match-detail pk=gamematch.id %}">
                         <span>
-                            {{gamematch.score_a}}
+                            {{gamematch.score_a|default_if_none:"?"}}
                         </span>
-                    {% endif %}
-                    <span>&nbsp;:&nbsp;</span>
-                    {% if gamematch.score_b %}
+                        <span>&nbsp;:&nbsp;</span>
                         <span>
-                            {{gamematch.score_b}}
+                            {{gamematch.score_b|default_if_none:"?"}}
                         </span>
-                    {% endif %}
+                    </a>
                 </td>
                 <td class="col-md-4 center">
                     {% with team=gamematch.team_b  %}

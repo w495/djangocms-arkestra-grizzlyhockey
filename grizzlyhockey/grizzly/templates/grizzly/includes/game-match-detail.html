@@ -34,17 +34,13 @@
         </div>
         <div class="col-sm-2 center scorew">
             <p class="score">
-                {% if gamematch.score_a %}
-                    <span>
-                        {{gamematch.score_a}}
-                    </span>
-                {% endif %}
+                <span>
+                    {{gamematch.score_a|default_if_none:"?"}}
+                </span>
                 <span>&nbsp;:&nbsp;</span>
-                {% if gamematch.score_b %}
-                    <span>
-                        {{gamematch.score_b}}
-                    </span>
-                {% endif %}
+                <span>
+                    {{gamematch.score_b|default_if_none:"?"}}
+                </span>
             </p>
         </div>
         <div class="col-sm-5 center">

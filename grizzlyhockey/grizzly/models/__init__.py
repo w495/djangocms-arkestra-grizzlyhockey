@@ -38,6 +38,8 @@ from trainer        import Trainer
 from rink           import Rink
 from team           import Team
 
+from finaltype      import FinalType
+
 from rinkschedule   import RinkSchedule
 from teamschedule   import TeamSchedule
 from teamplugin     import TeamPlugin
@@ -55,6 +57,8 @@ from gamedivisionpluginmany import GameDivisionPluginMany
 from gametournamentformat   import GameTournamentFormat
 from gametournamentsystem   import GameTournamentSystem
 
+
+from gametournamentplayoff              import GameTournamentPlayOff
 from gametournamentregular              import GameTournamentRegular
 from gametournamentregularplugin        import GameTournamentRegularPlugin
 from gametournamentregularpluginmany    import GameTournamentRegularPluginMany

@@ -73,45 +73,36 @@ class GameMatch (AbsGameObj):
     )
 
 
+    # alter table grizzly_gamematch add `finaltype_id` int(11) default null;
+
+    finaltype = models.ForeignKey(
+        'FinalType',
+        blank=True,
+        null=True,
+        verbose_name = u"финал"
+    )
+
+
     gametournamentregular = models.ForeignKey(
         'GameTournamentRegular',
         blank=True,
         null=True,
-        verbose_name=u"Турнир"
+        verbose_name=u"Турнир регулярный"
+    )
+
+
+    # alter table grizzly_gamematch add `gametournamentplayoff_id` int(11) DEFAULT NULL;
+
+    gametournamentplayoff = models.ForeignKey(
+        'GameTournamentPlayOff',
+        blank=True,
+        null=True,
+        verbose_name=u"Турнир play оff"
     )
 
     def async_save_action(self):
         self.team_a.resave()
         self.team_b.resave()
-
-
-    #def __str__(self):
-        #rink = ""
-        #if(self.rink):
-            #rink = "(%s)"%self.rink
-        #team_a = ""
-        #if(self.team_a):
-            #team_a = "«%s»"%self.team_a.name
-
-        #team_b = ""
-        #if(self.team_b):
-            #team_b = "«%s»"%self.team_b.name
-
-        #return u"%s (%s): «%s» × «%s»"%(self.name, rink, team_a, team_b)
-
-    #def __unicode__(self):
-        #rink = ""
-        #if(self.rink):
-            #rink = "(%s)"%self.rink
-        #team_a = ""
-        #if(self.team_a):
-            #team_a = "«%s»"%self.team_a.name
-
-        #team_b = ""
-        #if(self.team_b):
-            #team_b = "«%s»"%self.team_b.name
-
-        #return u"%s (%s): «%s» × «%s»"%(self.name, rink, team_a, team_b)
 
 
     class Meta:
