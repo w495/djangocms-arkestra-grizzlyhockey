@@ -7,6 +7,16 @@ class GameTournamentPlayOff (AbsGameObj):
     '''
 
         create table grizzly_gametournamentplayoff like grizzly_gametournamentregular;
+        create table grizzly_gametournamentplayoff_gamedivisions like grizzly_gametournamentregular_gamedivisions;
+        alter table grizzly_gametournamentplayoff_gamedivisions add `gametournamentplayoff_id` int(11);
+
+
+        create table grizzly_gametournamentplayoff_teams like grizzly_gametournamentregular_teams;
+
+        alter table grizzly_gametournamentplayoff_teams add `gametournamentplayoff_id` int(11);
+
+
+
 
     '''
     gamedivisions = models.ManyToManyField(
