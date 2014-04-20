@@ -154,6 +154,8 @@ class Team(AbsObj):
             '-nwins',
             '-ndraws',
             '-ngames',
+            '-ngoals',
+            'nmisses',
         ]
         app_label = "grizzly"
         verbose_name = "команду"
