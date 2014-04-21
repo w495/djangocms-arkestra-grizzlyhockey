@@ -1,3 +1,5 @@
+{% load mathfilters %}
+
 {% load thumbnail %}
 {% load sekizai_tags %}
 {% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
@@ -152,7 +154,7 @@
                                     {{p2t.goalminutes}}
                                 </td>
                                 <td title="Фактор надежности"  class="players-table-detail-number visible-lg visible-md">
-                                    {{p2t.safety_factor|default_if_none:"x"}}
+                                    {{p2t.safety_factor|div:100|stringformat:"2.2f" }}
                                 </td>
 
                                 <td title="Команда" class="players-table-detail-text">

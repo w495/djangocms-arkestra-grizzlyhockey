@@ -198,6 +198,7 @@ TEMPLATE_DIRS = (
 INSTALLED_APPS = (
 
     'autocomplete',
+    'mathfilters',
     
      # Django CMS applications
 

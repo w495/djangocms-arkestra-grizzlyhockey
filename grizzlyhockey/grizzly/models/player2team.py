@@ -166,7 +166,7 @@ class Player2Team(AbsObj):
     def get_safety_factor(self):
         if(not self.goalminutes):
             return None
-        return (self.nmisses * 60 * 100 / self.goalminutes) / 100
+        return (self.nmisses * 6000 / self.goalminutes)
 
 
     def pre_save_action(self):
