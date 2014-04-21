@@ -210,7 +210,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for p2t in gamedivision.get_p2t|dictsort:"ngoals"|slice:":5" %}
+                    {% for p2t in gamedivision.get_p2t|dictsortreversed:"ngoals"|slice:":5" %}
                         <tr>
                             <td title="Игрок" class="players-table-detail-text">
                                 <a href="{% url player-detail pk=p2t.player.id %}">
@@ -310,7 +310,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for p2t in gamedivision.get_p2t|dictsort:"ntrans"|slice:":5" %}
+                    {% for p2t in gamedivision.get_p2t|dictsortreversed:"ntrans"|slice:":5" %}
                         <tr>
                             <td title="Игрок" class="players-table-detail-text">
                                 <a href="{% url player-detail pk=p2t.player.id %}">
@@ -410,7 +410,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for p2t in gamedivision.get_p2t|dictsort:"ngoalsntrans"|slice:":5" %}
+                    {% for p2t in gamedivision.get_p2t|dictsortreversed:"ngoalsntrans"|slice:":5" %}
                         <tr>
                             <td title="Игрок" class="players-table-detail-text">
                                 <a href="{% url player-detail pk=p2t.player.id %}">
@@ -484,6 +484,8 @@
             </table>
         </div>
     </div>
+
+
 
     <div class="row">
         <div class="col-lg-12">
