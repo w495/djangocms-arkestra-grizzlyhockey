@@ -105,6 +105,9 @@
                         <th class="center" >Игрок</th>
                         <th class="center" >Игры</th>
 
+
+                        <th class="center visible-lg visible-md" >Пропущенных голов</th>
+
                         <th class="center visible-lg visible-md" >Минут на воротах</th>
                         <th class="center visible-lg visible-md" >Фактор надежности</th>
 
@@ -150,10 +153,6 @@
                                 </td>
                                 <td title="Фактор надежности"  class="players-table-detail-number visible-lg visible-md">
                                     {{p2t.safety_factor|default_if_none:"x"}}
-                                </td>
-
-                                <td title="Амплуа" class="players-table-detail-text" >
-                                    {{p2t.role}}
                                 </td>
 
                                 <td title="Команда" class="players-table-detail-text">
