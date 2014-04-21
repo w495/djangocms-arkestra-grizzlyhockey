@@ -85,10 +85,10 @@ class GameMatchGTime (AbsObj):
 
     def get_diff_minute(self):
 
-        if (not self.stop_minute):
+        if (None == self.stop_minute):
             return 0
 
-        if (not self.start_minute):
+        if (None == self.start_minute):
             return 0
 
         return abs(self.stop_minute - self.start_minute)
