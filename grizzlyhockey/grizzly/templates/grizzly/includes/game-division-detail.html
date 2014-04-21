@@ -107,11 +107,11 @@
                         <th class="center" >Голы</th>
                         <th class="center" >Передачи</th>
                         <th class="center visible-lg" >Голы и Передачи</th>
-                        <!--
+
                             <th class="center visible-lg visible-md" >Пропущенных голов</th>
                             <th class="center visible-lg visible-md" >Минут на воротах</th>
                             <th class="center visible-lg visible-md" >Фактор надежности</th>
-                        -->
+
                         <th class="center visible-lg" >Удаления</th>
                         <th class="center">Амплуа</th>
                         <th class="center" >Команда</th>
@@ -160,7 +160,7 @@
                                 {{p2t.ngoalsntrans}}
                             </td>
 
-                            <!--
+
                                 <td class="players-table-detail-number visible-lg visible-md">
                                     {% if p2t.safety_factor %}
                                         {{p2t.nmisses}}
@@ -174,7 +174,7 @@
                                 <td class="players-table-detail-number visible-lg visible-md">
                                     {{p2t.safety_factor|default_if_none:""}}
                                 </td>
-                            -->
+                            
 
                             <td class="players-table-detail-number visible-lg">
                                 {{p2t.nfines}}
