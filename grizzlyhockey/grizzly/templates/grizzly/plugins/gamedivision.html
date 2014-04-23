@@ -183,7 +183,7 @@
                     {% endwith %}
                 </div>
                 <div class="col-lg-3 col-md-6  col-sm-12 col-xs-6">
-                    {% with player=gamedivision.get_max_safety_factor_p2t.player %}
+                    {% with player=gamedivision.get_min_safety_factor_p2t.player %}
                         <p class="center">
                             Лучший вратарь
                             <a title="Лучший вратарь" href="{% url player-detail pk=player.id %}">

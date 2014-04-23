@@ -64,8 +64,8 @@ class GameDivision(AbsGameObj):
          return self.get_max_some_p2t('nmisses')
 
 
-    def get_max_safety_factor_p2t(self):
-         return self.get_max_some_p2t('-safety_factor')
+    def get_min_safety_factor_p2t(self):
+         return self.get_max_some_p2t('safety_factor')
 
 
 

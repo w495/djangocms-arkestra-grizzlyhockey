@@ -166,6 +166,11 @@ class Player2Team(AbsObj):
     def get_safety_factor(self):
         if(not self.goalminutes):
             return None
+
+        mins = self.team.ngames * 60
+        if(1.0 * self.goalminutes / mins < 1.0 / 3)
+            return None
+
         return (self.nmisses * 6000 / self.goalminutes)
 
 
