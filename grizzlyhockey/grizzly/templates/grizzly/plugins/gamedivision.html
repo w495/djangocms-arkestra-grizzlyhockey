@@ -184,31 +184,27 @@
                 </div>
                 <div class="col-lg-3 col-md-6  col-sm-12 col-xs-6">
                     {% with player=gamedivision.get_min_safety_factor_p2t.player %}
-                        {% if player != None %}
-                            <p class="center">
-                                Лучший вратарь
-                                <a title="Лучший вратарь" href="{% url player-detail pk=1 %}">
-                                    <div class="center" >
-                                        {% if player.image %}
-                                            <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 crop %}"
-                                                {% if player.image.alt %}
-                                                    alt="{{ player.image.alt }}"
-                                                {% endif %}
-                                            />
-                                        {% else %}
-                                            <div class="img-null p128x128 img-thumbnail">
-                                            </div>
-                                        {% endif %}
-                                    </div>
-                                    <div class="center" >
-                                        {{player.second_name}}
-                                        {{player.first_name}}
-                                    </div>
-                                </a>
-                            </p>
-                        {% endif %}
-                        <b>{{player}}</b>
-                        <b>{{player.id}}</b>
+                        <p class="center">
+                            Лучший вратарь
+                            <a title="Лучший вратарь" href="{% url player-detail pk=player.id %}">
+                                <div class="center" >
+                                    {% if player.image %}
+                                        <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 crop %}"
+                                            {% if player.image.alt %}
+                                                alt="{{ player.image.alt }}"
+                                            {% endif %}
+                                        />
+                                    {% else %}
+                                        <div class="img-null p128x128 img-thumbnail">
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="center" >
+                                    {{player.second_name}}
+                                    {{player.first_name}}
+                                </div>
+                            </a>
+                        </p>
                     {% endwith %}
                 </div>
             </p>
