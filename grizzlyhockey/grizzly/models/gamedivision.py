@@ -61,11 +61,13 @@ class GameDivision(AbsGameObj):
         return self.get_max_some_p2t('-ntrans')
 
     def get_min_nmisses_p2t(self):
-         return self.get_max_some_p2t('nmisses')
+        return self.get_max_some_p2t('nmisses')
 
 
     def get_min_safety_factor_p2t(self):
-         return self.get_max_some_p2t('safety_factor')
+        objs = self.get_some_p2t('safety_factor')
+        res = [o for o in objs if o.safety_factor != None]
+        return res[0]
 
 
 
