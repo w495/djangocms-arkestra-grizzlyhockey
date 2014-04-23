@@ -152,12 +152,12 @@ class PlayerBirthdayPlugin(CMSPluginBase):
         context['instance'] = instance
         return context
 
-    def birthdays_within(self, days = 10):
+    def birthdays_within(self, days = 1):
 
         date = datetime.datetime.now()
 
-        now = date - datetime.timedelta(1)
-        then = date + datetime.timedelta(days)
+        now = date - datetime.timedelta(days=0)
+        then = date + datetime.timedelta(days=days)
 
         # Build the list of month/day tuples.
         monthdays = [(now.month, now.day)]
