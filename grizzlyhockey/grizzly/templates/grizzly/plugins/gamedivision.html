@@ -187,7 +187,7 @@
                         {% if player != None %}
                             <p class="center">
                                 Лучший вратарь
-                                <a title="Лучший вратарь" href="{% url player-detail pk=player.id %}">
+                                <a title="Лучший вратарь" href="{% url player-detail pk=1 %}">
                                     <div class="center" >
                                         {% if player.image %}
                                             <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 crop %}"
