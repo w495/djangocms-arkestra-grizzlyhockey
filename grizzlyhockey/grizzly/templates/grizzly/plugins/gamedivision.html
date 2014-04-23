@@ -108,78 +108,102 @@
         <div class="col-md-12 col-lg-12">
             <p class="row">
                 <div class="col-lg-3 col-md-6  col-sm-12 col-xs-6">
-                    {% with player=gamedivision.get_max_ngoalsntrans_p2t.player %}
-                        <p class="center">
-                            Лучший бомбардир
-                            <a title="Лучший бомбардир" href="{% url player-detail pk=player.id %}">
-                                <div class="center" >
-                                    {% if player.image %}
-                                        <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 crop %}"
-                                            {% if player.image.alt %}
-                                                alt="{{ player.image.alt }}"
-                                            {% endif %}
-                                        />
-                                    {% else %}
-                                        <div class="img-null p128x128 img-thumbnail">
-                                        </div>
-                                    {% endif %}
-                                </div>
-                                <div class="center" >
-                                    {{player.second_name}}
-                                    {{player.first_name}}
-                                </div>
-                            </a>
-                        </p>
+                    {% with p2t=gamedivision.get_max_ngoalsntrans_p2t %}
+                        {% with player=p2t.player %}
+                            <p class="center">
+                                Лучший бомбардир
+                                <a title="Лучший бомбардир" href="{% url player-detail pk=player.id %}">
+                                    <div class="center" >
+                                        {% if player.image %}
+                                            <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 crop %}"
+                                                {% if player.image.alt %}
+                                                    alt="{{ player.image.alt }}"
+                                                {% endif %}
+                                            />
+                                        {% else %}
+                                            <div class="img-null p128x128 img-thumbnail">
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="center" >
+                                        {{player.second_name}}
+                                        {{player.first_name}}
+                                    </div>
+                                </a>
+                            </p>
+                        {% endwith %}
                     {% endwith %}
                 </div>
                 <div class="col-lg-3 col-md-6  col-sm-12 col-xs-6">
-                    {% with player=gamedivision.get_max_ngoals_p2t.player %}
-                        <p class="center">
-                            Лучший снайпер
-                            <a title="Лучший снайпер" href="{% url player-detail pk=player.id %}">
-                                <div class="center" >
-                                    {% if player.image %}
-                                        <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 crop %}"
-                                            {% if player.image.alt %}
-                                                alt="{{ player.image.alt }}"
-                                            {% endif %}
-                                        />
-                                    {% else %}
-                                        <div class="img-null p128x128 img-thumbnail">
-                                        </div>
-                                    {% endif %}
-                                </div>
-                                <div class="center" >
-                                    {{player.second_name}}
-                                    {{player.first_name}}
-                                </div>
-                            </a>
-                        </p>
+                    {% with p2t=gamedivision.get_max_ngoals_p2t %}
+                        {% with player=p2t.player %}
+                            <p class="center">
+                                Лучший снайпер
+                                <a title="Лучший снайпер" href="{% url player-detail pk=player.id %}">
+                                    <div class="center" >
+                                        {% if player.image %}
+                                            <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 crop %}"
+                                                {% if player.image.alt %}
+                                                    alt="{{ player.image.alt }}"
+                                                {% endif %}
+                                            />
+                                        {% else %}
+
+                                                {% if p2t.image %}
+                                                    <img  class="img-thumbnail" src="{% thumbnail p2t.image 128x128 crop %}"
+                                                        {% if p2t.image.alt %}
+                                                            alt="{{ p2t.image.alt }}"
+                                                        {% endif %}
+                                                    />
+                                                {% else %}
+                                                    <div class="img-null p128x128 img-thumbnail">
+                                                    </div>
+                                                {% endif %}
+
+                                        {% endif %}
+                                    </div>
+                                    <div class="center" >
+                                        {{player.second_name}}
+                                        {{player.first_name}}
+                                    </div>
+                                </a>
+                            </p>
+                        {% endwith %}
                     {% endwith %}
                 </div>
                 <div class="col-lg-3 col-md-6  col-sm-12 col-xs-6">
-                    {% with player=gamedivision.get_max_ntrans_p2t.player %}
-                        <p class="center">
-                            Лучший ассистент
-                            <a title="Лучший ассистент" href="{% url player-detail pk=player.id %}">
-                                <div class="center" >
-                                    {% if player.image %}
-                                        <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 crop %}"
-                                            {% if player.image.alt %}
-                                                alt="{{ player.image.alt }}"
+                    {% with p2t=gamedivision.get_max_ntrans_p2t %}
+                        {% with player=p2t.player %}
+                            <p class="center">
+                                Лучший ассистент
+                                <a title="Лучший ассистент" href="{% url player-detail pk=player.id %}">
+                                    <div class="center" >
+                                        {% if player.image %}
+                                            <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 crop %}"
+                                                {% if player.image.alt %}
+                                                    alt="{{ player.image.alt }}"
+                                                {% endif %}
+                                            />
+                                        {% else %}
+                                            {% if p2t.image %}
+                                                <img  class="img-thumbnail" src="{% thumbnail p2t.image 128x128 crop %}"
+                                                    {% if p2t.image.alt %}
+                                                        alt="{{ p2t.image.alt }}"
+                                                    {% endif %}
+                                                />
+                                            {% else %}
+                                                <div class="img-null p128x128 img-thumbnail">
+                                                </div>
                                             {% endif %}
-                                        />
-                                    {% else %}
-                                        <div class="img-null p128x128 img-thumbnail">
-                                        </div>
-                                    {% endif %}
-                                </div>
-                                <div class="center" >
-                                    {{player.second_name}}
-                                    {{player.first_name}}
-                                </div>
-                            </a>
-                        </p>
+                                        {% endif %}
+                                    </div>
+                                    <div class="center" >
+                                        {{player.second_name}}
+                                        {{player.first_name}}
+                                    </div>
+                                </a>
+                            </p>
+                        {% endwith %}
                     {% endwith %}
                 </div>
                 <div class="col-lg-3 col-md-6  col-sm-12 col-xs-6">
@@ -206,7 +230,6 @@
                                                 <div class="img-null p128x128 img-thumbnail">
                                                 </div>
                                             {% endif %}
-
                                         {% endif %}
                                     </div>
                                     <div class="center" >
