@@ -1,0 +1,121 @@
+{% load thumbnail %}
+{% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
+{% load cms_tags sekizai_tags menu_tags  insert_tags %}
+
+
+<link  rel="image_src" href="http://grizzlyhockey.ru{{ instance.image.url }}">
+
+<meta  property="og:image" content="http://grizzlyhockey.ru{{ instance.image.url }}">
+<!--<meta  property="og:image:secure_url" content="http://grizzlyhockey.ru{{ instance.image.url }}">-->
+<meta  property="og:image:type" content="image/jpeg">
+<meta  property="og:image:width" content="{{instance.image.width}}">
+<meta  property="og:image:height" content="{{instance.image.height}}">
+
+{% thumbnail instance.image 48x48 crop as image48x48crop %}
+
+<meta  property="og:image" content="http://grizzlyhockey.ru{{ image48x48crop.url }}">
+<!--<meta  property="og:image:secure_url" content="http://grizzlyhockey.ru{{ image48x48crop.url }}">-->
+<meta  property="og:image:type" content="image/jpeg">
+<meta  property="og:image:width" content="{{image48x48crop.width}}">
+<meta  property="og:image:height" content="{{image48x48crop.height}}">
+
+{% thumbnail instance.image 48x48 as image48x48 %}
+
+<meta  property="og:image" content="http://grizzlyhockey.ru{{ image48x48.url }}">
+<!--<meta  property="og:image:secure_url" content="http://grizzlyhockey.ru{{ image48x48.url }}">-->
+<meta  property="og:image:type" content="image/jpeg">
+<meta  property="og:image:width" content="{{image48x48.width}}">
+<meta  property="og:image:height" content="{{image48x48.height}}">
+
+{% thumbnail instance.image 64x64 crop as image64x64crop %}
+
+<meta  property="og:image" content="http://grizzlyhockey.ru{{ image64x64crop.url }}">
+<!--
+<meta  property="og:image:secure_url" content="http://grizzlyhockey.ru{{ image64x64crop.url }}">
+-->
+<meta  property="og:image:type" content="image/jpeg">
+<meta  property="og:image:width" content="{{image64x64crop.width}}">
+<meta  property="og:image:height" content="{{image64x64crop.height}}">
+
+{% thumbnail instance.image 64x64 as image64x64 %}
+
+<meta  property="og:image" content="http://grizzlyhockey.ru{{ image64x64.url }}">
+
+<!--
+<meta  property="og:image:secure_url" content="http://grizzlyhockey.ru{{ image64x64.url }}">
+-->
+
+<meta  property="og:image:type" content="image/jpeg">
+<meta  property="og:image:width" content="{{image64x64.width}}">
+<meta  property="og:image:height" content="{{image64x64.height}}">
+
+{% thumbnail instance.image 128x128 crop as image128x128crop %}
+
+<meta  property="og:image" content="http://grizzlyhockey.ru{{ image128x128crop.url }}">
+
+<!--
+<meta  property="og:image:secure_url" content="http://grizzlyhockey.ru{{ image128x128crop.url }}">
+-->
+
+<meta  property="og:image:type" content="image/jpeg">
+<meta  property="og:image:width" content="{{image128x128crop.width}}">
+<meta  property="og:image:height" content="{{image128x128crop.height}}">
+
+{% thumbnail instance.image 128x128 as image128x128 %}
+
+<meta  property="og:image" content="http://grizzlyhockey.ru{{ image128x128.url }}">
+
+<!--
+<meta  property="og:image:secure_url" content="http://grizzlyhockey.ru{{ image128x128.url }}">
+-->
+
+<meta  property="og:image:type" content="image/jpeg">
+<meta  property="og:image:width" content="{{image128x128.width}}">
+<meta  property="og:image:height" content="{{image128x128.height}}">
+
+{% thumbnail instance.image 256x256 crop as image256x256crop %}
+
+<meta  property="og:image" content="http://grizzlyhockey.ru{{ image256x256crop.url }}">
+
+<!--
+<meta  property="og:image:secure_url" content="http://grizzlyhockey.ru{{ image256x256crop.url }}">
+-->
+<meta  property="og:image:type" content="image/jpeg">
+<meta  property="og:image:width" content="{{image256x256crop.width}}">
+<meta  property="og:image:height" content="{{image256x256crop.height}}">
+
+{% thumbnail instance.image 256x256 as image256x256 %}
+
+<meta  property="og:image" content="http://grizzlyhockey.ru{{ image256x256.url }}">
+
+<!--
+<meta  property="og:image:secure_url" content="http://grizzlyhockey.ru{{ image256x256.url }}">
+-->
+
+<meta  property="og:image:type" content="image/jpeg">
+<meta  property="og:image:width" content="{{image256x256.width}}">
+<meta  property="og:image:height" content="{{image256x256.height}}">
+
+{% thumbnail instance.image 512x512 crop as image512x512crop %}
+
+<meta  property="og:image" content="http://grizzlyhockey.ru{{ image512x512crop.url }}">
+
+<!--
+<meta  property="og:image:secure_url" content="http://grizzlyhockey.ru{{ image512x512crop.url }}">
+-->
+<meta  property="og:image:type" content="image/jpeg">
+<meta  property="og:image:width" content="{{image512x512crop.width}}">
+<meta  property="og:image:height" content="{{image512x512crop.height}}">
+
+{% thumbnail instance.image 512x512 as image512x512 %}
+
+<meta  property="og:image" content="http://grizzlyhockey.ru{{ image512x512.url }}">
+
+<!--
+<meta  property="og:image:secure_url" content="http://grizzlyhockey.ru{{ image512x512.url }}">
+-->
+
+<meta  property="og:image:type" content="image/jpeg">
+<meta  property="og:image:width" content="{{image512x512.width}}">
+<meta  property="og:image:height" content="{{image512x512.height}}">
+
