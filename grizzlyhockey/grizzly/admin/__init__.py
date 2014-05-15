@@ -37,6 +37,8 @@ from grizzly.models import GameMatchGTime
 from grizzly.models import GameMatchPenalty
 
 
+from grizzly.models import FinalType
+
 
 from absbuttonablemodeladmin import AbsButtonableModelAdmin
 
@@ -45,6 +47,9 @@ from abspersadmin import AbsPersAdmin
 
 
 from absobjadmin import AbsObjTabularInline
+
+class FinalTypeAdmin(AbsObjAdmin):
+    pass
 
 
 class JudgeTypeAdmin(AbsObjAdmin):
@@ -800,6 +805,8 @@ class GameTournamentPlayOffAdmin(AbsObjAdmin):
     ]
 
 
+
+admin.site.register(FinalType, FinalTypeAdmin)
 admin.site.register(JudgeType, JudgeTypeAdmin)
 admin.site.register(Judge, JudgeAdmin)
 admin.site.register(InsuranceType, InsuranceTypeAdmin)
