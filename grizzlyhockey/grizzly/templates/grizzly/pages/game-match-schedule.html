@@ -25,7 +25,9 @@
             <meta name="title" content="Расписание"/>
             <meta name="description" content="
             {% for gamematch in gamematch_list %}
-                {{gamematch.start_datetime}} {{gamematch.name}} {{gamematch.rink}};
+
+                • {{gamematch.start_datetime}} − «{{gamematch.team_a}}» × «{{gamematch.team_b}}»; Ледовый дворец «{{gamematch.rink}}».
+
             {% endfor %}"/>
             <meta name="keywords" content=""/>
         {% endfilter %}
@@ -36,7 +38,9 @@
             <meta  property="og:title" content="Расписание">
             <meta name="og:description" content="
             {% for gamematch in gamematch_list %}
-                {{gamematch.start_datetime}} {{gamematch.name}} {{gamematch.rink}};
+
+                • {{gamematch.start_datetime}} − «{{gamematch.team_a}}» × «{{gamematch.team_b}}»; Ледовый дворец «{{gamematch.rink}}».
+
             {% endfor %}"/>
         {% endfilter %}
     {% endblock meta_og %}
@@ -46,7 +50,9 @@
             <meta name="mrc__share_title" content="Расписание">
             <meta name="mrc__share_description" content="
             {% for gamematch in gamematch_list %}
-                {{gamematch.start_datetime}} {{gamematch.name}} {{gamematch.rink}};
+
+                • {{gamematch.start_datetime}} − «{{gamematch.team_a}}» × «{{gamematch.team_b}}»; Ледовый дворец «{{gamematch.rink}}».
+
             {% endfor %}"/>
         {% endfilter %}
     {% endblock meta_mrc %}
