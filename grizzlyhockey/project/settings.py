@@ -155,6 +155,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'sekizai.context_processors.sekizai',
 
     "arkestra_utilities.context_processors.arkestra_templates",
+    "django_libs.context_processors.analytics",
 )
 
 MIDDLEWARE_CLASSES = (
@@ -199,7 +200,8 @@ INSTALLED_APPS = (
 
     'autocomplete',
     'mathfilters',
-    
+    'django_libs',
+
      # Django CMS applications
 
     'arkestra_utilities',
@@ -536,7 +538,7 @@ THUMBNAIL_PROCESSORS = (
     'easy_thumbnails.processors.autocrop',
     'filer.thumbnail_processors.scale_and_crop_with_subject_location',
     'easy_thumbnails.processors.filters',
-    )
+)
 
 
 # ------------------------ Django Filer
@@ -545,7 +547,7 @@ FILER_FILE_MODELS = (
         'video.models.Video',
         'filer.models.imagemodels.Image',
         'filer.models.filemodels.File',
-    )
+)
 
 # ------------------------ Django CMS
 

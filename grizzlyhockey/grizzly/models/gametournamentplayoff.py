@@ -17,6 +17,15 @@ class GameTournamentPlayOff (AbsGameObj):
 
         alter table grizzly_gametournamentplayoff_teams drop gametournamentregular_id;
 
+
+        alter table grizzly_gametournamentplayoff_gamedivisions add `gametournamentplayoff_id` int(11);
+
+
+        alter table grizzly_gametournamentplayoff_gamedivisions drop gametournamentregular_id;
+
+        alter table grizzly_gametournamentregular_gamedivisions drop gametournamentplayoff_id;
+
+
     '''
     gamedivisions = models.ManyToManyField(
         'GameDivision',

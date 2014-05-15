@@ -14,19 +14,37 @@
     <meta name='yandex-verification' content='76013efe4adc0541' />
 
     {% block meta %}
-        {% if meta.items %}
-            {% for name,content in meta.items %}
-                <meta name="{{ name }}" content="{{ content }}" />
-            {% endfor %}
-        {% else %}
-            <meta name="description" content="{% page_attribute meta_description %}"/>
-        {% endif %}
+
+        {% block meta_classic %}
+            {% filter typogrify %}
+                <meta name="title" content="{% page_attribute page_title %}"/>
+                <meta name="description" content="{% page_attribute meta_description %}"/>
+                <meta name="keywords" content="{% page_attribute meta_keywords %}"/>
+            {% endfilter %}
+        {% endblock meta_classic %}
+
+        {% block meta_og %}
+            <meta  property="og:site_name" content="grizzlyhockey.ru">
+            <meta  property="og:url" content="{{ request.build_absolute_uri }}?r={% now "Uu" %}">
+            {% filter typogrify %}
+                <meta  property="og:title" content="{% page_attribute page_title %}">
+                <meta  property="og:description" content="{% page_attribute meta_description %}">
+            {% endfilter %}
+        {% endblock meta_og %}
+
+        {% block meta_mrc %}
+            {% filter typogrify %}
+                <meta  name="mrc__share_title" content="{% page_attribute page_title %}">
+                <meta  name="mrc__share_description" content="{% page_attribute meta_description %}">
+            {% endfilter %}
+        {% endblock meta_mrc %}
+
     {% endblock meta %}
 
     {% block title %}
-        <title>
-            {% page_attribute title %}
-        </title>
+        {% filter typogrify %}
+            <title>{% page_attribute title %}</title>
+        {% endfilter %}
     {% endblock %}
 
     {% block favicon %}
@@ -331,9 +349,9 @@
                             {% block pagetitle %}
                                 {% if not current_page.flags.no_page_title %}
                                     {% filter typogrify %}
-                                    <h{{PAGE_TITLE_HEADING_LEVEL}}>
-                                        {% page_attribute title %}
-                                    </h{{PAGE_TITLE_HEADING_LEVEL}}>
+                                        <h{{PAGE_TITLE_HEADING_LEVEL}}>
+                                            {% page_attribute title %}
+                                        </h{{PAGE_TITLE_HEADING_LEVEL}}>
                                     {% endfilter %}
                                 {% endif %}
                             {% endblock pagetitle %}

@@ -1,9 +1,152 @@
 {% extends newsarticle.get_template %}
-{% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
+{% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags  %}
+{% load cms_tags sekizai_tags menu_tags  insert_tags %}
+{% load libs_tags %}
 
 {% block title %}
-    <title>{{ newsarticle }}</title>
+    {% filter typogrify %}
+        <title>{{ newsarticle }}</title>
+    {% endfilter %}
 {% endblock %}
+
+{% block meta %}
+
+        <meta>
+
+        </meta>
+
+        {% block meta_classic %}
+                <meta name="title" content="{{newsarticle.title}}"/>
+                <meta name="description" content="{% block_anyfilter django.template.defaultfilters.truncatewords 200 %}{% block_anyfilter django.template.defaultfilters.striptags %}{% render_placeholder newsarticle.body %}{% endblockanyfilter %}{% endblockanyfilter %}"/>
+
+                <meta name="keywords" content="{% page_attribute meta_keywords %}"/>
+
+        {% endblock meta_classic %}
+
+        {% block meta_og %}
+            <meta  property="og:site_name" content="grizzlyhockey.ru">
+            <meta  property="og:url" content="{{ request.build_absolute_uri }}?r={% now "Uu" %}">
+            {% filter typogrify %}
+                <meta property="og:title" content="{{newsarticle.title}}">
+                <meta property="og:description" content="{% block_anyfilter django.template.defaultfilters.truncatewords 40 %}{% block_anyfilter django.template.defaultfilters.striptags %}{% render_placeholder newsarticle.body %}{% endblockanyfilter %}{% endblockanyfilter %}"/>
+            {% endfilter %}
+
+            {% thumbnail newsarticle.image 48x48 crop as image48x48crop %}
+
+            <meta  property="og:image" content="http://{{ request.get_host }}{{ image48x48crop.url }}">
+            <meta  property="og:image:secure_url" content="https://{{ request.get_host }}{{ image48x48crop.url }}">
+
+            <meta  property="og:image:type" content="image/jpeg">
+            <meta  property="og:image:width" content="{{image48x48crop.width}}">
+            <meta  property="og:image:height" content="{{image48x48crop.height}}">
+
+            {% thumbnail newsarticle.image 48x48 as image48x48 %}
+
+            <meta  property="og:image" content="http://{{ request.get_host }}{{ image48x48.url }}">
+            <meta  property="og:image:secure_url" content="https://{{ request.get_host }}{{ image48x48.url }}">
+            <meta  property="og:image:type" content="image/jpeg">
+            <meta  property="og:image:width" content="{{image48x48.width}}">
+            <meta  property="og:image:height" content="{{image48x48.height}}">
+
+            {% thumbnail newsarticle.image 64x64 crop as image64x64crop %}
+
+            <meta  property="og:image" content="http://{{ request.get_host }}{{ image64x64crop.url }}">
+            <meta  property="og:image:secure_url" content="https://{{ request.get_host }}{{ image64x64crop.url }}">
+
+            <meta  property="og:image:type" content="image/jpeg">
+            <meta  property="og:image:width" content="{{image64x64crop.width}}">
+            <meta  property="og:image:height" content="{{image64x64crop.height}}">
+
+            {% thumbnail newsarticle.image 64x64 as image64x64 %}
+
+            <meta  property="og:image" content="http://{{ request.get_host }}{{ image64x64.url }}">
+            <meta  property="og:image:secure_url" content="https://{{ request.get_host }}{{ image64x64.url }}">
+            <meta  property="og:image:type" content="image/jpeg">
+            <meta  property="og:image:width" content="{{image64x64.width}}">
+            <meta  property="og:image:height" content="{{image64x64.height}}">
+
+            {% thumbnail newsarticle.image 128x128 crop as image128x128crop %}
+
+            <meta  property="og:image" content="http://{{ request.get_host }}{{ image128x128crop.url }}">
+            <meta  property="og:image:secure_url" content="https://{{ request.get_host }}{{ image128x128crop.url }}">
+
+            <meta  property="og:image:type" content="image/jpeg">
+            <meta  property="og:image:width" content="{{image128x128crop.width}}">
+            <meta  property="og:image:height" content="{{image128x128crop.height}}">
+
+            {% thumbnail newsarticle.image 128x128 as image128x128 %}
+
+            <meta  property="og:image" content="http://{{ request.get_host }}{{ image128x128.url }}">
+            <meta  property="og:image:secure_url" content="https://{{ request.get_host }}{{ image128x128.url }}">
+            <meta  property="og:image:type" content="image/jpeg">
+            <meta  property="og:image:width" content="{{image128x128.width}}">
+            <meta  property="og:image:height" content="{{image128x128.height}}">
+
+            {% thumbnail newsarticle.image 256x256 crop as image256x256crop %}
+
+            <meta  property="og:image" content="http://{{ request.get_host }}{{ image256x256crop.url }}">
+            <meta  property="og:image:secure_url" content="https://{{ request.get_host }}{{ image256x256crop.url }}">
+
+            <meta  property="og:image:type" content="image/jpeg">
+            <meta  property="og:image:width" content="{{image256x256crop.width}}">
+            <meta  property="og:image:height" content="{{image256x256crop.height}}">
+
+            {% thumbnail newsarticle.image 256x256 as image256x256 %}
+
+            <meta  property="og:image" content="http://{{ request.get_host }}{{ image256x256.url }}">
+            <meta  property="og:image:secure_url" content="https://{{ request.get_host }}{{ image256x256.url }}">
+            <meta  property="og:image:type" content="image/jpeg">
+            <meta  property="og:image:width" content="{{image256x256.width}}">
+            <meta  property="og:image:height" content="{{image256x256.height}}">
+
+            {% thumbnail newsarticle.image 512x512 crop as image512x512crop %}
+
+            <meta  property="og:image" content="http://{{ request.get_host }}{{ image512x512crop.url }}">
+            <meta  property="og:image:secure_url" content="https://{{ request.get_host }}{{ image512x512crop.url }}">
+
+            <meta  property="og:image:type" content="image/jpeg">
+            <meta  property="og:image:width" content="{{image512x512crop.width}}">
+            <meta  property="og:image:height" content="{{image512x512crop.height}}">
+
+            {% thumbnail newsarticle.image 512x512 as image512x512 %}
+
+            <meta  property="og:image" content="http://{{ request.get_host }}{{ image512x512.url }}">
+            <meta  property="og:image:secure_url" content="https://{{ request.get_host }}{{ image512x512.url }}">
+            <meta  property="og:image:type" content="image/jpeg">
+            <meta  property="og:image:width" content="{{image512x512.width}}">
+            <meta  property="og:image:height" content="{{image512x512.height}}">
+
+            <meta  property="og:image" content="http://{{ request.get_host }}{{ newsarticle.image.url }}">
+            <meta  property="og:image:secure_url" content="https://{{ request.get_host }}{{ newsarticle.image.url }}">
+            <meta  property="og:image:type" content="image/jpeg">
+            <meta  property="og:image:width" content="{{newsarticle.image.width}}">
+            <meta  property="og:image:height" content="{{newsarticle.image.height}}">
+
+
+
+        {% endblock meta_og %}
+
+
+            <meta  name="twitter:card" content="summary">
+            <meta  name="twitter:site" content="@grizzlyhockey">
+            <meta  name="twitter:title" content="{{ newsarticle }}">
+            <meta  name="twitter:description" content="{% block_anyfilter django.template.defaultfilters.truncatewords 40 %}{% block_anyfilter django.template.defaultfilters.striptags %}{% render_placeholder newsarticle.body %}{% endblockanyfilter %}{% endblockanyfilter %}"/>
+            <meta  name="twitter:creator" content="@grizzlyhockey">
+            <meta  name="twitter:image:src" content="http://{{ request.get_host }}{{ newsarticle.image.url }}">
+            <meta  name="twitter:domain" content="http://grizzlyhockey.ru/">
+
+            <link  rel="image_src" href="//{{ request.get_host }}{{ newsarticle.image.url }}">
+
+        {% block meta_mrc %}
+            {% filter typogrify %}
+                <meta  name="mrc__share_title" content="{{newsarticle.title}}">
+                <meta  name="mrc__share_description" content="{{ newsarticle.summary }}">
+            {% endfilter %}
+        {% endblock meta_mrc %}
+
+
+{% endblock meta %}
+
 
 {% block nav_local %}
 {% endblock nav_local %}
@@ -18,6 +161,7 @@
 
 
 {% block main_page_body %}
+
     {% thumbnail newsarticle.image.file sidebar_image_size subject_location=newsarticle.image.subject_location crop as image %}
     {% with placeholder_width=generic_main_width %}
         <div class="row columns3">
