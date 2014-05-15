@@ -4,6 +4,12 @@
 {% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
 
 
+{% block title %}
+    {% filter typogrify %}
+        <title>Игроки</title>
+    {% endfilter %}
+{% endblock %}
+
 {% block pagetitle %}
     {% filter typogrify %}
         <h{{PAGE_TITLE_HEADING_LEVEL}}>
@@ -11,6 +17,33 @@
         </h{{PAGE_TITLE_HEADING_LEVEL}}>
     {% endfilter %}
 {% endblock pagetitle %}
+
+{% block meta %}
+    {% block meta_classic %}
+        {% filter typogrify %}
+            <meta name="title" content="Игроки"/>
+            <meta name="description" content="Описание ..."/>
+            <meta name="keywords" content=""/>
+        {% endfilter %}
+    {% endblock meta_classic %}
+
+    {% block meta_og %}
+        {% filter typogrify %}
+            <meta property="og:title" content="Игроки">
+            <meta property="og:description" content="Описание ..."/>
+        {% endfilter %}
+    {% endblock meta_og %}
+
+    {% block meta_mrc %}
+        {% filter typogrify %}
+            <meta name="mrc__share_title" content="Игроки">
+            <meta name="mrc__share_description" content="Описание ..."/>
+        {% endfilter %}
+    {% endblock meta_mrc %}
+{% endblock meta %}}
+
+
+
 
 {% block main_page_body %}
     {% include "grizzly/includes/player-list.html" %}

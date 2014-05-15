@@ -22,8 +22,8 @@
 
     {% block meta_og %}
         {% filter typogrify %}
-            <meta  property="og:title" content="{{judge.second_name}} {{judge.first_name}} {{judge.patronymic}}">
-            <meta name="og:description" content="Описание ..."/>
+            <meta property="og:title" content="{{judge.second_name}} {{judge.first_name}} {{judge.patronymic}}">
+            <meta property="og:description" content="Описание ..."/>
         {% endfilter %}
 
          {% include "grizzly/includes/og-image.html" with instance=judge %}

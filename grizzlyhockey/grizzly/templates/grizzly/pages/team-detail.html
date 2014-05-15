@@ -27,9 +27,9 @@
         {% filter typogrify %}
             <meta  property="og:title" content="«{{team.name}}»">
             {% if team.detail %}
-                <meta name="og:description" content="{{team.detail}}"/>
+                <meta property="og:description" content="{{team.detail}}"/>
             {% else %}
-                <meta name="og:description" content="Игры: {{team.ngames}}, Победы: {{team.nwins}}, Ничьи: {{team.ndraws}}, Поражения: {{team.nloses}}, Забитые: {{team.ngoals}}, Пропущенные: {{team.nmisses}}, Очки: {{team.npoints}}"/>
+                <meta property="og:description" content="Игры: {{team.ngames}}, Победы: {{team.nwins}}, Ничьи: {{team.ndraws}}, Поражения: {{team.nloses}}, Забитые: {{team.ngoals}}, Пропущенные: {{team.nmisses}}, Очки: {{team.npoints}}"/>
             {% endif %}
         {% endfilter %}
 

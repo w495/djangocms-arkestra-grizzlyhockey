@@ -5,11 +5,10 @@
 
 
 {% block title %}
-    <title>
-        Команды
-    </title>
+    {% filter typogrify %}
+        <title>Команды</title>
+    {% endfilter %}
 {% endblock %}
-
 
 {% block pagetitle %}
     {% filter typogrify %}
@@ -18,6 +17,31 @@
         </h{{PAGE_TITLE_HEADING_LEVEL}}>
     {% endfilter %}
 {% endblock pagetitle %}
+
+{% block meta %}
+    {% block meta_classic %}
+        {% filter typogrify %}
+            <meta name="title" content="Команды"/>
+            <meta name="description" content="Описание ..."/>
+            <meta name="keywords" content=""/>
+        {% endfilter %}
+    {% endblock meta_classic %}
+
+    {% block meta_og %}
+        {% filter typogrify %}
+            <meta  property="og:title" content="Команды">
+            <meta name="og:description" content="Описание ..."/>
+        {% endfilter %}
+    {% endblock meta_og %}
+
+    {% block meta_mrc %}
+        {% filter typogrify %}
+            <meta name="mrc__share_title" content="Команды">
+            <meta name="mrc__share_description" content="Описание ..."/>
+        {% endfilter %}
+    {% endblock meta_mrc %}
+{% endblock meta %}}
+
 
 {% block main_page_body %}
     {% include "grizzly/includes/team-list.html" %}

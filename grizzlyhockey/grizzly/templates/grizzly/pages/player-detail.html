@@ -23,8 +23,8 @@
 
     {% block meta_og %}
         {% filter typogrify %}
-            <meta  property="og:title" content="{{player.second_name}} {{player.first_name}} {{player.patronymic}}">
-            <meta name="og:description" content="Описание ..."/>
+            <meta property="og:title" content="{{player.second_name}} {{player.first_name}} {{player.patronymic}}">
+            <meta property="og:description" content="Описание ..."/>
         {% endfilter %}
 
          {% include "grizzly/includes/og-image.html" with instance=player %}

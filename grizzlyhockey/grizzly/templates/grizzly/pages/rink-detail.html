@@ -22,8 +22,8 @@
 
     {% block meta_og %}
         {% filter typogrify %}
-            <meta  property="og:title" content="Ледовый дворец «{{rink.name}}»">
-            <meta name="og:description" content="{% if rink.town %}{{rink.town}}{% endif %}{% if rink.street %},&nbsp;{{rink.street}}{% endif %}{% if rink.house %},&ensp;дом&nbsp;{{rink.house}}{% endif %}{% if rink.building %},&ensp;cт.&nbsp;{{rink.building}}{% endif %}{% if rink.detail %}&ensp;{{rink.detail}}{%endif%}"/>
+            <meta property="og:title" content="Ледовый дворец «{{rink.name}}»">
+            <meta property="og:description" content="{% if rink.town %}{{rink.town}}{% endif %}{% if rink.street %},&nbsp;{{rink.street}}{% endif %}{% if rink.house %},&ensp;дом&nbsp;{{rink.house}}{% endif %}{% if rink.building %},&ensp;cт.&nbsp;{{rink.building}}{% endif %}{% if rink.detail %}&ensp;{{rink.detail}}{%endif%}"/>
         {% endfilter %}
 
          {% include "grizzly/includes/og-image.html" with instance=rink %}
