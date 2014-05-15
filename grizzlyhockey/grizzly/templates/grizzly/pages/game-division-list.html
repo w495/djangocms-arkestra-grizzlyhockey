@@ -2,7 +2,13 @@
 
 {% load thumbnail %}
 {% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
+{% load cms_tags sekizai_tags menu_tags typogrify_tags insert_tags %}
 
+{% block title %}
+    {% filter typogrify %}
+        <title>Дивизионы</title>
+    {% endfilter %}
+{% endblock %}
 
 {% block pagetitle %}
     {% filter typogrify %}
@@ -11,6 +17,30 @@
         </h{{PAGE_TITLE_HEADING_LEVEL}}>
     {% endfilter %}
 {% endblock pagetitle %}
+
+{% block meta %}
+    {% block meta_classic %}
+        {% filter typogrify %}
+            <meta name="title" content="Дивизионы"/>
+            <meta name="description" content=""/>
+            <meta name="keywords" content=""/>
+        {% endfilter %}
+    {% endblock meta_classic %}
+
+    {% block meta_og %}
+        {% filter typogrify %}
+            <meta  property="og:title" content="Дивизионы">
+            <meta  property="og:description" content="">
+        {% endfilter %}
+    {% endblock meta_og %}
+
+    {% block meta_mrc %}
+        {% filter typogrify %}
+            <meta  name="mrc__share_title" content="Дивизионы">
+            <meta  name="mrc__share_description" content="">
+        {% endfilter %}
+    {% endblock meta_mrc %}
+{% endblock meta %}}
 
 {% block main_page_body %}
     {% include "grizzly/includes/game-division-list.html" %}

@@ -11,24 +11,23 @@
 
 {% block meta %}
 
-        <meta>
-
-        </meta>
 
         {% block meta_classic %}
                 <meta name="title" content="{{newsarticle.title}}"/>
                 <meta name="description" content="{% block_anyfilter django.template.defaultfilters.truncatewords 200 %}{% block_anyfilter django.template.defaultfilters.striptags %}{% render_placeholder newsarticle.body %}{% endblockanyfilter %}{% endblockanyfilter %}"/>
-                <meta name="keywords" content="{{newsarticle.title}}"/>
+                <meta name="keywords" content="Хоккей, Кубок Грзизли, {{newsarticle.title}}"/>
                 <link  rel="image_src" href="http://grizzlyhockey.ru{{ newsarticle.image.url }}">
         {% endblock meta_classic %}
 
         {% block meta_og %}
-            <meta  property="og:site_name" content="grizzlyhockey.ru">
-            <meta  property="og:url" content="http://grizzlyhockey.ru{{ request.get_full_path }}?r={% now "Uu" %}">
             {% filter typogrify %}
+                <meta property="og:type" content="article">
                 <meta property="og:title" content="{{newsarticle.title}}">
                 <meta property="og:description" content="{% block_anyfilter django.template.defaultfilters.truncatewords 40 %}{% block_anyfilter django.template.defaultfilters.striptags %}{% render_placeholder newsarticle.body %}{% endblockanyfilter %}{% endblockanyfilter %}"/>
             {% endfilter %}
+
+            <meta property="article:published_time" content="{{ newsarticle.date }}">
+            <meta property="article:section" content="Sport">
 
             <meta  property="og:image" content="http://grizzlyhockey.ru{{ newsarticle.image.url }}">
             <!--<meta  property="og:image:secure_url" content="http://grizzlyhockey.ru{{ newsarticle.image.url }}">-->
@@ -144,18 +143,16 @@
             <meta  property="og:image:width" content="{{image512x512.width}}">
             <meta  property="og:image:height" content="{{image512x512.height}}">
 
-
-
         {% endblock meta_og %}
 
 
-            <meta  name="twitter:card" content="summary">
-            <meta  name="twitter:site" content="@grizzlyhockey">
-            <meta  name="twitter:title" content="{{ newsarticle }}">
-            <meta  name="twitter:description" content="{% block_anyfilter django.template.defaultfilters.truncatewords 40 %}{% block_anyfilter django.template.defaultfilters.striptags %}{% render_placeholder newsarticle.body %}{% endblockanyfilter %}{% endblockanyfilter %}"/>
-            <meta  name="twitter:creator" content="@grizzlyhockey">
-            <meta  name="twitter:image:src" content="http://grizzlyhockey.ru{{ newsarticle.image.url }}">
-            <meta  name="twitter:domain" content="http://grizzlyhockey.ru/">
+        <meta  name="twitter:card" content="summary">
+        <meta  name="twitter:site" content="@grizzlyhockey">
+        <meta  name="twitter:title" content="{{ newsarticle }}">
+        <meta  name="twitter:description" content="{% block_anyfilter django.template.defaultfilters.truncatewords 40 %}{% block_anyfilter django.template.defaultfilters.striptags %}{% render_placeholder newsarticle.body %}{% endblockanyfilter %}{% endblockanyfilter %}"/>
+        <meta  name="twitter:creator" content="@grizzlyhockey">
+        <meta  name="twitter:image:src" content="http://grizzlyhockey.ru{{ newsarticle.image.url }}">
+        <meta  name="twitter:domain" content="http://grizzlyhockey.ru/">
 
 
         {% block meta_mrc %}

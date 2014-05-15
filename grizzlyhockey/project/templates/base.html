@@ -3,7 +3,7 @@
 {% block doctype %}<!DOCTYPE html>{% endblock doctype %}
 
 {% block html_tag %}
-    <html lang="en" >
+    <html lang="ru" prefix="og: http://ogp.me/ns#" >
 {% endblock html_tag %}
 
 
@@ -13,8 +13,11 @@
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
     <meta name='yandex-verification' content='76013efe4adc0541' />
 
-    {% block meta %}
+    <meta property="og:site_name" content="grizzlyhockey.ru">
+    <meta property="og:url" content="http://grizzlyhockey.ru{{ request.get_full_path }}?r={% now "Uu" %}">
+    <meta property="og:locale" content="ru_RU" />
 
+    {% block meta %}
         {% block meta_classic %}
             {% filter typogrify %}
                 <meta name="title" content="{% page_attribute page_title %}"/>
@@ -24,8 +27,6 @@
         {% endblock meta_classic %}
 
         {% block meta_og %}
-            <meta  property="og:site_name" content="grizzlyhockey.ru">
-            <meta  property="og:url" content="{{ request.build_absolute_uri }}?r={% now "Uu" %}">
             {% filter typogrify %}
                 <meta  property="og:title" content="{% page_attribute page_title %}">
                 <meta  property="og:description" content="{% page_attribute meta_description %}">
@@ -38,7 +39,6 @@
                 <meta  name="mrc__share_description" content="{% page_attribute meta_description %}">
             {% endfilter %}
         {% endblock meta_mrc %}
-
     {% endblock meta %}
 
     {% block title %}
