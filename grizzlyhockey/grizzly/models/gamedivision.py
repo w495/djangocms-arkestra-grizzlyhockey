@@ -6,6 +6,7 @@ from team import Team
 from gameseason import GameSeason
 
 from gametournamentregular import GameTournamentRegular
+from gametournamentplayoff import GameTournamentPlayOff
 from player2team import Player2Team
 
 
@@ -33,6 +34,14 @@ class GameDivision(AbsGameObj):
         null=True,
         through=GameTournamentRegular.gamedivisions.through,
         verbose_name=u"регулярные чемпионаты"
+    )
+
+    gametournamentplayoffs = models.ManyToManyField(
+        'GameTournamentPlayOff',
+        blank=True,
+        null=True,
+        through=GameTournamentPlayOff.gamedivisions.through,
+        verbose_name=u"play-off"
     )
 
 

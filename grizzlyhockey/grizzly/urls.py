@@ -72,6 +72,11 @@ urlpatterns = patterns('',
     url(r'^game-tournament-regular/(?P<pk>\d+)/$', views.GameTournamentRegularDetailView.as_view(), name='game-tournament-regular-detail'),
 
 
+    url(r'^game-tournament-playoff/$', views.GameTournamentPlayOffListView.as_view(), name='game-tournament-playoff-list'),
+
+    url(r'^game-tournament-playoff/(?P<pk>\d+)/$', views.GameTournamentPlayOffDetailView.as_view(), name='game-tournament-playoff-detail'),
+
+
     url(r'^game-match/$', views.GameMatchListView.as_view(), name='game-match-list'),
 
     url(r'^game-match/(?P<pk>\d+)/$', views.GameMatchDetailView.as_view(), name='game-match-detail'),

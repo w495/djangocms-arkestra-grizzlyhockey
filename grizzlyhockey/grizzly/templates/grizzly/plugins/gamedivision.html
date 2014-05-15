@@ -1,5 +1,6 @@
 {% load thumbnail %}
 {% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
+{% load mathfilters %}
 
 {% with gamedivision=instance.gamedivision %}
 
@@ -244,6 +245,95 @@
             </p>
         </div>
     </div>
+
+    {% for gametournamentplayoff in gamedivision.gametournamentplayoffs.all %}
+        <div>
+            <h5>Play-Off</h5>
+            <div class="small-text-all">
+
+
+                {% regroup gametournamentplayoff.gamematch_set.all|dictsortreversed:"finaltype_id" by finaltype as gamegroup_list %}
+
+                <table class="table table-striped">
+                    <tr>
+                        {% for gamegroup in gamegroup_list %}
+                            <th class="center">{{gamegroup.grouper.detail}}</th>
+                        {% endfor %}
+                    </tr>
+                    <tr style="vetical-aligment: top">
+                        {% for gamegroup in gamegroup_list %}
+                            {% with offset=forloop.counter %}
+
+                            <td>
+                                {% for gamematch in gamegroup.list %}
+                                    {% if gamegroup.grouper.name != "3" %}
+                                        {% if forloop.last %}
+                                            <div style="margin-top:{{offset|mul:'100'|sub:'100'}}px;">
+                                        {% else %}
+                                            <div style="margin-top:{{offset|mul:'100'|sub:'100'}}px;margin-bottom:{{offset|mul:'150'}}px">
+                                        {% endif %}
+                                    {% else %}
+                                    <div style="margin-top:{{offset|mul:'100'|sub:'150'}}px;">
+                                    {% endif %}
+                                        <div class="center">
+                                            {% if gamematch.start_datetime %}
+                                                <span class="datetime-mark" title="Дата">
+                                                    <span>{{gamematch.start_datetime|date:"d M Y H:i"}}&nbsp;</span>
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                            <div>
+                                                <div class="col-md-12 center">
+                                                    {% with team=gamematch.team_a  %}
+                                                        {% if team.name %}
+                                                            <div>
+                                                                <a href="{% url team-detail pk=team.id %}">
+                                                                    {% if gamematch.score_a > gamematch.score_b %}
+                                                                        <b>{{team.name}}</b>
+                                                                    {% else %}
+                                                                        {{team.name}}
+                                                                    {% endif %}
+                                                                </a>
+                                                            </div>
+                                                        {% endif %}
+                                                    {% endwith %}
+                                                </div>
+                                                <div class="col-md-12 center">
+                                                    <a href="{% url game-match-detail pk=gamematch.id %}">
+                                                        <span class="center">
+                                                            {{gamematch.score_a|default_if_none:"?"}}&nbsp;:&nbsp;{{gamematch.score_b|default_if_none:"?"}}
+                                                        </span>
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-12 center">
+                                                    {% with team=gamematch.team_b  %}
+                                                        {% if team.name %}
+                                                            <div>
+                                                                <a href="{% url team-detail pk=team.id %}">
+                                                                    {% if gamematch.score_a < gamematch.score_b %}
+                                                                        <b>{{team.name}}</b>
+                                                                    {% else %}
+                                                                        {{team.name}}
+                                                                    {% endif %}
+                                                                </a>
+                                                            </div>
+                                                        {% endif %}
+                                                    {% endwith %}
+                                                </div>
+                                            </div>
+                                    </div>
+                                {% endfor %}
+                            </td>
+                            {% endwith %}
+                        {% endfor %}
+                    </tr>
+                </table>
+            </div>
+
+
+        <div>
+    {% endfor %}
+
 </section>
 
 

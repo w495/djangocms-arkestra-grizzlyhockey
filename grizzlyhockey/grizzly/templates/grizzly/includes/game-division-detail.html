@@ -91,6 +91,29 @@
     </div>
 
 
+    <div class="row">
+        <div class="col-lg-12">
+            <section>
+                <ul class="media-list">
+                {% for tournament in gamedivision.gametournamentplayoffs.all %}
+                    <li>
+                        <h4 class="media-heading">
+                            <a href="{% url game-tournament-playoff-detail pk=tournament.id %}">
+                                {{tournament.name}}
+                            </a>
+                        </h4>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                {% include "grizzly/includes/game-tournament-playoff-detail-table.html" with gametournamentplayoff=tournament  %}
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+                </ul>
+            </section>
+        </div>
+    </div>
+
 
     <div class="row">
         <div class="col-lg-12">

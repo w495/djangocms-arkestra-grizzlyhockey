@@ -282,6 +282,10 @@
                     font-size:0.8em;
                 }
 
+                .small-text-all *{
+                    font-size: 10pt;
+                }
+
                 .game-match-detail-time{
                     margin:2em;
                 }
@@ -334,6 +338,7 @@
                                         <li><a href="{% url news-list %}">Новости</a><li>
                                         <li><a href="{% url game-division-list %}">Дивизионы</a><li>
                                         <li><a href="{% url game-tournament-regular-list %}">Чемпионаты</a><li>
+                                        <li><a href="{% url game-tournament-playoff-list %}">Play-off</a><li>
                                         <li><a href="{% url team-list %}">Команды</a><li>
                                         <li><a href="{% url game-match-schedule %}">Расписание</a><li>
                                         {% show_menu 0 100 0 1 "cms/arkestra_menu.html" "" "" %}

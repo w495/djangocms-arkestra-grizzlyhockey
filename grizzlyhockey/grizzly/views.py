@@ -28,6 +28,8 @@ from grizzly.models import GameDivisionPluginMany
 from grizzly.models import GameTournamentFormat
 from grizzly.models import GameTournamentSystem
 from grizzly.models import GameTournamentRegular
+from grizzly.models import GameTournamentPlayOff
+
 from grizzly.models import GameTournamentRegularPlugin
 from grizzly.models import GameTournamentRegularPluginMany
 from grizzly.models import GameMatch
@@ -137,6 +139,16 @@ class GameTournamentRegularListView(generic.ListView):
 class GameTournamentRegularDetailView(generic.DetailView):
     model = GameTournamentRegular
     template_name = 'grizzly/pages/game-tournament-regular-detail.html'
+
+
+class GameTournamentPlayOffListView(generic.ListView):
+    model = GameTournamentPlayOff
+    template_name = 'grizzly/pages/game-tournament-playoff-list.html'
+
+class GameTournamentPlayOffDetailView(generic.DetailView):
+    model = GameTournamentPlayOff
+    template_name = 'grizzly/pages/game-tournament-playoff-detail.html'
+
 
 
 
