@@ -4,6 +4,42 @@
 {% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
 
 
+
+{% block title %}
+    {% filter typogrify %}
+        <title>Ледовый дворец «{{rink.name}}»</title>
+    {% endfilter %}
+{% endblock %}
+
+{% block meta %}
+    {% block meta_classic %}
+        {% filter typogrify %}
+            <meta name="title" content="Ледовый дворец «{{rink.name}}»"/>
+            <meta name="description" content="{% if rink.town %}{{rink.town}}{% endif %}{% if rink.street %},&nbsp;{{rink.street}}{% endif %}{% if rink.house %},&ensp;дом&nbsp;{{rink.house}}{% endif %}{% if rink.building %},&ensp;cт.&nbsp;{{rink.building}}{% endif %}{% if rink.detail %}&ensp;{{rink.detail}}{%endif%}"/>
+            <meta name="keywords" content="Хоккей, Каток, Ледовый дворец, {{rink.name}}, {% if rink.town %}{{rink.town}}{% endif %}{% if rink.street %},&nbsp;{{rink.street}}{% endif %}{% if rink.house %},&ensp;дом&nbsp;{{rink.house}}{% endif %}{% if rink.building %},&ensp;cт.&nbsp;{{rink.building}}{% endif %}"/>
+        {% endfilter %}
+    {% endblock meta_classic %}
+
+    {% block meta_og %}
+        {% filter typogrify %}
+            <meta  property="og:title" content="Ледовый дворец «{{rink.name}}»">
+            <meta name="og:description" content="{% if rink.town %}{{rink.town}}{% endif %}{% if rink.street %},&nbsp;{{rink.street}}{% endif %}{% if rink.house %},&ensp;дом&nbsp;{{rink.house}}{% endif %}{% if rink.building %},&ensp;cт.&nbsp;{{rink.building}}{% endif %}{% if rink.detail %}&ensp;{{rink.detail}}{%endif%}"/>
+        {% endfilter %}
+
+         {% include "grizzly/includes/og-image.html" with instance=rink %}
+
+    {% endblock meta_og %}
+
+    {% block meta_mrc %}
+        {% filter typogrify %}
+            <meta name="mrc__share_title" content="Ледовый дворец «{{rink.name}}»">
+            <meta name="mrc__share_description" content="{% if rink.town %}{{rink.town}}{% endif %}{% if rink.street %},&nbsp;{{rink.street}}{% endif %}{% if rink.house %},&ensp;дом&nbsp;{{rink.house}}{% endif %}{% if rink.building %},&ensp;cт.&nbsp;{{rink.building}}{% endif %}{% if rink.detail %}&ensp;{{rink.detail}}{%endif%}"/>
+        {% endfilter %}
+    {% endblock meta_mrc %}
+{% endblock meta %}}
+
+
+
 {% block main_page_body %}
     {% include "grizzly/includes/rink-detail.html" %}
 {% endblock main_page_body %}
