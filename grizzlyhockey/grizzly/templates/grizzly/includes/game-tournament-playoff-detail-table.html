@@ -26,7 +26,7 @@
 
                 <td>
                     {% for gamematch in gamegroup.list %}
-                        {% if gamegroup.grouper.name != "3" %}
+                        {% if gamegroup.grouper.id != -3 %}
                             {% if forloop.last %}
                                 <div style="margin-top:{{offset|mul:'100'|sub:'100'}}px;">
                             {% else %}
