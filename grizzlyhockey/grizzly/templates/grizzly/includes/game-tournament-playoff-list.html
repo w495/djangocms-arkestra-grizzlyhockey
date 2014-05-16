@@ -1,0 +1,43 @@
+{% load thumbnail %}
+{% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
+
+<section>
+
+    <ul class="media-list">
+    {% for gametournamentplayoff in gametournamentplayoff_list %}
+        <li class="media">
+            <div class="pull-left" href="#">
+                {% if gametournamentplayoff.image %}
+                    <a href="{% url game-tournament-playoff-detail pk=gametournamentplayoff.id %}">
+                        <img  class="img-thumbnail" src="{% thumbnail gametournamentplayoff.image 128x128 %}"
+                            {% if gametournamentplayoff.image.alt %}
+                                alt="{{ gametournamentplayoff.image.alt }}"
+                            {% endif %}
+                        />
+                    </a>
+                {% endif %}
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading">
+                    <a href="{% url game-tournament-playoff-detail pk=gametournamentplayoff.id %}">
+                        {{gametournamentplayoff.name}}
+                    </a>
+                </h4>
+                {% if gametournamentplayoff.gamedivisions %}
+                    <p>
+                        Дивизионы:
+                        {% for division in gametournamentplayoff.gamedivisions.all %}
+                            <a href="{% url game-division-detail pk=division.id %}">{{division}}</a>
+                        {% endfor %}
+                    </p>
+                {% endif %}
+
+                {% if gametournamentplayoff.detail %}
+                    <p>{{gametournamentplayoff.detail}}</p>
+                {% endif %}
+            </div>
+        </li>
+    {% endfor %}
+    </ul>
+
+</section>

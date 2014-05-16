@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% load thumbnail %}
+{% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
+
+{% block title %}
+    {% filter typogrify %}
+        <title>Чемпионат «{{gametournamentplayoff.name}}»</title>
+    {% endfilter %}
+{% endblock %}
+
+
+{% block meta %}
+    {% block meta_classic %}
+        {% filter typogrify %}
+            <meta name="title" content="Чемпионат «{{gametournamentplayoff.name}}»"/>
+            <meta name="description" content="Описание ..."/>
+            <meta name="keywords" content=""/>
+        {% endfilter %}
+    {% endblock meta_classic %}
+
+    {% block meta_og %}
+        {% filter typogrify %}
+            <meta property="og:title" content="Чемпионат «{{gametournamentplayoff.name}}»">
+            <meta property="og:description" content="Описание ..."/>
+        {% endfilter %}
+
+    {% endblock meta_og %}
+
+    {% block meta_mrc %}
+        {% filter typogrify %}
+            <meta name="mrc__share_title" content="Чемпионат «{{gametournamentplayoff.name}}»">
+            <meta name="mrc__share_description" content="Описание ..."/>
+        {% endfilter %}
+    {% endblock meta_mrc %}
+{% endblock meta %}}
+
+
+{% block main_page_body %}
+    {% include "grizzly/includes/game-tournament-playoff-detail.html" %}
+{% endblock main_page_body %}
+

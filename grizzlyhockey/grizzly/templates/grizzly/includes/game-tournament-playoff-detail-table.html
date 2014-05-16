@@ -1,0 +1,149 @@
+{% load thumbnail %}
+{% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
+{% load mathfilters %}
+
+<div class="panel">
+    <div class="panel-heading">
+        <div class="panel-title center">
+            <span>c&nbsp;</span>
+            <date>{{ gametournamentplayoff.start_datetime }}</date>
+            <span>&nbsp;по&nbsp;</span>
+            <date>{{ gametournamentplayoff.stop_datetime  }}</date>
+        </div>
+    </div>
+
+    {% regroup gametournamentplayoff.gamematch_set.all|dictsortreversed:"finaltype_id" by finaltype as gamegroup_list %}
+
+    <table class="table table-striped">
+        <tr>
+            {% for gamegroup in gamegroup_list %}
+                <th class="center">{{gamegroup.grouper.detail}}</th>
+            {% endfor %}
+        </tr>
+        <tr style="vetical-aligment: top">
+            {% for gamegroup in gamegroup_list %}
+                {% with offset=forloop.counter %}
+
+                <td>
+                    {% for gamematch in gamegroup.list %}
+                        {% if gamegroup.grouper.name != "3" %}
+                            {% if forloop.last %}
+                                <div style="margin-top:{{offset|mul:'100'|sub:'100'}}px;">
+                            {% else %}
+                                <div style="margin-top:{{offset|mul:'100'|sub:'100'}}px;margin-bottom:{{offset|mul:'100'}}px">
+                            {% endif %}
+                        {% else %}
+                        <div style="margin-top:{{offset|mul:'100'|sub:'150'}}px;">
+                        {% endif %}
+                            <div class="center">
+                                {% if gamematch.start_datetime %}
+                                    <span class="datetime-mark" title="Дата">
+                                        <span>{{gamematch.start_datetime|date:"d M Y H:i"}}&nbsp;</span>
+                                    </span>
+                                {% endif %}
+                            </div>
+                            <table class="table">
+                                <tr>
+                                    <td class="col-md-5 center">
+                                        {% with team=gamematch.team_a  %}
+                                            {% if team.image %}
+                                                <div>
+                                                    <a href="{% url team-detail pk=team.id %}">
+                                                        {% if gamematch.score_a > gamematch.score_b %}
+                                                            <img  class="img-thumbnail" src="{% thumbnail team.image 48x48 %}"
+                                                                {% if team.image.alt %}
+                                                                    alt="{{ team.image.alt }}"
+                                                                {% endif %}
+                                                            />
+                                                        {% else %}
+                                                            <img  class="img-thumbnail" src="{% thumbnail team.image 32x32 %}"
+                                                                {% if team.image.alt %}
+                                                                    alt="{{ team.image.alt }}"
+                                                                {% endif %}
+                                                            />
+                                                        {% endif %}
+                                                    </a>
+                                                </div>
+                                            {% else %}
+                                                {% if gamematch.score_a > gamematch.score_b %}
+                                                    <div class="img-null p48x48 img-thumbnail"></div>
+                                                {% else %}
+                                                    <div class="img-null p32x32 img-thumbnail"></div>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if team.name %}
+                                                <div>
+                                                    <a href="{% url team-detail pk=team.id %}">
+                                                        {% if gamematch.score_a > gamematch.score_b %}
+                                                            <b>{{team.name}}</b>
+                                                        {% else %}
+                                                            {{team.name}}
+                                                        {% endif %}
+                                                    </a>
+                                                </div>
+                                            {% endif %}
+                                        {% endwith %}
+                                    </td>
+
+                                    <td class="col-md-2 center">
+                                        <p class="">
+                                            <a href="{% url game-match-detail pk=gamematch.id %}">
+                                                <span class="center">
+                                                    {{gamematch.score_a|default_if_none:"?"}}&nbsp;:&nbsp;{{gamematch.score_b|default_if_none:"?"}}
+                                                </span>
+                                            </a>
+                                        </p>
+                                    </td>
+                                    <td class="col-md-5 center">
+                                        {% with team=gamematch.team_b  %}
+                                            {% if team.image %}
+                                                <div>
+                                                    <a href="{% url team-detail pk=team.id %}">
+                                                        {% if gamematch.score_a < gamematch.score_b %}
+                                                            <img  class="img-thumbnail" src="{% thumbnail team.image 48x48 %}"
+                                                                {% if team.image.alt %}
+                                                                    alt="{{ team.image.alt }}"
+                                                                {% endif %}
+                                                            />
+                                                        {% else %}
+                                                            <img  class="img-thumbnail" src="{% thumbnail team.image 32x32 %}"
+                                                                {% if team.image.alt %}
+                                                                    alt="{{ team.image.alt }}"
+                                                                {% endif %}
+                                                            />
+                                                        {% endif %}
+                                                    </a>
+                                                </div>
+                                            {% else %}
+                                                {% if gamematch.score_a < gamematch.score_b %}
+                                                    <div class="img-null p48x48 img-thumbnail"></div>
+                                                {% else %}
+                                                    <div class="img-null p32x32 img-thumbnail"></div>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if team.name %}
+                                                <div>
+                                                    <a href="{% url team-detail pk=team.id %}">
+                                                        {% if gamematch.score_a < gamematch.score_b %}
+                                                            <b>{{team.name}}</b>
+                                                        {% else %}
+                                                            {{team.name}}
+                                                        {% endif %}
+                                                    </a>
+                                                </div>
+                                            {% endif %}
+                                        {% endwith %}
+                                    </td>
+
+                                </tr>
+                            </table>
+                        </div>
+                    {% endfor %}
+                </td>
+                {% endwith %}
+            {% endfor %}
+        </tr>
+    </table>
+</div>
+
+

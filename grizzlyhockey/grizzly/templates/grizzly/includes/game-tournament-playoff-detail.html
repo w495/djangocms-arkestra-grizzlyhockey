@@ -1,0 +1,74 @@
+{% load thumbnail %}
+{% load sekizai_tags %}
+{% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
+{% load mathfilters %}
+
+<section>
+
+    <header>
+        <h{{IN_BODY_HEADING_LEVEL}}>
+            Play-off «{{ gametournamentplayoff.name }}»
+        </h{{IN_BODY_HEADING_LEVEL}}>
+    </header>
+
+
+    <section class="media">
+        <div class="pull-left" href="#">
+            {% if gametournamentplayoff.image %}
+                <a href="{% url game-tournament-regular-detail pk=gametournamentplayoff.id %}">
+                    <img  class="img-thumbnail" src="{% thumbnail gametournamentplayoff.image 128x128 crop %}"
+                        {% if gametournamentplayoff.image.alt %}
+                            alt="{{ gametournamentplayoff.image.alt }}"
+                        {% endif %}
+                    />
+                </a>
+            {% endif %}
+        </div>
+        <div class="media-body">
+            {% if gametournamentplayoff.gamedivisions %}
+                <p>
+                    Дивизионы:
+                    {% for division in gametournamentplayoff.gamedivisions.all %}
+                        <a href="{% url game-division-detail pk=division.id %}">{{division}}</a>
+                    {% endfor %}
+                </p>
+            {% endif %}
+
+            {% if gametournamentplayoff.detail %}
+                <p>{{gametournamentplayoff.detail}}</p>
+            {% endif %}
+        </div>
+    </section>
+    <br/>
+
+
+    {% include "grizzly/includes/game-tournament-playoff-detail-rating.html" %}
+
+    <hr/>
+    <br/>
+
+
+    <section>
+        <header>
+            <h3>
+                Матчи
+            </h3>
+        </header>
+
+        {% include "grizzly/includes/game-tournament-playoff-detail-table.html" %}
+
+    </section>
+
+</section>
+
+
+
+
+{% addtoblock "js" %}
+<script src="{{ STATIC_URL }}j/moment.min.js" ></script>
+<script src="{{ STATIC_URL }}j/bootstrap-sortable.js" ></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $.bootstrapSortable(true)
+});
+{% endaddtoblock %}
