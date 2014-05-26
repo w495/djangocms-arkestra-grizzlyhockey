@@ -76,7 +76,9 @@ class GameDivision(AbsGameObj):
     def get_min_safety_factor_p2t(self):
         objs = self.get_some_p2t('safety_factor')
         res = [o for o in objs if o.safety_factor != None]
-        return res[0]
+        if(res)
+            return res[0]
+        return None
 
 
 
