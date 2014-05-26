@@ -111,6 +111,7 @@
                 <div class="col-lg-3 col-md-6  col-sm-12 col-xs-6">
                     {% with p2t=gamedivision.get_max_ngoalsntrans_p2t %}
                         {% with player=p2t.player %}
+                        {% if player %}
                             <p class="center">
                                 Лучший бомбардир
                                 <a title="Лучший бомбардир" href="{% url player-detail pk=player.id %}">
@@ -132,12 +133,14 @@
                                     </div>
                                 </a>
                             </p>
+                        {% endif %}
                         {% endwith %}
                     {% endwith %}
                 </div>
                 <div class="col-lg-3 col-md-6  col-sm-12 col-xs-6">
                     {% with p2t=gamedivision.get_max_ngoals_p2t %}
                         {% with player=p2t.player %}
+                        {% if player %}
                             <p class="center">
                                 Лучший снайпер
                                 <a title="Лучший снайпер" href="{% url player-detail pk=player.id %}">
@@ -169,12 +172,15 @@
                                     </div>
                                 </a>
                             </p>
+                        {% endif %}
                         {% endwith %}
                     {% endwith %}
                 </div>
                 <div class="col-lg-3 col-md-6  col-sm-12 col-xs-6">
                     {% with p2t=gamedivision.get_max_ntrans_p2t %}
                         {% with player=p2t.player %}
+                        {% if player %}
+
                             <p class="center">
                                 Лучший ассистент
                                 <a title="Лучший ассистент" href="{% url player-detail pk=player.id %}">
@@ -204,12 +210,14 @@
                                     </div>
                                 </a>
                             </p>
+                        {% endif %}
                         {% endwith %}
                     {% endwith %}
                 </div>
                 <div class="col-lg-3 col-md-6  col-sm-12 col-xs-6">
                     {% with p2t=gamedivision.get_min_safety_factor_p2t %}
                         {% with player=p2t.player %}
+                        {% if player %}
                             <p class="center">
                                 Лучший вратарь
                                 <a title="Лучший вратарь" href="{% url player-detail pk=player.id %}">
@@ -239,6 +247,7 @@
                                     </div>
                                 </a>
                             </p>
+                        {% endif %}
                         {% endwith %}
                     {% endwith %}
                 </div>
