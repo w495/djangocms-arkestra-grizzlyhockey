@@ -165,6 +165,14 @@
                                 <dd>
                                     {{player2team.nfines}}
                                 </dd>
+                                {% if player2team.nfines_minutes != 0 %}
+                                <dt class="text-muted">
+                                    Штрафов (в минутах):&nbsp;
+                                </dt>
+                                <dd>
+                                    {{player2team.nfines_minutes}}
+                                </dd>
+                                {% endif %}
 
                             </dl>
                         </div>

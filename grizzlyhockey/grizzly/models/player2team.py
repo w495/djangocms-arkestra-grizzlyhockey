@@ -60,7 +60,14 @@ class Player2Team(AbsObj):
         null=True,
         default=0
     )
-
+    
+    # alter table grizzly_player2team add nfines_minutes int(11) default null;
+    nfines_minutes = models.IntegerField(
+        verbose_name=u"Штрафы (в минутах)",
+        blank=True,
+        null=True,
+        default=0
+    )
 
     # alter table grizzly_player2team add ngoals int(11) default null;
     ngoals = models.IntegerField(
@@ -158,7 +165,13 @@ class Player2Team(AbsObj):
             x = self.player.gamematchfine_set.filter(team = self.team).count()
             return x
         return 0
-
+    
+    def get_nfines_minutes(self):
+        if (self.player):
+            fines = sum(fine.minutes for fine in self.player.gamematchfine_set.filter(team = self.team))
+            return fines
+        return 0
+    
     def get_ntrans(self):
         if (self.player):
             assistant_count = len(GameMatchGoal.objects.filter(Q(assistant_1 = self.player) | Q(assistant_2 = self.player)))
@@ -185,6 +198,7 @@ class Player2Team(AbsObj):
 
         self.ntrans = self.get_ntrans()
         self.nfines = self.get_nfines()
+        self.nfines_minutes = self.get_nfines_minutes()
         self.ngames = self.get_ngames()
         self.goalminutes = self.get_goalminutes()
 

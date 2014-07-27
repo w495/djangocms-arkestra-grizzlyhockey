@@ -22,6 +22,9 @@
                 Время конца
             </th>
             <th class="center">
+                Штраф в минутах
+            </th>
+            <th class="center">
                 Игрок
             </th>
             <th class="center">
@@ -39,6 +42,11 @@
                     <td>
                         {% if fine.stop_time%}
                             {{fine.stop_time|time:"i:s"}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if fine.minutes != 0 %}
+                            {{fine.minutes}} мин.
                         {% endif %}
                     </td>
                     <td>

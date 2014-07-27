@@ -37,7 +37,17 @@ class GameMatchFine (AbsObj):
         null=True,
         verbose_name=u"время конца"
     )
-
+    ##
+    ## Количество штрафа (в минутах)
+    ## ALTER TABLE grizzly_gamematchfine ADD minutes integer default 0;
+    ##
+    minutes = models.IntegerField(
+        blank = True,
+        null = True,
+        verbose_name = u"время штрафа (в минутах)",
+        default=0
+    )
+    
     ##
     ## Игрок,
     ##
