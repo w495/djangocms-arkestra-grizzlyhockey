@@ -84,6 +84,28 @@ class GameMatchGoal (AbsObj):
         null=True,
         verbose_name=u"игроки, сделавшие результативную передачу"
     )
+    
+    ##
+    ## Игроки, сделавшие результативную передачу
+    ##
+    assistant_1 = models.ForeignKey(
+        'Player',
+        blank=True,
+        null=True,
+        verbose_name=u"ассистент 1",
+        related_name="gamematchgoal_assistant_1"
+    )
+    
+    ##
+    ## Игроки, сделавшие результативную передачу
+    ##
+    assistant_2 = models.ForeignKey(
+        'Player',
+        blank=True,
+        null=True,
+        verbose_name=u"ассистент 2",
+        related_name="gamematchgoal_assistant_2"
+    )
 
     game_situation = models.CharField(
         blank = True,
@@ -124,8 +146,12 @@ class GameMatchGoal (AbsObj):
 
         if(self.goal_keeper):
             self.goal_keeper.resave_player2team_set()
-
-        [p.resave_player2team_set() for p in self.trans_players.all()]
+        if self.assistant_1 != None:
+            self.assistant_1.resave_player2team_set()
+            if self.assistant_2 != None:
+                self.assistant_2.resave_player2team_set()
+        else:
+            [p.resave_player2team_set() for p in self.trans_players.all()]
 
 
 

@@ -291,6 +291,10 @@ class GameMatchGoalAdminInline(AbsObjTabularInline):
                 field.queryset = field.queryset.filter(
                     teams__in = (request._obj_.team_a, request._obj_.team_b)
                 )
+            if db_field.name == 'assistant_1' or db_field.name == 'assistant_2':
+                field.queryset = field.queryset.filter(
+                    teams__in = (request._obj_.team_a, request._obj_.team_b)
+                )
         return field
 
 

@@ -57,6 +57,34 @@
                         {% endwith %}
                     </td>
                     <td>
+                        {% if goal.assistant_1 != NULL %}
+                            <div>
+                            {% for player2team in goal.assistant_1.player2team_set.all %}
+                                    {% if player2team.player == goal.assistant_1 %}
+                                        <a href="{% url player-detail pk=goal.assistant_1.id %}">
+                                            {{player2team.game_number}}&nbsp;
+                                            {{goal.assistant_1.second_name}}&nbsp;
+                                            {{goal.assistant_1.first_name}}&nbsp;
+                                            {{goal.assistant_1.patronymic}}
+                                        </a>
+                                    {% endif %}
+                            {% endfor %}
+                            </div>
+                           {% if goal.assistant_2 != NULL %} 
+                            <div>
+                               {% for player2team in goal.assistant_2.player2team_set.all %}
+                                    {% if player2team.player == goal.assistant_2 %}
+                                        <a href="{% url player-detail pk=goal.assistant_2.id %}">
+                                            {{player2team.game_number}}&nbsp;
+                                            {{goal.assistant_2.second_name}}&nbsp;
+                                            {{goal.assistant_2.first_name}}&nbsp;
+                                            {{goal.assistant_2.patronymic}}
+                                        </a>
+                                    {% endif %}
+                               {% endfor %}
+                            </div>
+                           {% endif%}
+                        {% else %}
                         {% for player in goal.trans_players.all %}
                             <div>
                                 {% for player2team in player.player2team_set.all %}
@@ -71,6 +99,7 @@
                                 {% endfor %}
                             </div>
                         {% endfor %}
+                        {% endif%}
                     </td>
                     <td class="game-situation">
                         {{goal.game_situation}}

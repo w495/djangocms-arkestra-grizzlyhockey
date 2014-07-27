@@ -4,6 +4,8 @@ import logging
 from django.db import models
 from abspers import AbsPers
 from absobj import AbsObj
+from gamematchgoal import GameMatchGoal
+from django.db.models import Q
 
 class Player2Team(AbsObj):
 
@@ -159,7 +161,10 @@ class Player2Team(AbsObj):
 
     def get_ntrans(self):
         if (self.player):
-            x = self.player.gamematchgoal_trans.filter(team = self.team).count()
+            assistant_count = len(GameMatchGoal.objects.filter(Q(assistant_1 = self.player) | Q(assistant_2 = self.player)))
+            # there isn't two same assistant
+            x = assistant_count
+            x += self.player.gamematchgoal_trans.filter(team = self.team).count()
             return x
         return 0
 
