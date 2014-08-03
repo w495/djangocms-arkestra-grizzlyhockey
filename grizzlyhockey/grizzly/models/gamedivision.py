@@ -49,7 +49,12 @@ class GameDivision(AbsGameObj):
         teams = [team for team  in self.teams.all()]
         objs = [x for x in Player2Team.objects.filter(team__in = teams).order_by(*args)]
         return objs
-
+   
+    def get_some_p2t_goalkeeper(self, *args):
+        teams = [team for team  in self.teams.all()]
+        objs = [x for x in Player2Team.objects.filter(team__in = teams, player__role = "Вратарь").exclude(safety_factor = None).order_by(*args)]
+        return objs 
+ 
     def get_p2t(self):
         objs = self.get_some_p2t('-ngoalsntrans')
         return objs
@@ -57,9 +62,17 @@ class GameDivision(AbsGameObj):
     def get_max_some_p2t(self, *args):
         objs = self.get_some_p2t(*args)
         if(objs):
+            return objs[0:4]
             return objs[0]
         return None
-
+    
+    def get_max_some_p2t_goalkeeper(self, *args):
+        objs = self.get_some_p2t_goalkeeper(*args)
+        if(objs):
+            return objs[0:4]
+            return objs[0]
+        return None
+    
     def get_max_ngoalsntrans_p2t(self):
         return self.get_max_some_p2t('-ngoalsntrans')
 
@@ -70,7 +83,7 @@ class GameDivision(AbsGameObj):
         return self.get_max_some_p2t('-ntrans')
 
     def get_min_nmisses_p2t(self):
-        return self.get_max_some_p2t('nmisses')
+        return self.get_max_some_p2t_goalkeeper('safety_factor', '-ngames')
 
 
     def get_min_safety_factor_p2t(self):

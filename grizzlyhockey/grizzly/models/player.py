@@ -66,7 +66,7 @@ class Player(AbsPers):
         through='Player2Team',
         verbose_name = u"команды"
     )
-
+    
     gamematchgoal_trans = models.ManyToManyField(
         'GameMatchGoal',
         blank=True,
@@ -74,7 +74,7 @@ class Player(AbsPers):
         through=GameMatchGoal.trans_players.through,
         verbose_name=u"игроки, сделавшие результативную передачу"
     )
-
+    
     def resave_player2team_set(self):
         [p2t.async_resave() for p2t in self.player2team_set.all()]
 
