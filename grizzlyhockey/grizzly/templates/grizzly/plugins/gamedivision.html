@@ -164,11 +164,11 @@
                                         <tr>
                                             <th class="right" >  </th>
                                             <th class="center" > Игрок </th>
+                                            <th class="center" > Клуб </th>
                                             <th class="center" title="Количество проведённых игр"> И </th>
                                             <th class="center" title="Забитые шайбы"> Ш </th>
                                             <th class="center" title="Передачи"> А </th>
                                             <th class="center" title="Очки"> О </th>
-                                            <th class="center" title="Штрафное время"> Штр </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -179,11 +179,16 @@
                                         </td>
                                         <td class="left" >
                                             <a title="Лучший бомбардир" href="{% url player-detail pk=player.id %}">  
-                                                {{player.second_name}} {{player.first_name}}
+                                                {{player.second_name}} <br/>{{player.first_name}}
                                             </a>
                                         </td>
                                         {% for player2team in player.player2team_set.all %}
                                         {% if player2team.player == player %}
+                                        <td class="center" >
+                                            <a title="«{{player2team.team}}»" href="{% url team-detail pk=player2team.team.id %}">
+                                                {{player2team.team.name|upper|slice:":3"}}
+                                            </a>
+                                        </td>
                                         <td class="center" >
                                             {{player2team.ngames}}
                                         </td>
@@ -195,9 +200,6 @@
                                         </td>
                                         <td class="center">
                                             <b>{{player2team.ngoalsntrans}}</b>
-                                        </td>
-                                        <td class="center">
-                                            {{player2team.nfines}}
                                         </td>
                                     </tr>
                                     {% endif %}
@@ -222,7 +224,7 @@
                                     <tr width="100%">
                                         <td valign="middle" width="80%" style="vertical-align:middle">
                                         <div class="center" style="font-size:14pt;">
-                                            <b>{{player.second_name}} {{player.first_name}}</b>
+                                            <b>{{player.second_name}} <br/>{{player.first_name}}</b>
                                         </div>
                                         <div class="center">
                                                 {% for player2team in player.player2team_set.all %}
@@ -268,11 +270,11 @@
                                         <tr>
                                             <th class="right" >  </th>
                                             <th class="center" > Игрок </th>
+                                            <th class="center" > Клуб </th>
                                             <th class="center" title="Количество проведённых игр"> И </th>
                                             <th class="center" title="Забитые шайбы"> Ш </th>
                                             <th class="center" title="Передачи"> А </th>
                                             <th class="center" title="Очки"> О </th>
-                                            <th class="center" title="Штрафное время"> Штр </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -283,11 +285,17 @@
                                         </td>
                                         <td class="left" >
                                             <a title="Лучший снайпер" href="{% url player-detail pk=player.id %}">  
-                                                {{player.second_name}} {{player.first_name}}
+                                                {{player.second_name}} <br/>{{player.first_name}}
                                             </a>
                                         </td>
+
                                         {% for player2team in player.player2team_set.all %}
                                         {% if player2team.player == player %}
+                                        <td class="center" >
+                                            <a title="«{{player2team.team}}»" href="{% url team-detail pk=player2team.team.id %}">
+                                                {{player2team.team.name|upper|slice:":3"}}
+                                            </a>
+                                        </td>
                                         <td class="center" >
                                             {{player2team.ngames}}
                                         </td>
@@ -299,9 +307,6 @@
                                         </td>
                                         <td class="center">
                                             {{player2team.ngoalsntrans}}
-                                        </td>
-                                        <td class="center">
-                                            {{player2team.nfines}}
                                         </td>
                                     </tr>
                                     {% endif %}
@@ -328,7 +333,7 @@
                                     <tr width="100%">
                                         <td valign="middle" width="80%" style="vertical-align:middle">
                                         <div class="center" style="font-size:14pt;">
-                                            <b>{{player.second_name}} {{player.first_name}}</b>
+                                            <b>{{player.second_name}}<br/> {{player.first_name}}</b>
                                         </div>
                                         <div class="center">
                                                 {% for player2team in player.player2team_set.all %}
@@ -374,11 +379,11 @@
                                         <tr>
                                             <th class="right" >  </th>
                                             <th class="center" > Игрок </th>
+                                            <th class="center" > Клуб </th>
                                             <th class="center" title="Количество проведённых игр"> И </th>
                                             <th class="center" title="Забитые шайбы"> Ш </th>
                                             <th class="center" title="Передачи"> А </th>
                                             <th class="center" title="Очки"> О </th>
-                                            <th class="center" title="Штрафное время"> Штр </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -395,6 +400,11 @@
                                         {% for player2team in player.player2team_set.all %}
                                         {% if player2team.player == player %}
                                         <td class="center" >
+                                            <a title="«{{player2team.team}}»" href="{% url team-detail pk=player2team.team.id %}">
+                                                {{player2team.team.name|upper|slice:":3"}}
+                                            </a>
+                                        </td>
+                                        <td class="center" >
                                             {{player2team.ngames}}
                                         </td>
                                         <td class="center">
@@ -405,9 +415,6 @@
                                         </td>
                                         <td class="center">
                                             {{player2team.ngoalsntrans}}
-                                        </td>
-                                        <td class="center">
-                                            {{player2team.nfines}}
                                         </td>
                                     </tr>
                                     {% endif %}
@@ -432,7 +439,7 @@
                                     <tr width="100%">
                                         <td valign="middle" width="80%" style="vertical-align:middle">
                                         <div class="center" style="font-size:14pt;">
-                                            <b>{{player.second_name}} {{player.first_name}}</b>
+                                            <b>{{player.second_name}} <br/>{{player.first_name}}</b>
                                         </div>
                                         <div class="center">
                                                 {% for player2team in player.player2team_set.all %}
@@ -477,11 +484,11 @@
                                         <tr>
                                             <th class="right" >  </th>
                                             <th class="center" > Игрок </th>
+                                            <th class="center" > Клуб </th>
                                             <th class="center" title="Количество проведённых игр"> И </th>
                                             <th class="center" title="Пропущено шайб"> ПШ </th>
                                             <th class="center" title="Коэффициент надёжности"> КН </th>
                                             <th class="center" title="Время на площадке"> ВП </th>
-                                            <th class="center" title="Количество штрафов"> Штр </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -498,6 +505,11 @@
                                         {% for player2team in player.player2team_set.all %}
                                         {% if player2team.player == player %}
                                         <td class="center" >
+                                            <a title="«{{player2team.team}}»" href="{% url team-detail pk=player2team.team.id %}">
+                                                {{player2team.team.name|upper|slice:":3"}}
+                                            </a>
+                                        </td>
+                                        <td class="center" >
                                             {{player2team.ngames}}
                                         </td>
                                         <td class="center">
@@ -508,9 +520,6 @@
                                         </td>
                                         <td class="center">
                                             {{player2team.goalminutes}}
-                                        </td>
-                                        <td class="center">
-                                            {{player2team.nfines}}
                                         </td>
                                     </tr>
                                     {% endif %}
