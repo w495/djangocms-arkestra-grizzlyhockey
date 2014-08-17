@@ -130,6 +130,11 @@ class Player2Team(AbsObj):
         default=0
     )
 
+    #  alter table grizzly_player add is_disqualified bool NOT NULL;
+    is_disqualified = models.BooleanField(
+        default=False,
+        verbose_name = u'дисквалифицирован'
+    )
 
     def get_ngames(self):
         if (self.player):

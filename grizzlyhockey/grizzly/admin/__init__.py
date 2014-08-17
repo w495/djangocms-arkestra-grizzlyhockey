@@ -809,6 +809,16 @@ class GameTournamentPlayOffAdmin(AbsObjAdmin):
     ]
 
 
+class Player2TeamMeta(Player2Team):
+    class Meta:
+        proxy = True
+        verbose_name = "Игры: дисквалифицированный игрок"
+        verbose_name_plural = "Игры: дисквалифицированные игроки"
+
+class Player2TeamAdminFiltered(Player2TeamAdmin):
+    def queryset(self, request):
+        return self.model.objects.filter(is_disqualified = True)
+
 
 admin.site.register(FinalType, FinalTypeAdmin)
 admin.site.register(JudgeType, JudgeTypeAdmin)
@@ -822,6 +832,7 @@ admin.site.register(PlayerType,     PlayerTypeAdmin)
 admin.site.register(PlayerStatus,   PlayerStatusAdmin)
 admin.site.register(Player,         PlayerAdmin)
 admin.site.register(Player2Team,    Player2TeamAdmin)
+admin.site.register(Player2TeamMeta,    Player2TeamAdminFiltered)
 
 
 admin.site.register(Trainer, TrainerAdmin)

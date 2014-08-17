@@ -2,6 +2,7 @@
 
 from django.db import models
 from absobj import AbsObj
+from player2team import Player2Team
 
 class GameMatchFine (AbsObj):
 
@@ -72,6 +73,14 @@ class GameMatchFine (AbsObj):
         self.fine_player.resave_player2team_set()
 
 
+    def pre_save_action(self):
+        if self.minutes == 20 or self.minutes >= 25:
+            fine_players = Player2Team.objects.filter(team__id=self.team.id, player__id=self.fine_player.id)
+            if len(fine_players) > 0:
+                for player in fine_players:
+                    player.is_disqualified = True
+                    player.save()
+        
 
 
     class Meta:
