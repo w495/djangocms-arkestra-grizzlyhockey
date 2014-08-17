@@ -19,20 +19,20 @@ $(window).load(function() {
 
 <div id="{{ instance.domid }}" class="carousel slide hidden-xs">
     <ol class="carousel-indicators">
-        {% for item in vk_instance %}
+        {% for item in instance.carouselitem_set.all %}
             <li data-target="#{{ instance.domid }}" data-slide-to="{{forloop.counter0}}"  class="{% if forloop.first %}active {% endif %}" ></li>
         {% endfor %}
     </ol>
 
-    <div id="carousel-inner" class="carousel-inner">
-        {% for item in vk_instance %}
+    <div class="carousel-inner">
+        {% for item in instance.carouselitem_set.all %}
             <div class="item {% if forloop.last %}active {% endif %}">
-                
-                    <a class="carousel-inner-image" href="{{ item.image_url }}" style="background-image:url('{{ item.image_url }}')"></a>
-                
+                {% if item.image %}
+                    <a class="carousel-inner-image" href="{{ item.caption_link }}" style="background-image:url('{{ item.image.url }}')"></a>
+                {% endif %}
                 <div class="carousel-caption">
                     <h4>{{ item.caption_title }}</h4>
-                    <p></p>
+                    <p>{{ item.caption_content }}</p>
                 </div>
             </div>
         {% endfor %}

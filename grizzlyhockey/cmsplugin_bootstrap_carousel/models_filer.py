@@ -28,12 +28,3 @@ class CarouselItem(models.Model):
     caption_link = models.CharField(max_length=100, blank=True, null=True)
     caption_content = models.TextField(blank=True, null=True)
     image = FilerImageField(blank=True, null=True)
-
-class CarouselItemVK:
-    caption_title = ""
-    image_url = ""
-    
-    def __init__(self, title, url):
-        self.caption_title = title
-        self.image_url = url
-    
