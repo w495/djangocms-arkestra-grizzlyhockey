@@ -2,6 +2,8 @@
 
 import operator
 import datetime
+import urllib2
+import json 
 
 from django.db.models import Q
 
@@ -181,6 +183,72 @@ class PlayerBirthdayPlugin(CMSPluginBase):
         return players
 
 
+class CarouselItemVK:
+    caption_title = ""
+    image_url = ""
+    album_thumb_m = ""
+    album_thumb_y = ""
+    album_url = ""
+    
+    def __init__(self, title, url, thumb_tuple, album_url):
+        self.caption_title = title
+        self.image_url = url
+        self.album_thumb_m = thumb_tuple[0]
+        self.album_thumb_y = thumb_tuple[1]
+        self.album_url = album_url
+        
+
+class VKPlugin(CMSPluginBase):
+    name = _(u"VK фоточки")
+    render_template = "grizzly/plugins/vk_carousel.html"
+
+    def render(self, context, instance, placeholder):
+        response = urllib2.urlopen('https://api.vk.com/method/photos.getAlbums?owner_id=-71330880&v=5.24&need_covers=1&photo_sizes=1')
+        album_json = json.load(response)
+        photo_size = 0
+        my_instance = list()
+        for album in album_json[u'response']['items']:
+            if photo_size > 20:
+                break
+            album_title = album[u'title']
+            album_id = album[u'id']
+            album_thumb_m = ""
+            album_thumb_y = ""
+            album_url = "http://vk.com/grizzlyhockey?z=album-71330880_" + str(album_id)
+            for size in album[u'sizes']:
+                if size[u'type'] == 'm':
+                    album_thumb_m = size[u'src']
+                if size[u'type'] == 'y':
+                    album_thumb_y = size[u'src']
+                print size
+            
+            if album_thumb_y != "":
+                vk = CarouselItemVK(album_title, album_thumb_y, (album_thumb_m, album_thumb_y), album_url)
+                my_instance.append(vk)
+            continue
+            response = urllib2.urlopen('https://api.vk.com/method/photos.get?owner_id=-71330880&v=5.24&album_id=' + str(album_id))
+            photo_json = json.load(response)
+            for photo in photo_json[u'response']['items']:
+                if photo_size > 20:
+                    break
+                image_src = ""
+                if not photo.has_key(u'width') or not photo.has_key(u'height') or (float(photo[u'width']) / float(photo[u'height']) < 1.3):
+                    print float(photo[u'width']) / float(photo[u'height'])
+                    continue
+                
+                if photo.has_key(u'photo_1280'):
+                    image_src = photo[u'photo_1280']
+                elif photo.has_key(u'photo_807'):
+                    image_src = photo[u'photo_807']
+                else:
+                    continue
+                photo_size += 1
+                vk = CarouselItemVK(album_title, image_src, (album_thumb_m, album_thumb_y), album_url)
+                my_instance.append(vk)
+        context.update({'vk_instance' : my_instance})
+        return context
+
+
 plugin_pool.register_plugin(PlayerBirthdayPlugin)
 plugin_pool.register_plugin(TeamPlugin)
 plugin_pool.register_plugin(TeamPluginMany)
@@ -200,3 +268,4 @@ plugin_pool.register_plugin(GameMatchSchedulePlugin)
 
 plugin_pool.register_plugin(GameMatchPluginMany)
 
+plugin_pool.register_plugin(VKPlugin)

@@ -1,0 +1,58 @@
+{% load sekizai_tags %}
+{% addtoblock "js" %}
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#2").carousel({interval: 5000});
+});
+
+$(window).load(function() {
+    var carousel_items = $("#2");
+    var height = 0;
+    carousel_items.each(function () {
+        height = Math.max(height, $(this).height());
+    });
+    carousel_items.height(height);
+});
+</script>
+
+<style>
+.black-cover {
+    background-image: -moz-linear-gradient(center top , rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8), #000);
+    bottom: 0px;
+    width: 100%;
+    left: 0px;
+    color: #FFF;
+    position: absolute;
+}
+</style>
+
+{% endaddtoblock %}
+
+<div id="2" class="carousel slide hidden-xs">
+    <!--ol class="carousel-indicators">
+        {% for item in vk_instance %}
+            <li data-target="#2" data-slide-to="{{forloop.counter0}}"  class="{% if forloop.first %}active {% endif %}" ></li>
+        {% endfor %}
+    </ol-->
+
+    <div id="carousel-inner" class="carousel-inner">
+        {% for item in vk_instance %}
+            <div class="item {% if forloop.last %}active {% endif %}">
+                
+                    <a class="carousel-inner-image" href="{{ item.album_url }}" style="background-image:url('{{ item.image_url }}')"></a>
+                
+                <div class="carousel-caption black-cover">
+                    <h4>{{ item.caption_title }}</h4>
+                    <p></p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <a class="left carousel-control" href="#2" data-slide="prev">
+        <span class="glyphicon"></span>
+    </a>
+    <a class="right carousel-control" href="#2" data-slide="next">
+        <span class="glyphicon"></span>
+    </a>
+</div>
