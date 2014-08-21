@@ -94,7 +94,8 @@ class GameDivision(AbsGameObj):
         return None
 
 
-
+    def post_save_action(self):
+        [team.async_resave() for team in self.team_set.all()]
 
 
 

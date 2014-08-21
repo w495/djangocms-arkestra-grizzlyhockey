@@ -5,7 +5,11 @@ from django.db import models
 from abspers import AbsPers
 from absobj import AbsObj
 from gamematchgoal import GameMatchGoal
+from gamematchgtime import GameMatchGTime
+from gamematch import GameMatch
+from gameseason import GameSeason
 from django.db.models import Q
+import time
 
 class Player2Team(AbsObj):
 
@@ -136,22 +140,39 @@ class Player2Team(AbsObj):
         verbose_name = u'дисквалифицирован'
     )
 
+    def get_last_season(self):
+        seasons = GameSeason.objects.filter().order_by('-start_datetime')
+        if len(seasons) > 0:
+            return seasons[0]
+        return None
+    
+    def get_division_query(self):
+        season = self.get_last_season()
+        if season == None:
+            return None
+        divisions = season.gamedivisions.all()
+        q = Q()
+        for division in divisions:
+            q |= Q(gametournamentregular__gamedivisions=division)
+            q |= Q(gametournamentplayoff__gamedivisions=division)
+        return q
+
     def get_ngames(self):
         if (self.player):
-            ga = self.player.gamematch_a.filter(team_a = self.team).count()
-            gb = self.player.gamematch_b.filter(team_b = self.team).count()
+            ga = self.player.gamematch_a.filter(Q(team_a = self.team) & self.query_set).distinct().count()
+            gb = self.player.gamematch_b.filter(Q(team_b = self.team) & self.query_set).distinct().count()
             return ga + gb
         return 0
 
     def get_ngoals(self):
         if (self.player):
-            x = self.player.gamematchgoal_goal.filter().count()
+            x = GameMatchGoal.objects.filter(goal_player=self.player, gamematch__in = self.season_games).distinct().count()
             return x
         return 0
 
     def get_nmisses(self):
         if (self.player):
-            x = self.player.gamematchgoal_miss.filter().count()
+            x = self.player.gamematchgoal_miss.filter(gamematch__in = self.season_games).count()
             return x
         return 0
 
@@ -160,34 +181,35 @@ class Player2Team(AbsObj):
         if (self.player):
             minutes = sum([
                 gtime.get_diff_minute()
-                for gtime in self.player.gamematchgtime_set.all()
+                for gtime in GameMatchGTime.objects.filter(player=self.player, gamematch__in = self.season_games).distinct()
             ])
+            
             return minutes
         return 0
 
     def get_nfines(self):
         if (self.player):
-            x = self.player.gamematchfine_set.filter(team = self.team).count()
+            x = self.player.gamematchfine_set.filter(team = self.team, gamematch__in = self.season_games).count()
             return x
         return 0
     
     def get_nfines_minutes(self):
         if (self.player):
-            fines = sum(fine.minutes for fine in self.player.gamematchfine_set.filter(team = self.team))
+            fines = sum(fine.minutes for fine in self.player.gamematchfine_set.filter(team = self.team, gamematch__in = self.season_games))
             return fines
         return 0
     
     def get_ntrans(self):
         if (self.player):
-            assistant_count = len(GameMatchGoal.objects.filter(Q(assistant_1 = self.player) | Q(assistant_2 = self.player)))
+            assistant_count = len(GameMatchGoal.objects.filter(Q(assistant_1 = self.player) | Q(assistant_2 = self.player), gamematch__in = self.season_games))
             # there isn't two same assistant
             x = assistant_count
-            x += self.player.gamematchgoal_trans.filter(team = self.team).count()
+            x += self.player.gamematchgoal_trans.filter(team = self.team, gamematch__in = self.season_games).count()
             return x
         return 0
 
     def get_safety_factor(self):
-        if(not self.goalminutes):
+        if(not self.goalminutes or self.team.ngames == 0):
             return None
 
         mins = self.team.ngames * 60
@@ -198,6 +220,8 @@ class Player2Team(AbsObj):
 
 
     def pre_save_action(self):
+        self.query_set = self.get_division_query()
+        self.season_games = GameMatch.objects.filter(self.query_set).distinct()
         self.ngoals = self.get_ngoals()
         self.nmisses =  self.get_nmisses()
 

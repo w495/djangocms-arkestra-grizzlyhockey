@@ -11,6 +11,9 @@ class GameSeason (AbsGameObj):
         null=True,
         verbose_name=u"дивизионы"
     )
+    
+    def post_save_action(self):
+        [division.async_resave() for division in self.gamedivision_set.all()]
 
     class Meta:
         ordering = ('ctime',)

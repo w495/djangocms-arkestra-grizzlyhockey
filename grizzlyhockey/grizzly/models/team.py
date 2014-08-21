@@ -4,6 +4,9 @@ from django.db import models
 
 from absobj import AbsObj
 from django_cached_functions import cached_function
+from django.db.models import Q
+from gameseason import GameSeason
+
 
 class Team(AbsObj):
 
@@ -86,23 +89,38 @@ class Team(AbsObj):
         null=True,
     )
 
-
-
+    def get_last_season(self):
+        seasons = GameSeason.objects.filter().order_by('-start_datetime')
+        if len(seasons) > 0:
+            return seasons[0]
+        return None
+    
+    def get_division_query(self):
+        season = self.get_last_season()
+        if season == None:
+            return None
+        divisions = self.gamedivisions.filter(gameseasons = season)
+        q = Q()
+        for division in divisions:
+            q |= Q(gametournamentregular__gamedivisions=division)
+        return q
 
     def get_nwins(self):
-        wa = self.gamematch_a.filter(score_a__gt = models.F('score_b')).count()
-        wb = self.gamematch_b.filter(score_b__gt = models.F('score_a')).count()
+        wa = self.gamematch_a.filter(Q(score_a__gt = models.F('score_b')) & self.query_set).distinct().count()
+        wb = self.gamematch_b.filter(Q(score_b__gt = models.F('score_a')) & self.query_set).distinct().count()
+        
         return wa + wb
 
     def get_nloses(self):
-        la = self.gamematch_a.filter(score_a__lt = models.F('score_b')).count()
-        lb = self.gamematch_b.filter(score_b__lt = models.F('score_a')).count()
+        la = self.gamematch_a.filter(Q(score_a__lt = models.F('score_b')) & self.query_set).distinct().count()
+        lb = self.gamematch_b.filter(Q(score_b__lt = models.F('score_a')) & self.query_set).distinct().count()
+        
         return la + lb
 
 
     def get_ndraws(self):
-        da = self.gamematch_a.filter(score_a = models.F('score_b')).count()
-        db = self.gamematch_b.filter(score_b = models.F('score_a')).count()
+        da = self.gamematch_a.filter(Q(score_a = models.F('score_b')) & self.query_set).distinct().count()
+        db = self.gamematch_b.filter(Q(score_b = models.F('score_a')) & self.query_set).distinct().count()
         return da + db
 
 
@@ -112,8 +130,8 @@ class Team(AbsObj):
 
 
     def get_ngoals(self):
-        wa =  self.gamematch_a.aggregate(models.Sum('score_a')).get('score_a__sum', 0)
-        wb =  self.gamematch_b.aggregate(models.Sum('score_b')).get('score_b__sum', 0)
+        wa =  sum( x.score_a for x in self.gamematch_a.filter(self.query_set).distinct().exclude(score_a__isnull=True))
+        wb =  sum( x.score_b for x in self.gamematch_b.filter(self.query_set).distinct().exclude(score_b__isnull=True))
         if(not wa):
             wa = 0
         if(not wb):
@@ -122,8 +140,8 @@ class Team(AbsObj):
         return n
 
     def get_nmisses(self):
-        la =  self.gamematch_a.aggregate(models.Sum('score_b')).get('score_b__sum', 0)
-        lb =  self.gamematch_b.aggregate(models.Sum('score_a')).get('score_a__sum', 0)
+        la =  sum( x.score_b for x in self.gamematch_a.filter(self.query_set).exclude(score_b__isnull=True).distinct())
+        lb =  sum( x.score_a for x in self.gamematch_b.filter(self.query_set).exclude(score_a__isnull=True).distinct())
         if(not la):
             la = 0
         if(not lb):
@@ -136,6 +154,7 @@ class Team(AbsObj):
         return res
 
     def pre_save_action(self):
+        self.query_set = self.get_division_query()
         self.nwins  = self.get_nwins()
         self.nloses = self.get_nloses()
         self.ndraws = self.get_ndraws()
