@@ -12,6 +12,8 @@ urlpatterns = patterns('',
     url(r'^player/$', views.PlayerListView.as_view(), name='player-list'),
 
     url(r'^player/(?P<pk>\d+)/$', views.PlayerDetailView.as_view(), name='player-detail'),
+    
+    url(r'^team-request/(?P<pk>\d+)/$', views.TeamRequestView.as_view(), name='team-request'),
 
 
     url(r'^judge-type/$', views.JudgeTypeListView.as_view(), name='judge-type-list'),

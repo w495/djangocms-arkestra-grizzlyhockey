@@ -199,6 +199,12 @@ class PlayerDetailView(generic.DetailView):
     model = Player
     template_name = 'grizzly/pages/player-detail.html'
 
+class TeamRequestView(generic.DetailView):
+    model = Team
+    template_name = 'grizzly/pages/team-request.html'
+    
+    def get_queryset(self, *args, **kwargs):
+        return self.model.objects.all().order_by('player__role')
 
 
 class PlayerStatusListView(generic.ListView):

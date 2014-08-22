@@ -11,6 +11,7 @@
     {% if request.get_full_path != thisurl %}
         <a href="{{thisurl}}">{{ team.name }}</a>
     {% endif%}
+    <a href="{% url team-request pk=team.id %}">Заявка</a>
     <!-- Проверка, чтобы не было ссылок на текущий элемент -->
 
     <div class="media">

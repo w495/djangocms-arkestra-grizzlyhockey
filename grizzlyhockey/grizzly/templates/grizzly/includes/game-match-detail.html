@@ -32,7 +32,7 @@
                 {% endif %}
                 {% with player=gamematch.best_player_a  %}
                 {% if player %}
-                    <div style="margin-top:10px;">Лучший игрок</div>
+                    <div style="margin-top:10px;"><i>Лучший игрок</i></div>
                     <a title="Лучший игрок команды {{team.name}}" href="{% url player-detail pk=player.id %}">  
                     {% if player.image %}
                         <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 %}"
@@ -91,7 +91,7 @@
                 {% endif %}
                 {% with player=gamematch.best_player_b  %}
                 {% if player %}
-                    <div style="margin-top:10px;">Лучший игрок</div>
+                    <div style="margin-top:10px;"><i>Лучший игрок</i></div>
                     <a title="Лучший игрок команды {{team.name}}" href="{% url player-detail pk=player.id %}">  
                     {% if player.image %}
                         <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 %}"
