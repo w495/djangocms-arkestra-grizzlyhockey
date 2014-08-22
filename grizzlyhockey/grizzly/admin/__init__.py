@@ -440,7 +440,23 @@ class GameMatchAdmin(AbsObjAdmin):
         request._obj_ = obj
         return super(GameMatchAdmin, self).get_form(request, obj, **kwargs)
 
-
+    def formfield_for_foreignkey(self, db_field, request=None, **kwargs):
+        field = super(GameMatchAdmin, self).formfield_for_foreignkey(
+            db_field,
+            request,
+            **kwargs
+        )
+        if request._obj_ and request._obj_.team_a and request._obj_.team_b:
+            if db_field.name == 'best_player_a':
+                field.queryset = field.queryset.filter(
+                    teams__in = (request._obj_.team_a,)
+                )
+            if db_field.name == 'best_player_b':
+                field.queryset = field.queryset.filter(
+                    teams__in = (request._obj_.team_b,)
+                )
+        return field
+    
     def formfield_for_manytomany(self, db_field, request, **kwargs):
         field = super(GameMatchAdmin, self).formfield_for_manytomany(
             db_field,

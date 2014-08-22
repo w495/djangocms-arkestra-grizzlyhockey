@@ -46,6 +46,21 @@ class GameMatch (AbsGameObj):
         related_name="gamematch_b"
     )
 
+    best_player_a = models.ForeignKey(
+        'Player',
+        blank=True,
+        null=True,
+        verbose_name=u"лучший игрок команды A",
+        related_name="best_player_a"
+    )
+
+    best_player_b = models.ForeignKey(
+        'Player',
+        blank=True,
+        null=True,
+        verbose_name=u"лучший игрок команды Б",
+        related_name="best_player_b"
+    )
 
     score_a = models.IntegerField(
         blank = True,

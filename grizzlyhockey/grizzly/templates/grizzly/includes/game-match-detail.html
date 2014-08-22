@@ -30,6 +30,29 @@
                         </a>
                     </div>
                 {% endif %}
+                {% with player=gamematch.best_player_a  %}
+                {% if player %}
+                    <div style="margin-top:10px;">Лучший игрок</div>
+                    <a title="Лучший игрок команды {{team.name}}" href="{% url player-detail pk=player.id %}">  
+                    {% if player.image %}
+                        <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 %}"
+                            {% if player.image.alt %}
+                                alt="{{ player.image.alt }}"
+                            {% endif %}
+                        />
+                    {% else %}
+                        <div class="img-null-{{"123456"|make_list|random}} px128x128 img-thumbnail">
+                        </div>
+                    {% endif %}
+                    </a>
+                    <div class="center">
+                        <a title="Лучший игрок команды {{team.name}}" href="{% url player-detail pk=player.id %}">  
+                            <b>{{player.second_name}} {{player.first_name}}</b>
+                        </a>
+                    </div>
+                    </a>
+                {% endif %}
+                {% endwith %}
             {% endwith %}
         </div>
         <div class="col-sm-2 center scorew">
@@ -66,6 +89,29 @@
                         </a>
                     </div>
                 {% endif %}
+                {% with player=gamematch.best_player_b  %}
+                {% if player %}
+                    <div style="margin-top:10px;">Лучший игрок</div>
+                    <a title="Лучший игрок команды {{team.name}}" href="{% url player-detail pk=player.id %}">  
+                    {% if player.image %}
+                        <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 %}"
+                            {% if player.image.alt %}
+                                alt="{{ player.image.alt }}"
+                            {% endif %}
+                        />
+                    {% else %}
+                        <div class="img-null-{{"123456"|make_list|random}} px128x128 img-thumbnail">
+                        </div>
+                    {% endif %}
+                    </a>
+                    <div class="center">
+                        <a title="Лучший игрок команды {{team.name}}" href="{% url player-detail pk=player.id %}">  
+                            <b>{{player.second_name}} {{player.first_name}}</b>
+                        </a>
+                    </div>
+                    </a>
+                {% endif %}
+                {% endwith %}
             {% endwith %}
         </div>
     </div>
