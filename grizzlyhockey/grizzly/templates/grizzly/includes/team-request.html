@@ -1,0 +1,144 @@
+{% load thumbnail %}
+{% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
+
+<section>
+<style media="print">
+
+    .NoPrint {display: none;}
+
+</style>
+<div class="NoPrint" >
+
+    <input type="button" value="Печать" onclick="window.print();"></input>
+
+</div>
+
+    <div class="center">
+    <h{{IN_BODY_HEADING_LEVEL}}>«{{ team.name }}»</h{{IN_BODY_HEADING_LEVEL}}>
+
+    <!-- Проверка, чтобы не было ссылок на текущий элемент -->
+    {% url team-detail pk=team.id as thisurl %}
+
+    <!-- Проверка, чтобы не было ссылок на текущий элемент -->
+    {% if team.image %}
+            <img  src="{% thumbnail team.image 150x150 %}"
+                       {% if team.image.alt %}
+                          alt="{{ team.image.alt }}"
+                       {% endif %}
+            />
+    {% else %}
+        <div class="img-null p150x150 img-thumbnail">
+        </div>
+    {% endif %}
+        </div>
+        <div class="row" >
+        {% for player2team in team.player2team_set.all|dictsort:"role" %}
+            {% with player2team.player as player  %}
+                {% if player and not player.is_disqualified %}
+                      
+                      {% if forloop.counter == 1 %}
+                         <div class="row" >
+                      {% endif %}
+                        <div class="col-md-3 col-sm-4 center">
+                            <div class="pull-left" href="#">
+                                {% if player2team.image %}
+                                    <img  class="img-thumbnail" src="{% thumbnail player2team.image 96x96 %}"
+                                        {% if player2team.image.alt %}
+                                            alt="{{ player2team.image.alt }}"
+                                        {% endif %}
+                                    />
+                                {% else %}
+                                    {% if player.image %}
+                                        <img  class="img-thumbnail" src="{% thumbnail player.image 96x96 %}"
+                                            {% if player.image.alt %}
+                                                alt="{{ player.image.alt }}"
+                                            {% endif %}
+                                        />
+                                    {% else %}
+                                        <div class="img-null-{{"123456"|make_list|random}} p96x96 img-thumbnail">
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            <div class="media-body">
+                            <h6 class="media-heading">
+                                    {{player.second_name}}
+                                    {{player.first_name}}
+                            </h6>
+                            {% if player2team.game_number %}
+                            <h6>Номер:&nbsp;{{player2team.game_number}}</h6>
+                            {% endif %}
+                            <span title="Амплуа">
+                                <h6>{{player.role}}</h6>
+                            </span>
+                            <span title="Дата рождения">
+                                <h6>{{player.birthday}}</h6>
+                            </span>
+                            </div>
+                        </div>
+                        {% if forloop.counter|divisibleby:3 %}
+                         </div><div class="row" >
+                        {% endif %}
+                {% endif %}
+            {% endwith %}
+        {% endfor %}
+    </div>
+
+      <h3>Дисквалифицированы:</h3>
+     <div class="row" >
+        {% for player2team in team.player2team_set.all|dictsort:"role" %}
+            {% with player2team.player as player  %}
+                {% if player and player.is_disqualified %}
+                      
+                      {% if forloop.counter == 1 %}
+                         <div class="row" >
+                      {% endif %}
+                        <div class="col-md-3 col-sm-4 center">
+                            <div class="pull-left" href="#">
+                                {% if player2team.image %}
+                                    <img  class="img-thumbnail" src="{% thumbnail player2team.image 96x96 %}"
+                                        {% if player2team.image.alt %}
+                                            alt="{{ player2team.image.alt }}"
+                                        {% endif %}
+                                    />
+                                {% else %}
+                                    {% if player.image %}
+                                        <img  class="img-thumbnail" src="{% thumbnail player.image 96x96 %}"
+                                            {% if player.image.alt %}
+                                                alt="{{ player.image.alt }}"
+                                            {% endif %}
+                                        />
+                                    {% else %}
+                                        <div class="img-null-{{"123456"|make_list|random}} p96x96 img-thumbnail">
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            <div class="media-body">
+                            <h6 class="media-heading">
+                                    {{player.second_name}}
+                                    {{player.first_name}}
+                            </h6>
+                            {% if player2team.game_number %}
+                            <h6>Номер:&nbsp;{{player2team.game_number}}</h6>
+                            {% endif %}
+                            <span title="Амплуа">
+                                <h6>{{player.role}}</h6>
+                            </span>
+                            <span title="Дата рождения">
+                                <h6>{{player.birthday}}</h6>
+                            </span>
+                            {% if player.is_disqualified %}
+                                <span style="color:red;">Дисквалифицирован</spam>
+                            {% endif %}
+                            </div>
+                        </div>
+                        {% if forloop.counter|divisibleby:3 %}
+                         </div><div class="row" >
+                        {% endif %}
+                {% endif %}
+            {% endwith %}
+        {% endfor %}
+    </div>
+
+</section>
