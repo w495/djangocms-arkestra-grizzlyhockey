@@ -1,17 +1,13 @@
-{% extends "base.html" %}
-
+<html>
 {% load thumbnail %}
 {% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
 {% load cms_tags sekizai_tags menu_tags  insert_tags %}
 
-{% block title %}
-    {% filter typogrify %}
-        <title>Команда «{{team.name}}»</title>
-    {% endfilter %}
-{% endblock %}
+<head>
 
-{% block meta %}
-    {% block meta_classic %}
+<title>Команда «{{team.name}}»</title>
+
+
         {% filter typogrify %}
             <meta name="title" content="«{{team.name}}»"/>
             {% if team.detail %}
@@ -21,9 +17,7 @@
             {% endif %}
             <meta name="keywords" content="Хоккей, {{team.name}}, {% for player2team in team.player2team_set.all %}{% with player2team.player as player  %}{% if player %}{{player.second_name}} {{player.first_name}} {{player.patronymic}}, {%endif%}{%endwith%}{%endfor%}"/>
         {% endfilter %}
-    {% endblock meta_classic %}
 
-    {% block meta_og %}
         {% filter typogrify %}
             <meta  property="og:title" content="«{{team.name}}»">
             {% if team.detail %}
@@ -35,9 +29,6 @@
 
          {% include "grizzly/includes/og-image.html" with instance=team %}
 
-    {% endblock meta_og %}
-
-    {% block meta_mrc %}
         {% filter typogrify %}
             <meta  name="mrc__share_title" content="«{{team.name}}»">
             {% if team.detail %}
@@ -46,14 +37,10 @@
                 <meta name="mrc__share_description" content="Игры: {{team.ngames}}, Победы: {{team.nwins}}, Ничьи: {{team.ndraws}}, Поражения: {{team.nloses}}, Забитые: {{team.ngoals}}, Пропущенные: {{team.nmisses}}, Очки: {{team.npoints}}"/>
             {% endif %}
         {% endfilter %}
-    {% endblock meta_mrc %}
-{% endblock meta %}}
+
+</head>
+
+{% include "grizzly/includes/team-request.html" with team=team %}
 
 
-{% block body %}
-
-{% block main_page_body %}
-    {% include "grizzly/includes/team-request.html" with team=team %}
-{% endblock main_page_body %}
-
-{% endblock body %}
+</html>
