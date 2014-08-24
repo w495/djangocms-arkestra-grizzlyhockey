@@ -3,7 +3,8 @@ import logging
 
 from django.db import models
 from absgameobj import AbsGameObj
-
+from gamematchgtime import GameMatchGTime
+from gamematchgoal import GameMatchGoal
 
 class GameMatch (AbsGameObj):
 
@@ -116,8 +117,10 @@ class GameMatch (AbsGameObj):
     )
 
     def async_save_action(self):
+        [ gtime.resave() for gtime in GameMatchGTime.objects.filter(gamematch = self) ]
         self.team_a.resave()
         self.team_b.resave()
+        [ match.resave() for match in GameMatchGoal.objects.filter(gamematch = self) ]
 
 
     class Meta:
