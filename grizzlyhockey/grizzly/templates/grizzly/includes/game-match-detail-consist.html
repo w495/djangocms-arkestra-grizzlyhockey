@@ -1,0 +1,95 @@
+{% load thumbnail %}
+{% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
+{% load order_by %}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="panel-title center">
+            <span>
+                Составы команд
+            </span>
+        </div>
+    </div>
+    <table border="2" style="width:100%;">
+        <tr>
+            <td border="3">
+                <table class="table table-striped">
+                    <tr class="center">
+                        <th colspan="3" class="center">
+                            &laquo;{{team_a.name}}&raquo;
+                        </th>
+                    </tr>
+                    <tr class="center">
+                        <th class="center">
+                            Номер
+                        </th>
+                        <th class="center">
+                            Игрок
+                        </th>
+                        <th class="center">
+                            Амплуа
+                        </th>
+                    </tr>
+                    {% for player in team_a.player2team_set.all|order_by:"role,game_number" %}
+                            {% if player and not player.is_disqualified and player.game_number != "0" %}
+                            <tr>
+                            <td>
+                                {{player.game_number}}&nbsp;
+                            </td>
+                            <td>
+                                <a href="{% url player-detail pk=player.player.id %}">
+                                    {{player.player.second_name}}&nbsp;
+                                    {{player.player.first_name}}&nbsp;
+                                </a>
+                            </td>
+                            <td>
+                                {{player.player.role}}&nbsp;
+                            </td>
+                            </tr>
+                            {% endif%}
+                    {% endfor %}
+                </table>
+            </td>
+            <td style="border-left: 1px solid gray;">
+                <table class="table table-striped">
+                    <tr class="center">
+                        <th colspan="3" class="center">
+                            &laquo;{{team_b.name}}&raquo;
+                        </th>
+                    </tr>
+                    <tr class="center">
+                        <th class="center">
+                            Номер
+                        </th>
+                        <th class="center">
+                            Игрок
+                        </th>
+                        <th class="center">
+                            Амплуа
+                        </th>
+                    </tr>
+                    {% for player in team_b.player2team_set.all|order_by:"role,game_number" %}
+                            {% if player and not player.is_disqualified and player.game_number != "0" %}
+                            <tr>
+                            <td>
+                                {{player.game_number}}&nbsp;
+                            </td>
+                            <td>
+                                <a href="{% url player-detail pk=player.player.id %}">
+                                    {{player.player.second_name}}&nbsp;
+                                    {{player.player.first_name}}&nbsp;
+                                </a>
+                            </td>
+                            <td>
+                                {{player.player.role}}&nbsp;
+                            </td>
+                            </tr>
+                            {% endif%}
+                    {% endfor %}
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
