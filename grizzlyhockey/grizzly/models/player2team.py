@@ -181,9 +181,12 @@ class Player2Team(AbsObj):
         if (self.player):
             minutes = sum([
                 gtime.get_diff_minute()
-                for gtime in GameMatchGTime.objects.filter(player=self.player, gamematch__in = self.season_games).distinct()
+                for gtime in self.player.gamematchgtime_set.filter(player=self.player, gamematch__in = self.season_games).distinct()
             ])
-            return minutes
+            if self.player.id == 1039:
+                print "\n\n\n\n\n\n\n\n\n\ndsffsdkafj;dskljsdfkljasdlkfjsldfjsaldkfjasf;sdfj;sdakfjs;fj;saf\n\n\n\n\n\n\n\n\n\n\n"
+                print [gtime.id for gtime in self.player.gamematchgtime_set.filter(player=self.player, gamematch__in = self.season_games).distinct()]
+            return minutes / 2
         return 0
 
     def get_nfines(self):
