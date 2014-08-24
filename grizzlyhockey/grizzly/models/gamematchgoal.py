@@ -122,7 +122,7 @@ class GameMatchGoal (AbsObj):
                     gtime
                     for gtime in self.gamematch.gamematchgtime_set.filter(
                         start_minute__lt = self.minute,
-                        stop_minute__gt = self.minute,
+                        stop_minute__gte = self.minute,
                     ).exclude(team = self.team)
                 ]
             else:
@@ -130,7 +130,7 @@ class GameMatchGoal (AbsObj):
                     gtime
                     for gtime in self.gamematch.gamematchgtime_set.filter(
                         start_minute__lt = self.minute,
-                        stop_minute__gt = self.minute,
+                        stop_minute__gte = self.minute,
                     )
                 ]
             if gtimes:
