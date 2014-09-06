@@ -1,6 +1,6 @@
 {% load thumbnail %}
 {% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
-
+{% load order_by %}
 <section>
 <style media="print">
     .NoPrint {display: none;}
@@ -111,7 +111,7 @@ body {
     {% endif %}
         </div>
         <table style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif;  font-size: 14px; line-height: 1.42857; color: #333;">
-        {% for player2team in team.player2team_set.all|dictsort:"role" %}
+        {% for player2team in team.player2team_set.all|order_by_game_number:"" %}
             {% with player2team.player as player  %}
                 {% if player and not player.is_disqualified %}
                       
