@@ -159,10 +159,11 @@
                                         </td>
                                       </tr>
                                   </table> 
-                                  <table class="table table-bordered table-striped sortable">
+                                  <table class="table table-bordered table-striped sortable table-best">
                                     <thead>
                                         <tr>
                                             <th class="right" >  </th>
+                                            <th class="center" title="Номер игрока">№</th>
                                             <th class="center" > Игрок </th>
                                             <th class="center" > Клуб </th>
                                             <th class="center" title="Количество проведённых игр"> И </th>
@@ -176,6 +177,9 @@
                                         <tr>
                                         <td class="center">
                                            {{ forloop.counter }}
+                                        </td>
+                                        <td class="left" >
+                                            {{player.game_number}}
                                         </td>
                                         <td class="left" >
                                             <a title="Лучший бомбардир" href="{% url player-detail pk=player.id %}">  
@@ -265,10 +269,11 @@
                                         </td>
                                       </tr>
                                   </table> 
-                                  <table class="table table-bordered table-striped sortable">
+                                  <table class="table table-bordered table-striped sortable table-best">
                                     <thead>
                                         <tr>
                                             <th class="right" >  </th>
+                                            <th class="center" title="Номер игрока">№</th>
                                             <th class="center" > Игрок </th>
                                             <th class="center" > Клуб </th>
                                             <th class="center" title="Количество проведённых игр"> И </th>
@@ -282,6 +287,9 @@
                                         <tr>
                                         <td class="center">
                                            {{ forloop.counter }}
+                                        </td>
+                                        <td class="left" >
+                                            {{player.game_number}}
                                         </td>
                                         <td class="left" >
                                             <a title="Лучший снайпер" href="{% url player-detail pk=player.id %}">  
@@ -374,10 +382,11 @@
                                         </td>
                                       </tr>
                                   </table> 
-                                  <table class="table table-bordered table-striped sortable">
+                                  <table class="table table-bordered table-striped sortable table-best">
                                     <thead>
                                         <tr>
                                             <th class="right" >  </th>
+                                            <th class="center" title="Номер игрока">№</th>
                                             <th class="center" > Игрок </th>
                                             <th class="center" > Клуб </th>
                                             <th class="center" title="Количество проведённых игр"> И </th>
@@ -391,6 +400,9 @@
                                         <tr>
                                         <td class="center">
                                            {{ forloop.counter }}
+                                        </td>
+                                        <td class="left" >
+                                            {{player.game_number}}
                                         </td>
                                         <td class="left" >
                                             <a title="Лучший ассистент" href="{% url player-detail pk=player.id %}">  
@@ -479,10 +491,11 @@
                                         </td>
                                       </tr>
                                   </table> 
-                                  <table class="table table-bordered table-striped sortable">
+                                  <table class="table table-bordered table-striped sortable table-best">
                                     <thead>
                                         <tr>
                                             <th class="right" >  </th>
+                                            <th class="center" title="Номер игрока">№</th>
                                             <th class="center" > Игрок </th>
                                             <th class="center" > Клуб </th>
                                             <th class="center" title="Количество проведённых игр"> И </th>
@@ -496,6 +509,9 @@
                                         <tr>
                                         <td class="center">
                                            {{ forloop.counter }}
+                                        </td>
+                                        <td class="left" >
+                                            {{player.game_number}}
                                         </td>
                                         <td class="left" >
                                             <a title="Лучший вратарь" href="{% url player-detail pk=player.id %}">  
