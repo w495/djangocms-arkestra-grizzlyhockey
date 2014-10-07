@@ -15,8 +15,5 @@ def order_by_game_number(queryset, args):
             new_query_set.append(q)
         except:
             pass
-    try:
-        queryset = sorted(new_query_set, key=lambda tup: int(tup.game_number))
-    except:
-        return None
+    queryset = sorted(new_query_set, key=lambda tup: int(tup.game_number) if tup.game_number != "" else 0 )
     return queryset
