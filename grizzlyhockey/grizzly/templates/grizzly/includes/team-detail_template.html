@@ -122,6 +122,7 @@
                                                 {{player.type}}
                                             </dd>
                                         {% endif %}
+                                        <!--
                                         <dt class="text-muted">
                                             Игр:&nbsp;
                                         </dt>
@@ -148,8 +149,10 @@
                                         </dt>
                                         <dd>
                                             {{player2team.nfines}}
-                                        </dd>
+                                        </dd> -->
                                     </dl>
+                                    
+                                    
                                 </div>
                                 <div class="col-md-9">
                                     {% if player.qualification %}
@@ -168,7 +171,72 @@
                                         </p>
                                     {%endif%}
                                 </div>
+                                
                             </div>
+                            <ul class="nav nav-tabs" role="tablist">
+                                        {% for stat in player2team.stats.all|order_by:"-season__start_datetime" %} 
+                                           {% if forloop.counter == 1 %}
+                                            <li class="active">
+                                          {% else %}
+                                            <li>
+                                          {% endif %}
+                                          <a href="#tab{{ forloop.counter }}-{{player2team.id}}" role="tab" data-toggle="tab">{{ stat.season.name }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                    <!-- Tab panes -->
+                                    <div class="tab-content">
+                                        {% for stat in player2team.stats.all|order_by:"-season__start_datetime" %}
+                                          {% if forloop.counter == 1 %}
+                                            <div class="tab-pane active" id="tab{{ forloop.counter }}-{{player2team.id}}">
+                                          {% else %}
+                                            <div class="tab-pane" id="tab{{ forloop.counter }}-{{player2team.id}}">
+                                          {% endif %}
+                                                <div class="row" >
+                                                    <div class="col-md-8">
+                                                        <dl class="dl-horizontal dl-playercard">
+                                                            <dt class="text-muted">
+                                                                Игр:&nbsp;
+                                                            </dt>
+                                                            <dd>
+                                                                {{stat.ngames}}
+                                                            </dd>
+
+                                                            <dt class="text-muted">
+                                                                Голов:&nbsp;
+                                                            </dt>
+                                                            <dd>
+                                                                {{stat.ngoals}}
+                                                            </dd>
+
+                                                            <dt class="text-muted">
+                                                                Передач:&nbsp;
+                                                            </dt>
+                                                            <dd>
+                                                                {{stat.ntrans}}
+                                                            </dd>
+
+                                                            <dt class="text-muted">
+                                                                Штрафов:&nbsp;
+                                                            </dt>
+                                                            <dd>
+                                                                {{stat.nfines}}
+                                                            </dd>
+                                                            {% if stat.nfines_minutes != 0 %}
+                                                            <dt class="text-muted">
+                                                                Штрафов (в минутах):&nbsp;
+                                                            </dt>
+                                                            <dd>
+                                                                {{stat.nfines_minutes}}
+                                                            </dd>
+                                                            {% endif %}
+                                                            <dd>
+                                                            </dd>
+                                                        </dl>
+                                                    </div>
+                                                 </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
                         </div>
                     </li>
                 {% endif %}

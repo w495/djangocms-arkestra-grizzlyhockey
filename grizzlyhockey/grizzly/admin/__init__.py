@@ -12,6 +12,8 @@ from grizzly.models import PlayerType
 from grizzly.models import PlayerStatus
 from grizzly.models import Player
 from grizzly.models import Player2Team
+from grizzly.models import PlayerStat
+from grizzly.models import Player2Stat
 from grizzly.models import Trainer
 from grizzly.models import Rink
 from grizzly.models import RinkSchedule
@@ -144,6 +146,23 @@ class TeamScheduleAdmin(AbsObjAdmin):
     filter_horizontal = ('teams',)
 
 
+class PlayerStatAdmin(AbsObjAdmin):
+    list_display = (
+        'season',
+        'ngames',
+    )
+
+class Player2StatAdmin(AbsObjAdmin):
+    list_display = (
+        'player2team',
+        'playerstat',
+    )
+    exclude = (
+        'description',
+        'detail',
+        'image',
+        'name',
+    )
 
 class Player2TeamAdmin(AbsObjAdmin):
     list_display = (
@@ -848,6 +867,8 @@ admin.site.register(PlayerType,     PlayerTypeAdmin)
 admin.site.register(PlayerStatus,   PlayerStatusAdmin)
 admin.site.register(Player,         PlayerAdmin)
 admin.site.register(Player2Team,    Player2TeamAdmin)
+admin.site.register(PlayerStat,     PlayerStatAdmin)
+admin.site.register(Player2Stat,    Player2StatAdmin)
 admin.site.register(Player2TeamMeta,    Player2TeamAdminFiltered)
 
 

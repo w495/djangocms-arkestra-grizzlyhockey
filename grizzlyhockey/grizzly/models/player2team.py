@@ -7,8 +7,9 @@ from absobj import AbsObj
 from gamematchgoal import GameMatchGoal
 from gamematchgtime import GameMatchGTime
 from gamematch import GameMatch
-from gameseason import GameSeason
 from django.db.models import Q
+from player2teamstat import PlayerStat
+from gameseason import GameSeason
 import time
 
 class Player2Team(AbsObj):
@@ -139,11 +140,19 @@ class Player2Team(AbsObj):
         default=False,
         verbose_name = u'дисквалифицирован'
     )
-
+    
+    stats = models.ManyToManyField(
+        'PlayerStat',
+        blank = True,
+        null = True,
+        through='Player2Stat',
+        verbose_name = u"статистика"
+    )
+    
     def get_last_season(self):
-        seasons = GameSeason.objects.filter().order_by('-start_datetime')
-        if len(seasons) > 0:
-            return seasons[0]
+        #seasons = GameSeason.objects.filter().order_by('-start_datetime')
+        #if len(seasons) > 0:
+        #    return seasons[0]
         return None
     
     def get_division_query(self):
@@ -220,22 +229,25 @@ class Player2Team(AbsObj):
 
 
     def pre_save_action(self):
-        self.query_set = self.get_division_query()
-        self.season_games = GameMatch.objects.filter(self.query_set).distinct()
-        self.ngoals = self.get_ngoals()
-        self.nmisses =  self.get_nmisses()
+        [ stat.resave() for stat in self.stat_set.all() ]
+        pass
+        #self.query_set = self.get_division_query()
+        #self.season_games = GameMatch.objects.filter(self.query_set).distinct()
+        #self.ngoals = self.get_ngoals()
+        #self.nmisses =  self.get_nmisses()
 
-        self.ntrans = self.get_ntrans()
-        self.nfines = self.get_nfines()
-        self.nfines_minutes = self.get_nfines_minutes()
-        self.ngames = self.get_ngames()
-        self.goalminutes = self.get_goalminutes()
+        #self.ntrans = self.get_ntrans()
+        #self.nfines = self.get_nfines()
+        #self.nfines_minutes = self.get_nfines_minutes()
+        #self.ngames = self.get_ngames()
+        #self.goalminutes = self.get_goalminutes()
 
-        self.safety_factor =  self.get_safety_factor()
+        #self.safety_factor =  self.get_safety_factor()
 
-        self.ngoalsntrans = self.ngoals + self.ntrans
+        #self.ngoalsntrans = self.ngoals + self.ntrans
 
-
+    def __unicode__(self):
+        return u"%s, %s"%(self.game_number, self.player.second_name)
 
     class Meta:
         app_label = "grizzly"

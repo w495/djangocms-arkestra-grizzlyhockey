@@ -26,7 +26,14 @@ from playerstatus import PlayerStatus
 from playertype     import PlayerType
 
 from player         import Player
-from player2team    import Player2Team
+#from player2team    import Player2Team
+#from player2teamstat    import PlayerStat
+#from player2teamstat    import Player2Stat
+#from player2teamstat    import Player2TeamStat
+from gameseason    import Player2Team
+from gameseason    import PlayerStat
+from gameseason    import Player2Stat
+
 
 #from player2gamematcha    import Player2GameMatchA
 #from player2gamematchb    import Player2GameMatchB
@@ -36,7 +43,11 @@ from judgetype      import JudgeType
 from judge          import Judge
 from trainer        import Trainer
 from rink           import Rink
-from team           import Team
+#from team           import Team
+from gameseason    import Team
+from gameseason    import TeamStat
+from gameseason    import TeamStatEntry
+from gameseason    import Team2Stat
 
 from finaltype      import FinalType
 

@@ -2,7 +2,8 @@
 
 from django.db import models
 from absobj import AbsObj
-from player2team import Player2Team
+#from player2team import Player2Team
+from gameseason import Player2Team
 
 class GameMatchFine (AbsObj):
 

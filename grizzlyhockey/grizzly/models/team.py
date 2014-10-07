@@ -154,16 +154,19 @@ class Team(AbsObj):
         return res
 
     def pre_save_action(self):
-        self.query_set = self.get_division_query()
-        self.nwins  = self.get_nwins()
-        self.nloses = self.get_nloses()
-        self.ndraws = self.get_ndraws()
-        self.ngames = self.get_ngames()
-        self.npoints = self.get_npoints()
-        self.nmisses = self.get_nmisses()
-        self.ngoals = self.get_ngoals()
+        #self.query_set = self.get_division_query()
+        #self.nwins  = self.get_nwins()
+        #self.nloses = self.get_nloses()
+        #self.ndraws = self.get_ndraws()
+        #self.ngames = self.get_ngames()
+        #self.npoints = self.get_npoints()
+        #self.nmisses = self.get_nmisses()
+        #self.ngoals = self.get_ngoals()
+        [ division.resave() for division in self.gamedivisions.all() ]
+        [ p2t.resave() for p2t in self.player2team_set.all() ]
 
     def async_save_action(self):
+        [ division.resave() for division in self.gamedivisions.all() ]
         [p2t.async_resave() for p2t in self.player2team_set.all()]
 
 
