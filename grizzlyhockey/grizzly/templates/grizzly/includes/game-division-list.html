@@ -33,36 +33,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                              <!--  {% for team in gamedivision.teams.all %}
-                                    <tr>
-                                        <td class="right" >
-                                            <a href="{% url team-detail pk=team.id %}">
-                                                «{{team.name}}»
-                                            </a>
-                                        </td>
-                                        <td class="center" >
-                                            {{team.ngames}}
-                                        </td>
-                                        <td class="center">
-                                            {{team.nwins}}
-                                        </td>
-                                        <td class="center">
-                                            {{team.ndraws}}
-                                        </td>
-                                        <td class="center">
-                                            {{team.nloses}}
-                                        </td>
-                                        <td class="center">
-                                            {{team.ngoals}}
-                                        </td>
-                                        <td class="center">
-                                            {{team.nmisses}}
-                                        </td>
-                                        <td class="center">
-                                            {{team.npoints}}
-                                        </td>
-                                    </tr>
-                                {% endfor %}-->
                                 {% for division_stat in gamedivision.teams_stats.all|order_by:"-season__start_datetime" %}
                                     {% if forloop.counter == 1 %}
                                         {% for team in division_stat.team2stat.all %}
@@ -109,9 +79,6 @@
                             <div class="col-lg-6 col-md-6  col-sm-12 col-xs-6">
                                 <p class="center">
                                     <i>Лучший бомбардир</i>
-
-
-
                                     {% for item in gamedivision.get_max_ngoalsntrans_p2t_new %}
                                     {% for player2team in item.player2team_set.all %}
                                         {% with player=player2team.player %}
@@ -126,7 +93,7 @@
                                         </div>
                                         <div class="center">
                                                 {% for player2team in player.player2team_set.all %}
-                                                {% if player2team.player == player %}
+                                                {% if player2team.player == player and player2team.team %}
                                                 <a href="{% url team-detail pk=player2team.team.id %}">
                                                     <b>&laquo;{{player2team.team}}&raquo; </b>
                                                 </a>
@@ -188,7 +155,7 @@
                                             </a>
                                         </td>
                                         {% for player2team in player.player2team_set.all %}
-                                        {% if player2team.player == player %}
+                                        {% if player2team.player == player and player2team.team %}
                                         <td class="center" >
                                             <a href="{% url team-detail pk=player2team.team.id %}">
                                                 «{{player2team.team}}»
@@ -218,117 +185,6 @@
                                         {% endwith %}
                                     {% endfor %}
                                 {% endfor %}
-
-
-
-
-
-
-
-
-
-
-                             <!--   {% for item in gamedivision.get_max_ngoalsntrans_p2t %}
-                                {% with player=item.player %}
-                                {% if player %}
-                                {% if forloop.counter == 1 %}    
-                                <table>
-                                    <tr width="100%">
-                                        <td valign="middle" width="80%" style="vertical-align:middle">
-                                        <div class="center" style="font-size:14pt;">
-                                            <b>{{player.second_name}} {{player.first_name}}</b>
-                                        </div>
-                                        <div class="center">
-                                                {% for player2team in player.player2team_set.all %}
-                                                {% if player2team.player == player %}
-                                                <a href="{% url team-detail pk=player2team.team.id %}">
-                                                    <b>&laquo;{{player2team.team}}&raquo; </b>
-                                                </a>
-                                                {% if player2team.role %}
-                                                <dd>
-                                                    <b><date>{{player2team.role|lower}}</date></b>
-                                                </dd>
-                                                {% endif %}
-                                                {% endif %}
-                                                {% endfor %}
-                                                <dd>
-                                                    <b>{{player.birthday}}</b>
-                                                </dd>
-                                        </div>
-                                        </td>
-                                        <td align="right" width="40%">
-                                            <a title="Лучший бомбардир" href="{% url player-detail pk=player.id %}">  
-                                                <div class="center" >
-                                                {% if player.image %}
-                                                    <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 crop %}"
-                                                        {% if player.image.alt %}
-                                                            alt="{{ player.image.alt }}"
-                                                        {% endif %}
-                                                    />
-                                                {% else %}
-                                                    <div class="img-null-{{"123456"|make_list|random}} p128x128 img-thumbnail">
-                                                    </div>
-                                                {% endif %}
-                                                </div> 
-                                            </a>
-                                        </td>
-                                      </tr>
-                                  </table> 
-                                  <table class="table table-bordered table-striped sortable">
-                                    <thead>
-                                        <tr>
-                                            <th class="right" >  </th>
-                                            <th class="center" > Игрок </th>
-                                            <th class="center"> Клуб </th>
-                                            <th class="center" title="Количество проведённых игр"> И </th>
-                                            <th class="center" title="Забитые шайбы"> Ш </th>
-                                            <th class="center" title="Передачи"> А </th>
-                                            <th class="center" title="Очки"> О </th>
-                                            <th class="center" title="Штрафное время"> Штр </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                {%endif%}
-                                        <tr>
-                                        <td class="center">
-                                           {{ forloop.counter }}
-                                        </td>
-                                        <td class="left" >
-                                            <a title="Лучший бомбардир" href="{% url player-detail pk=player.id %}">  
-                                                {{player.second_name}} {{player.first_name}}
-                                            </a>
-                                        </td>
-                                        {% for player2team in player.player2team_set.all %}
-                                        {% if player2team.player == player %}
-                                        <td class="center" >
-                                            <a href="{% url team-detail pk=player2team.team.id %}">
-                                                «{{player2team.team}}»
-                                            </a>
-                                        </td>
-                                        <td class="center" >
-                                            {{player2team.ngames}}
-                                        </td>
-                                        <td class="center">
-                                            {{player2team.ngoals}}
-                                        </td>
-                                        <td class="center">
-                                            {{player2team.ntrans}}
-                                        </td>
-                                        <td class="center">
-                                            <b>{{player2team.ngoalsntrans}}</b>
-                                        </td>
-                                        <td class="center">
-                                            {{player2team.nfines}}
-                                        </td>
-                                    </tr>
-                                    {% endif %}
-                                    {% endfor %}
-
-
-                                {% endif %}
-                                {% endwith %}
-                                {% endfor%} 
-                            </tbody>-->
                         </table>
                                 </p>
                             </div>
@@ -349,7 +205,7 @@
                                         </div>
                                         <div class="center">
                                                 {% for player2team in player.player2team_set.all %}
-                                                {% if player2team.player == player %}
+                                                {% if player2team.player == player and player2team.team %}
                                                 <a href="{% url team-detail pk=player2team.team.id %}">
                                                     <b>&laquo;{{player2team.team}}&raquo; </b>
                                                 </a>
@@ -410,7 +266,7 @@
                                         </td>
                                         {% for player2team in player.player2team_set.all %}
                                         {% if forloop.counter == 1 %}
-                                        {% if player2team.player == player %}
+                                        {% if player2team.player == player and player2team.team %}
                                             <td class="center" >
                                                 <a href="{% url team-detail pk=player2team.team.id %}">
                                                     «{{player2team.team}}»
@@ -442,112 +298,6 @@
                                         {% endwith %}
                                     {% endfor %}
                                 {% endfor %}
-
-
-
-
-                              <!--  {% for item in gamedivision.get_max_ngoals_p2t %}
-                                {% with player=item.player %}
-                                {% if player %}
-                                {% if forloop.counter == 1 %}    
-                                <table>
-                                    <tr width="100%">
-                                        <td valign="middle" width="80%" style="vertical-align:middle">
-                                        <div class="center" style="font-size:14pt;">
-                                            <b>{{player.second_name}} {{player.first_name}}</b>
-                                        </div>
-                                        <div class="center">
-                                                {% for player2team in player.player2team_set.all %}
-                                                {% if player2team.player == player %}
-                                                <a href="{% url team-detail pk=player2team.team.id %}">
-                                                    <b>&laquo;{{player2team.team}}&raquo; </b>
-                                                </a>
-                                                {% if player2team.role %}
-                                                <dd>
-                                                    <b><date>{{player2team.role|lower}}</date></b>
-                                                </dd>
-                                                {% endif %}
-                                                {% endif %}
-                                                {% endfor %}
-                                                <dd>
-                                                    <b>{{player.birthday}}</b>
-                                                </dd>
-                                            
-                                        </div>
-                                        </td>
-                                        <td align="right" width="40%">
-                                            <a title="Лучший снайпер" href="{% url player-detail pk=player.id %}">  
-                                                <div class="center" >
-                                                {% if player.image %}
-                                                    <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 crop %}"
-                                                        {% if player.image.alt %}
-                                                            alt="{{ player.image.alt }}"
-                                                        {% endif %}
-                                                    />
-                                                {% else %}
-                                                    <div class="img-null-{{"123456"|make_list|random}} p128x128 img-thumbnail">
-                                                    </div>
-                                                {% endif %}
-                                                </div> 
-                                            </a>
-                                        </td>
-                                      </tr>
-                                  </table> 
-                                  <table class="table table-bordered table-striped sortable">
-                                    <thead>
-                                        <tr>
-                                            <th class="right" >  </th>
-                                            <th class="center" > Игрок </th>
-                                            <th class="center"> Клуб </th>
-                                            <th class="center" title="Количество проведённых игр"> И </th>
-                                            <th class="center" title="Забитые шайбы"> Ш </th>
-                                            <th class="center" title="Передачи"> А </th>
-                                            <th class="center" title="Очки"> О </th>
-                                            <th class="center" title="Штрафное время"> Штр </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                {%endif%}
-                                        <tr>
-                                        <td class="center">
-                                           {{ forloop.counter }}
-                                        </td>
-                                        <td class="left" >
-                                            <a title="Лучший снайпер" href="{% url player-detail pk=player.id %}">  
-                                                {{player.second_name}} {{player.first_name}}
-                                            </a>
-                                        </td>
-                                        {% for player2team in player.player2team_set.all %}
-                                        {% if player2team.player == player %}
-                                        <td class="center" >
-                                            <a href="{% url team-detail pk=player2team.team.id %}">
-                                                «{{player2team.team}}»
-                                            </a>
-                                        </td>
-                                        <td class="center" >
-                                            {{player2team.ngames}}
-                                        </td>
-                                        <td class="center">
-                                            <b>{{player2team.ngoals}}</b>
-                                        </td>
-                                        <td class="center">
-                                            {{player2team.ntrans}}
-                                        </td>
-                                        <td class="center">
-                                            {{player2team.ngoalsntrans}}
-                                        </td>
-                                        <td class="center">
-                                            {{player2team.nfines}}
-                                        </td>
-                                    </tr>
-                                    {% endif %}
-                                    {% endfor %}
-
-
-                                {% endif %}
-                                {% endwith %}
-                                {% endfor %}
-                            </tbody>-->
                         </table>
 
 
@@ -577,7 +327,7 @@
                                         </div>
                                         <div class="center">
                                                 {% for player2team in player.player2team_set.all %}
-                                                {% if player2team.player == player %}
+                                                {% if player2team.player == player and player2team.team %}
                                                 <a href="{% url team-detail pk=player2team.team.id %}">
                                                     <b>&laquo;{{player2team.team}}&raquo; </b>
                                                 </a>
@@ -639,7 +389,7 @@
                                             </a>
                                         </td>
                                         {% for player2team in player.player2team_set.all %}
-                                        {% if player2team.player == player %}
+                                        {% if player2team.player == player and player2team.team %}
                                         <td class="center" >
                                             <a href="{% url team-detail pk=player2team.team.id %}">
                                                 «{{player2team.team}}»
@@ -669,232 +419,12 @@
                                         {% endwith %}
                                     {% endfor %}
                                 {% endfor %}
-
-
-
-
-
-
-                            <!--    {% for item in gamedivision.get_max_ntrans_p2t %}
-                                {% with player=item.player %}
-                                {% if player %}
-                                {% if forloop.counter == 1 %}    
-                                <table>
-                                    <tr width="100%">
-                                        <td valign="middle" width="80%" style="vertical-align:middle">
-                                        <div class="center" style="font-size:14pt;">
-                                            <b>{{player.second_name}} {{player.first_name}}</b>
-                                        </div>
-                                        <div class="center">
-                                                {% for player2team in player.player2team_set.all %}
-                                                {% if player2team.player == player %}
-                                                <a href="{% url team-detail pk=player2team.team.id %}">
-                                                    <b>&laquo;{{player2team.team}}&raquo; </b>
-                                                </a>
-                                                {% if player2team.role %}
-                                                <dd>
-                                                    <b><date>{{player2team.role|lower}}</date></b>
-                                                </dd>
-                                                {% endif %}
-                                                {% endif %}
-                                                {% endfor %}
-                                                <dd>
-                                                    <b>{{player.birthday}}</b>
-                                                </dd>
-                                            
-                                        </div>
-                                        </td>
-                                        <td align="right" width="40%">
-                                            <a title="Лучший ассистент" href="{% url player-detail pk=player.id %}">  
-                                                <div class="center" >
-                                                {% if player.image %}
-                                                    <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 crop %}"
-                                                        {% if player.image.alt %}
-                                                            alt="{{ player.image.alt }}"
-                                                        {% endif %}
-                                                    />
-                                                {% else %}
-                                                    <div class="img-null-{{"123456"|make_list|random}} p128x128 img-thumbnail">
-                                                    </div>
-                                                {% endif %}
-                                                </div> 
-                                            </a>
-                                        </td>
-                                      </tr>
-                                  </table> 
-                                  <table class="table table-bordered table-striped sortable">
-                                    <thead>
-                                        <tr>
-                                            <th class="right" >  </th>
-                                            <th class="center" > Игрок </th>
-                                            <th class="center"> Клуб </th>
-                                            <th class="center" title="Количество проведённых игр"> И </th>
-                                            <th class="center" title="Забитые шайбы"> Ш </th>
-                                            <th class="center" title="Передачи"> А </th>
-                                            <th class="center" title="Очки"> О </th>
-                                            <th class="center" title="Штрафное время"> Штр </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                {%endif%}
-                                        <tr>
-                                        <td class="center">
-                                           {{ forloop.counter }}
-                                        </td>
-                                        <td class="left" >
-                                            <a title="Лучший ассистент" href="{% url player-detail pk=player.id %}">  
-                                                {{player.second_name}} {{player.first_name}}
-                                            </a>
-                                        </td>
-                                        {% for player2team in player.player2team_set.all %}
-                                        {% if player2team.player == player %}
-                                        <td class="center" >
-                                            <a href="{% url team-detail pk=player2team.team.id %}">
-                                                «{{player2team.team}}»
-                                            </a>
-                                        </td>
-                                        <td class="center" >
-                                            {{player2team.ngames}}
-                                        </td>
-                                        <td class="center">
-                                            {{player2team.ngoals}}
-                                        </td>
-                                        <td class="center">
-                                            <b>{{player2team.ntrans}}</b>
-                                        </td>
-                                        <td class="center">
-                                            {{player2team.ngoalsntrans}}
-                                        </td>
-                                        <td class="center">
-                                            {{player2team.nfines}}
-                                        </td>
-                                    </tr>
-                                    {% endif %}
-                                    {% endfor %}
-                                {% endif %}
-                                {% endwith %}
-                                {% endfor %} 
-                            </tbody>-->
                         </table>
                             </p>
                             </div>
                             <div class="col-lg-6 col-md-6  col-sm-12 col-xs-6">
                                 <p class="center">
                                         <i>Лучший вратарь</i>
-
-
-
-
-
-                            <!--    {% for item in gamedivision.get_min_nmisses_p2t_new %}
-                                {% with player=item.player2team.player %}
-                                {% if player %}
-                                {% if forloop.counter == 1 %}    
-                                <table>
-                                    <tr width="100%">
-                                        <td valign="middle" width="80%" style="vertical-align:middle">
-                                        <div class="center" style="font-size:14pt;">
-                                            <b>{{player.second_name}} {{player.first_name}}</b>
-                                        </div>
-                                        <div class="center">
-                                                {% for player2team in player.player2team_set.all %}
-                                                {% if player2team.player == player %}
-                                                <a href="{% url team-detail pk=player2team.team.id %}">
-                                                    <b>&laquo;{{player2team.team}}&raquo; </b>
-                                                </a>
-                                                {% if player2team.role %}
-                                                <dd>
-                                                    <b><date>{{player2team.role|lower}}</date></b>
-                                                </dd>
-                                                {% endif %}
-                                                {% endif %}
-                                                {% endfor %}
-                                                <dd>
-                                                    <b>{{player.birthday}}</b>
-                                                </dd>
-                                        </div>
-                                        </td>
-                                        <td align="right" width="40%">
-                                            <a title="Лучший вратарь" href="{% url player-detail pk=player.id %}">  
-                                                <div class="center" >
-                                                {% if player.image %}
-                                                    <img  class="img-thumbnail" src="{% thumbnail player.image 128x128 crop %}"
-                                                        {% if player.image.alt %}
-                                                            alt="{{ player.image.alt }}"
-                                                        {% endif %}
-                                                    />
-                                                {% else %}
-                                                    <div class="img-null-{{"123456"|make_list|random}} p128x128 img-thumbnail">
-                                                    </div>
-                                                {% endif %}
-                                                </div> 
-                                            </a>
-                                        </td>
-                                      </tr>
-                                  </table> 
-                                  <table class="table table-bordered table-striped sortable">
-                                    <thead>
-                                        <tr>
-                                            <th class="right" >  </th>
-                                            <th class="center" > № </th>
-                                            <th class="center" > Игрок </th>
-                                            <th class="center"> Клуб </th>
-                                            <th class="center" title="Количество проведённых игр"> И </th>
-                                            <th class="center" title="Пропущено шайб"> ПШ </th>
-                                            <th class="center" title="Коэффициент надёжности"> КН </th>
-                                            <th class="center" title="Время на площадке"> ВП </th>
-                                            <th class="center" title="Количество штрафов"> Штр </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                {%endif%}
-                                        <tr>
-                                        <td class="center">
-                                           {{ forloop.counter }}
-                                        </td>
-                                        <td class="left" >
-                                            {{player.game_number}}
-                                        </td>
-                                        <td class="left" >
-                                            <a title="Лучший вратарь" href="{% url player-detail pk=player.id %}">  
-                                                {{player.second_name}} {{player.first_name}}
-                                            </a>
-                                        </td>
-                                        {% for player2team in player.player2team_set.all %}
-                                        {% if player2team.player == player %}
-                                        <td class="center" >
-                                            <a href="{% url team-detail pk=player2team.team.id %}">
-                                                «{{player2team.team}}»
-                                            </a>
-                                        </td>
-                                        <td class="center" >
-                                            {{player2team.ngames}}
-                                        </td>
-                                        <td class="center">
-                                            {{player2team.nmisses}}
-                                        </td>
-                                        <td class="center">
-                                            <b>{{player2team.safety_factor}}</b>
-                                        </td>
-                                        <td class="center">
-                                            {{player2team.goalminutes}}
-                                        </td>
-                                        <td class="center">
-                                            {{player2team.nfines}}
-                                        </td>
-                                    </tr>
-                                    {% endif %}
-                                    {% endfor %}
-
-
-                                {% endif %}
-                                {% endwith %}
-                                {% endfor %}
-
--->
-
-
-
 
                                 {% for item in gamedivision.get_min_nmisses_p2t %}
                                 {% with player=item.player %}
@@ -971,7 +501,7 @@
                                             </a>
                                         </td>
                                         {% for player2team in player.player2team_set.all %}
-                                        {% if player2team.player == player %}
+                                        {% if player2team.player == player and player2team.team %}
                                         <td class="center" >
                                             <a href="{% url team-detail pk=player2team.team.id %}">
                                                 «{{player2team.team}}»
