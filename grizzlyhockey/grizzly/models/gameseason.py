@@ -848,6 +848,11 @@ class Player2Team(AbsObj):
         #        print "\n\n\n\nNmiss\n\n\n\n\n\n"
         #        print nmiss
         #return
+        try:
+            if self.stats is None:
+                return
+        except:
+            return
         for season in [ haha.season for haha in self.stats.all() ]:
             player2stats = Player2Stat.objects.filter(player2team=self, playerstat__season=season)
             if len(player2stats) != 1:
