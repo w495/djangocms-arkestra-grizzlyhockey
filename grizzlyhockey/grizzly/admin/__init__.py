@@ -604,8 +604,41 @@ class GameMatchAdminInlineR(AbsObjTabularInline):
         'name',
         'stop_datetime',
         'gametournamentplayoff',
-        'finaltype'
+        'finaltype',
+        'players_a',
+        'players_b',
+        'best_player_a',
+        'best_player_b'
     )
+    
+    list_display = (
+        'id',
+        'name',
+        'rink',
+        'team_a',
+        'team_b',
+    )
+    
+    list_filter = (
+        'team_a',
+        'team_b',
+    )
+    
+    def get_form(self, request, obj=None, **kwargs):
+        # just save obj reference for future processing in Inline
+        request._obj_ = obj
+        return super(GameMatchAdminInlineR, self).get_form(request, obj, **kwargs)
+    
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        field = super(GameMatchAdminInlineR, self).formfield_for_foreignkey(
+            db_field,
+            request,
+            **kwargs
+        )
+        print dir(request._obj_)
+        print db_field.name
+        
+        return field
 
 
 class GameMatchAdminInlineP(AbsObjTabularInline):
@@ -617,7 +650,11 @@ class GameMatchAdminInlineP(AbsObjTabularInline):
         'name',
         'stop_datetime',
         'gametournamentregular',
-        'tourno'
+        'tourno',
+        'players_a',
+        'players_b',
+        'best_player_a',
+        'best_player_b'
     )
 
 
@@ -653,7 +690,11 @@ class GameTournamentRegularAdmin(AbsButtonableModelAdmin, AbsObjAdmin):
         GameMatchAdminInlineR,
     ]
 
-
+    def get_form(self, request, obj=None, **kwargs):
+        # just save obj reference for future processing in Inline
+        request._obj_ = obj
+        return super(GameTournamentRegularAdmin, self).get_form(request, obj, **kwargs)
+    
     def build_matrix(self, request, tournament):
         '''
             Генерации матрицы игр
