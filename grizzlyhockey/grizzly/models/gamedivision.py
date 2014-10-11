@@ -191,10 +191,10 @@ class GameDivision(AbsGameObj):
     
     def create_season(self, season, tour):
         if (tour in self.gametournamentregulars.all() or tour in self.gametournamentplayoffs.all()) and len(self.teams_stats.filter(season=season)) > 0:
-            print "Skip it"
-            print season.id
-            print tour in self.gametournamentregulars.all()
-            print tour in self.gametournamentplayoffs.all()
+            #print "Skip it"
+            #print season.id
+            #print tour in self.gametournamentregulars.all()
+            #print tour in self.gametournamentplayoffs.all()
             return
         division2stat = Division2Stat(season=season)
         for team in self.teams.all():
@@ -257,9 +257,24 @@ class GameDivision(AbsGameObj):
             return None
         division2stat = last_season[0]
         last_season = last_season[0].season
-        teams = division2stat.team2stat.all()
-        objs = [x for x in Player2Stat.objects.filter(playerstat__season_id = last_season.id, player2team__player__role = "Вратарь" ).exclude(playerstat__safety_factor = None).order_by(*args)]
-        return objs 
+        players = list()
+        
+        for x in Player2Team.objects.filter(team__in = self.teams.all(), stats__season=last_season, player__role = "Вратарь").exclude(stats__safety_factor = None).exclude(stats__ngames = 0).order_by(*args):
+            stats = x.stats.filter(season=last_season)
+            #print "\n\n\n\n\n\n\n=========================================AHahahhaha\n\n\n\n\n\n\n"
+            if len(stats) > 0:
+                for stat in stats:
+                    if stat.ngames != 0 and stat.safety_factor is not None:
+                        players.append(stat)
+                        #print " safety_factor"  
+                        #print stat.safety_factor
+                        break
+        return players
+        #division2stat = last_season[0]
+        #last_season = last_season[0].season
+        #teams = division2stat.team2stat.all()
+        #objs = [x for x in Player2Stat.objects.filter(playerstat__season_id = last_season.id, player2team__player__role = "Вратарь" ).exclude(playerstat__safety_factor = None).order_by(*args)]
+        #return objs 
  
     def get_p2t(self):
         objs = self.get_some_p2t('-ngoalsntrans')
@@ -319,7 +334,7 @@ class GameDivision(AbsGameObj):
         return self.get_max_some_p2t_goalkeeper('safety_factor', '-ngames')
 
     def get_min_nmisses_p2t_new(self):
-        return self.get_max_some_p2t_goalkeeper_new('playerstat__safety_factor', '-playerstat__ngames')
+        return self.get_max_some_p2t_goalkeeper_new('stats__safety_factor', '-stats__ngames')
 
     def get_min_safety_factor_p2t(self):
         objs = self.get_some_p2t('safety_factor')

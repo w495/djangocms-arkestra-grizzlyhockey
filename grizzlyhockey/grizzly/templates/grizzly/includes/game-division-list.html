@@ -92,8 +92,6 @@
                                                 <b>{{player.second_name}} {{player.first_name}}</b>
                                         </div>
                                         <div class="center">
-                                                {% for player2team in player.player2team_set.all %}
-                                                {% if player2team.player == player and player2team.team %}
                                                 <a href="{% url team-detail pk=player2team.team.id %}">
                                                     <b>&laquo;{{player2team.team}}&raquo; </b>
                                                 </a>
@@ -102,8 +100,6 @@
                                                     <b><date>{{player2team.role|lower}}</date></b>
                                                 </dd>
                                                 {% endif %}
-                                                {% endif %}
-                                                {% endfor %}
                                                 <dd>
                                                     {% if player.birthday %}
                                                     <b>{{player.birthday}}</b>
@@ -154,8 +150,6 @@
                                                 {{player.second_name}} {{player.first_name}}
                                             </a>
                                         </td>
-                                        {% for player2team in player.player2team_set.all %}
-                                        {% if player2team.player == player and player2team.team %}
                                         <td class="center" >
                                             <a href="{% url team-detail pk=player2team.team.id %}">
                                                 «{{player2team.team}}»
@@ -176,8 +170,6 @@
                                         <td class="center">
                                             {{item.nfines}}
                                         </td>
-                                    {% endif %}
-                                    {% endfor %}
                                     </tr>
                                     </tbody>
                                         {% endif %}
@@ -204,8 +196,6 @@
                                                 <b>{{player.second_name}} {{player.first_name}}</b>
                                         </div>
                                         <div class="center">
-                                                {% for player2team in player.player2team_set.all %}
-                                                {% if player2team.player == player and player2team.team %}
                                                 <a href="{% url team-detail pk=player2team.team.id %}">
                                                     <b>&laquo;{{player2team.team}}&raquo; </b>
                                                 </a>
@@ -214,8 +204,6 @@
                                                     <b><date>{{player2team.role|lower}}</date></b>
                                                 </dd>
                                                 {% endif %}
-                                                {% endif %}
-                                                {% endfor %}
                                                 <dd>
                                                     <b>{{player.birthday}}</b>
                                                 </dd>
@@ -264,9 +252,6 @@
                                                 {{player.second_name}} {{player.first_name}}
                                             </a>
                                         </td>
-                                        {% for player2team in player.player2team_set.all %}
-                                        {% if forloop.counter == 1 %}
-                                        {% if player2team.player == player and player2team.team %}
                                             <td class="center" >
                                                 <a href="{% url team-detail pk=player2team.team.id %}">
                                                     «{{player2team.team}}»
@@ -287,10 +272,6 @@
                                             <td class="center">
                                                 {{item.nfines}}
                                             </td>
-                                        
-                                        {% endif %}
-                                        {% endif %}
-                                        {% endfor %}
                                     </tr>
                                     </tbody>
                                         {% endif %}
@@ -326,8 +307,7 @@
                                                 <b>{{player.second_name}} {{player.first_name}}</b>
                                         </div>
                                         <div class="center">
-                                                {% for player2team in player.player2team_set.all %}
-                                                {% if player2team.player == player and player2team.team %}
+                                                
                                                 <a href="{% url team-detail pk=player2team.team.id %}">
                                                     <b>&laquo;{{player2team.team}}&raquo; </b>
                                                 </a>
@@ -336,8 +316,6 @@
                                                     <b><date>{{player2team.role|lower}}</date></b>
                                                 </dd>
                                                 {% endif %}
-                                                {% endif %}
-                                                {% endfor %}
                                                 <dd>
                                                     {% if player.birthday %}
                                                     <b>{{player.birthday}}</b>
@@ -388,8 +366,7 @@
                                                 {{player.second_name}} {{player.first_name}}
                                             </a>
                                         </td>
-                                        {% for player2team in player.player2team_set.all %}
-                                        {% if player2team.player == player and player2team.team %}
+                                        
                                         <td class="center" >
                                             <a href="{% url team-detail pk=player2team.team.id %}">
                                                 «{{player2team.team}}»
@@ -410,8 +387,6 @@
                                         <td class="center">
                                             {{item.nfines}}
                                         </td>
-                                    {% endif %}
-                                    {% endfor %}
                                     </tr>
                                     </tbody>
                                         {% endif %}
@@ -426,10 +401,12 @@
                                 <p class="center">
                                         <i>Лучший вратарь</i>
 
-                                {% for item in gamedivision.get_min_nmisses_p2t %}
-                                {% with player=item.player %}
-                                {% if player %}
-                                {% if forloop.counter == 1 %}    
+                                {% for item in gamedivision.get_min_nmisses_p2t_new %}
+                                    {% for player2team in item.player2team_set.all %}
+                                        {% with player=player2team.player %}
+                                        {% if player %}
+                                        {% if forloop.counter == 1 %}
+                                        {% if forloop.parentloop.counter == 1 %}
                                 <table>
                                     <tr width="100%">
                                         <td valign="middle" width="80%" style="vertical-align:middle">
@@ -437,8 +414,6 @@
                                             <b>{{player.second_name}} {{player.first_name}}</b>
                                         </div>
                                         <div class="center">
-                                                {% for player2team in player.player2team_set.all %}
-                                                {% if player2team.player == player %}
                                                 <a href="{% url team-detail pk=player2team.team.id %}">
                                                     <b>&laquo;{{player2team.team}}&raquo; </b>
                                                 </a>
@@ -447,8 +422,6 @@
                                                     <b><date>{{player2team.role|lower}}</date></b>
                                                 </dd>
                                                 {% endif %}
-                                                {% endif %}
-                                                {% endfor %}
                                                 <dd>
                                                     <b>{{player.birthday}}</b>
                                                 </dd>
@@ -500,35 +473,32 @@
                                                 {{player.second_name}} {{player.first_name}}
                                             </a>
                                         </td>
-                                        {% for player2team in player.player2team_set.all %}
-                                        {% if player2team.player == player and player2team.team %}
                                         <td class="center" >
                                             <a href="{% url team-detail pk=player2team.team.id %}">
                                                 «{{player2team.team}}»
                                             </a>
                                         </td>
                                         <td class="center" >
-                                            {{player2team.ngames}}
+                                            {{item.ngames}}
                                         </td>
                                         <td class="center">
-                                            {{player2team.nmisses}}
+                                            {{item.nmisses}}
                                         </td>
                                         <td class="center">
-                                            <b>{{player2team.safety_factor}}</b>
+                                            <b>{{item.safety_factor|div:100|stringformat:"2.2f"}}</b>
                                         </td>
                                         <td class="center">
-                                            {{player2team.goalminutes}}
+                                            {{item.goalminutes}}
                                         </td>
                                         <td class="center">
-                                            {{player2team.nfines}}
+                                            {{item.nfines}}
                                         </td>
                                     </tr>
-                                    {% endif %}
+
+                                         {% endif %}
+                                        {% endif %}
+                                        {% endwith %}
                                     {% endfor %}
-
-
-                                {% endif %}
-                                {% endwith %}
                                 {% endfor %}
 </tbody>
                         </table>

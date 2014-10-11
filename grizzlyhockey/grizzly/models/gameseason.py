@@ -43,7 +43,7 @@ class GameSeason (AbsGameObj):
     def post_save_action(self):
         for tour in self.regulars.all():
             for division in tour.gamedivisions.all():
-                print "AHAHAHAHAHHAHAHAHAHAHAH START CREATE DIVISION"
+                #print "AHAHAHAHAHHAHAHAHAHAHAH START CREATE DIVISION"
                 division.create_season(self, tour)
             for team in tour.teams.all():
                 team.resave()
@@ -354,7 +354,7 @@ class Team(AbsObj):
         for season in [ haha.season for haha in self.stats.all() ]:
             team2stats = Team2Stat.objects.filter(team=self, teamstat__season=season)
             if len(team2stats) != 1:
-                print "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ SKIP IT"
+                # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ SKIP IT"
                 continue
             team2stat = Team2Stat.objects.get(team=self, teamstat__season=season)
             
@@ -716,6 +716,7 @@ class Player2Team(AbsObj):
         verbose_name = u'дисквалифицирован'
     )
     
+    #  alter table grizzly_player add stats int NOT NULL;
     stats = models.ManyToManyField(
         'PlayerStat',
         blank = True,
@@ -803,15 +804,15 @@ class Player2Team(AbsObj):
         return (self.nmisses * 6000 / self.goalminutes)
     
     def get_safety_factor(self, playerstat, season):
-        return
+        #return
         teamstat = Team2Stat.objects.filter(team=self.team, teamstat__season = season)
         if len(teamstat) == 0:
             return None
         teamstat = teamstat[0]
-        if(not playerstat.goalminutes or teamstat.teamstat.ngames == 0):
+        if(not playerstat.goalminutes or teamstat.teamstat.teamstat_all.ngames == 0):
             return None
 
-        mins = teamstat.teamstat.ngames * 60
+        mins = teamstat.teamstat.teamstat_all.ngames * 60
         if(1.0 * playerstat.goalminutes / mins < 1.0 / 3):
             return None
 
@@ -819,6 +820,30 @@ class Player2Team(AbsObj):
 
 
     def pre_save_action(self):
+        
+        #print "\n\n\n==================== Yabadaa sdad asd\n\n\n"
+        #for season in [ haha.season for haha in self.stats.all() ]:
+        #    print season.name
+        #    player2stats = Player2Stat.objects.filter(player2team=self, playerstat__season=season)
+        #    print len(player2stats)
+        #    if len(player2stats) != 1:
+        #        continue
+        #    player2stat = Player2Stat.objects.get(player2team=self, playerstat__season=season)
+        #    print "\n\n\n\nOOOOOOOOps\n\n\n\n\n\n"
+        #    ngames = 0
+        #    nmiss = 0
+        #    for regular in season.regulars.all():
+        #        ngames += regular.gamematch_set.filter(Q(team_a = self.team) & Q(players_a__id = self.player.id) ).distinct().count()
+        #        ngames += regular.gamematch_set.filter(Q(team_b = self.team) & Q(players_b__id = self.player.id) ).distinct().count()
+        #        print "\n\n\n\nNgames\n\n\n\n\n\n"
+        #        print ngames
+        #        games = list()
+        #        games += regular.gamematch_set.filter(Q(team_a = self.team)).distinct()
+        #        games += regular.gamematch_set.filter(Q(team_b = self.team)).distinct()
+        #        nmiss += self.player.gamematchgoal_miss.filter(gamematch__in = games).count()
+        #        print "\n\n\n\nNmiss\n\n\n\n\n\n"
+        #        print nmiss
+        #return
         for season in [ haha.season for haha in self.stats.all() ]:
             player2stats = Player2Stat.objects.filter(player2team=self, playerstat__season=season)
             if len(player2stats) != 1:
@@ -831,6 +856,8 @@ class Player2Team(AbsObj):
             fines = 0
             ntrans = 0
             goalminutes = 0
+            #print "\n\n\n\n\n O macarena \n\n\n\n\n\n\n"
+            #print player2stat.playerstat.id
             for regular in season.regulars.all():
                 ngames += regular.gamematch_set.filter(Q(team_a = self.team) & Q(players_a__id = self.player.id) ).distinct().count()
                 ngames += regular.gamematch_set.filter(Q(team_b = self.team) & Q(players_b__id = self.player.id) ).distinct().count()
@@ -839,6 +866,8 @@ class Player2Team(AbsObj):
                 games += regular.gamematch_set.filter(Q(team_a = self.team)).distinct()
                 games += regular.gamematch_set.filter(Q(team_b = self.team)).distinct()
                 nmiss += self.player.gamematchgoal_miss.filter(gamematch__in = games).count()
+                #print "\n\n\n\nNmiss\n\n\n\n\n\n"
+                #print nmiss
                 nfines += self.player.gamematchfine_set.filter(team = self.team, gamematch__in = games).count()
                 fines += sum(fine.minutes for fine in self.player.gamematchfine_set.filter(team = self.team, gamematch__in = games))
                 
@@ -861,6 +890,8 @@ class Player2Team(AbsObj):
                 games += regular.gamematch_set.filter(Q(team_a = self.team)).distinct()
                 games += regular.gamematch_set.filter(Q(team_b = self.team)).distinct()
                 nmiss += self.player.gamematchgoal_miss.filter(gamematch__in = games).count()
+                #print "\n\n\n\nNmiss2\n\n\n\n\n\n"
+                #print nmiss
                 nfines += self.player.gamematchfine_set.filter(team = self.team, gamematch__in = games).count()
                 fines += sum(fine.minutes for fine in self.player.gamematchfine_set.filter(team = self.team, gamematch__in = games))
                 
@@ -877,7 +908,7 @@ class Player2Team(AbsObj):
             
             player2stat.playerstat.ngames = ngames
             player2stat.playerstat.ngoals = ngoals
-            player2stat.playerstat.nmiss = nmiss
+            player2stat.playerstat.nmisses = nmiss
             player2stat.playerstat.nfines = nfines
             player2stat.playerstat.nfines_minutes = fines
             player2stat.playerstat.ntrans = ntrans
@@ -887,7 +918,7 @@ class Player2Team(AbsObj):
             
                         
             player2stat.playerstat.save()
-            print "%s [%s %s] match_count %d: %d %d" % ( self.team.name, self.player.first_name, self.player.second_name,  player2stat.playerstat.ngames, player2stat.id, ngoals )
+            #print "%s [%s %s] match_count %d: %d %d" % ( self.team.name, self.player.first_name, self.player.second_name,  player2stat.playerstat.ngames, player2stat.id, ngoals )
         pass
         #self.query_set = self.get_division_query()
         #self.season_games = GameMatch.objects.filter(self.query_set).distinct()

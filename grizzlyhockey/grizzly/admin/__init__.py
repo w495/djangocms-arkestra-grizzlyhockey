@@ -273,7 +273,7 @@ class GameTournamentSystemAdmin(AbsObjAdmin):
 
 class GameMatchGoalAdminInline(AbsObjTabularInline):
     model = GameMatchGoal
-    exclude = ('description', 'detail', 'image', 'name')
+    exclude = ('description', 'detail', 'image', 'name', 'trans_players')
 
 
     readonly_fields = ('goal_keeper',)
@@ -316,20 +316,6 @@ class GameMatchGoalAdminInline(AbsObjTabularInline):
                 )
         return field
 
-
-    def formfield_for_manytomany(self, db_field, request, **kwargs):
-        field = super(GameMatchGoalAdminInline, self).formfield_for_foreignkey(
-            db_field,
-            request,
-            **kwargs
-        )
-        if request._obj_ and request._obj_.team_a and request._obj_.team_b:
-            if db_field.name == 'trans_players':
-                field.queryset = field.queryset.filter(
-                    teams__in = (request._obj_.team_a, request._obj_.team_b)
-                )
-
-        return field
 
 
 
@@ -623,22 +609,6 @@ class GameMatchAdminInlineR(AbsObjTabularInline):
         'team_a',
         'team_b',
     )
-    
-    def get_form(self, request, obj=None, **kwargs):
-        # just save obj reference for future processing in Inline
-        request._obj_ = obj
-        return super(GameMatchAdminInlineR, self).get_form(request, obj, **kwargs)
-    
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        field = super(GameMatchAdminInlineR, self).formfield_for_foreignkey(
-            db_field,
-            request,
-            **kwargs
-        )
-        print dir(request._obj_)
-        print db_field.name
-        
-        return field
 
 
 class GameMatchAdminInlineP(AbsObjTabularInline):
