@@ -350,7 +350,11 @@ class Team(AbsObj):
         return res
 
     def pre_save_action(self):
-        
+        try:
+            if self.stats is None:
+                return
+        except:
+            return
         for season in [ haha.season for haha in self.stats.all() ]:
             team2stats = Team2Stat.objects.filter(team=self, teamstat__season=season)
             if len(team2stats) != 1:
