@@ -384,8 +384,8 @@ class Team(AbsObj):
                 return
         except:
             return
-        print "\n\n\n\n\n======= Team =======\n\n\n\n\n"
-        print self.name
+        #print "\n\n\n\n\n======= Team =======\n\n\n\n\n"
+        #print self.name
         for stat in self.stats.all():
             season = stat.season
             nwins = 0
