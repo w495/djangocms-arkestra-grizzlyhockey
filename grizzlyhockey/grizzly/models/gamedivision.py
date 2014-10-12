@@ -34,7 +34,7 @@ class Division2Stat(AbsObj):
         verbose_name = u"сезон"
     )
     
-    def post_save_action(self):
+    def recompute_stat(self):
         for team2stat in self.team2stat.all():
 
             regular_score = team2stat.teamstat.teamstat_regular
@@ -191,10 +191,43 @@ class GameDivision(AbsGameObj):
     
     def create_season(self, season, tour):
         if (tour in self.gametournamentregulars.all() or tour in self.gametournamentplayoffs.all()) and len(self.teams_stats.filter(season=season)) > 0:
+            return
+            division2stat = self.teams_stats.get(season=season)
+            for team in self.teams.all():
+                if len(division2stat.team2stat.filter(team=team)):
+                    print "AHahahah"
+                else:
+                    print "Ooops"
+                    print team.name
+                    team_stats = TeamStat.objects.filter(season=season)
+                    #if len(team_stats) > 0 and len(Team2Stat.objects.filter(team=team, teamstat__in=team_stats)) > 0:
+                    #    continue
+                    
+                    all_stat = TeamStatEntry()
+                    regular_stat = TeamStatEntry()
+                    playoff_stat = TeamStatEntry()
+                    
+                    all_stat.save()
+                    regular_stat.save()
+                    playoff_stat.save()
+                    
+                    team_stat = TeamStat(season=season,
+                                         teamstat_all=all_stat,
+                                         teamstat_regular=regular_stat,
+                                         teamstat_playoff=playoff_stat)
+                    
+                    team_stat.save()
+                    team2stat = Team2Stat(team=team, teamstat=team_stat)
+                    team2stat.save()
+                    division2stat.save()
+                    division2stat.team2stat.add(team2stat)
+            division2stat.save()
+            division2stat.recompute_stat()
             #print "Skip it"
             #print season.id
             #print tour in self.gametournamentregulars.all()
             #print tour in self.gametournamentplayoffs.all()
+            
             return
         division2stat = Division2Stat(season=season)
         for team in self.teams.all():
@@ -224,6 +257,7 @@ class GameDivision(AbsGameObj):
             division2stat.save()
             division2stat.team2stat.add(team2stat)            
         division2stat.save()
+        division2stat.recompute_stat()
         self.teams_stats.add(division2stat)
         self.save()
             

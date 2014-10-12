@@ -113,7 +113,34 @@ class GameMatchGoal (AbsObj):
         max_length = 200,
         verbose_name = u"игровая ситуация"
     )
-
+    
+    def resave_goalkeeper(self, *args, **kwargs):
+        if self.goal_keeper:
+            #print self.goal_keeper.first_name
+            #print self.goal_keeper.second_name
+            self.goal_keeper.resave_player2team_set()
+        else:
+            if(self.team):
+                gtimes = [
+                    gtime
+                    for gtime in self.gamematch.gamematchgtime_set.filter(
+                        start_minute__lt = self.minute,
+                        stop_minute__gte = self.minute,
+                    ).exclude(team = self.team)
+                ]
+            else:
+                gtimes = [
+                    gtime
+                    for gtime in self.gamematch.gamematchgtime_set.filter(
+                        start_minute__lt = self.minute,
+                        stop_minute__gte = self.minute,
+                    )
+                ]
+            if gtimes:
+                self.goal_keeper = gtimes[0].player
+                self.goal_keeper.resave_player2team_set()
+                self.save()
+    
     def pre_save_action(self, *args, **kwargs):
 
         if(self.minute):
@@ -150,8 +177,8 @@ class GameMatchGoal (AbsObj):
             self.assistant_1.resave_player2team_set()
             if self.assistant_2 != None:
                 self.assistant_2.resave_player2team_set()
-        else:
-            [p.resave_player2team_set() for p in self.trans_players.all()]
+        #else:
+        #    [p.resave_player2team_set() for p in self.trans_players.all()]
 
 
 

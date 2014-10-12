@@ -116,13 +116,15 @@ class GameMatch (AbsGameObj):
         verbose_name=u"Турнир play оff"
     )
     
-    def pre_save_action(self):
-        [ goal.resave() for goal in GameMatchGoal.objects.filter(gamematch = self) ]
+    def post_save_action(self):
+        [ goal.resave_goalkeeper() for goal in GameMatchGoal.objects.filter(gamematch = self) ]
+        pass
     
     def async_save_action(self):
         [ gtime.resave() for gtime in GameMatchGTime.objects.filter(gamematch = self) ]
         self.team_a.resave()
         self.team_b.resave()
+        pass
 
 
     class Meta:
