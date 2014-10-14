@@ -31,40 +31,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!--{% for team in gamedivision.teams.all %}
-                            <tr>
-                                <td class="right" >
-                                    <a href="{% url team-detail pk=team.id %}">
-                                        «{{team.name}}»
-                                    </a>
-                                </td>
-                                <td class="center" >
-                                    {{team.ngames}}
-                                </td>
-                                <td class="center">
-                                    {{team.nwins}}
-                                </td>
-                                <td class="center">
-                                    {{team.ndraws}}
-                                </td>
-                                <td class="center">
-                                    {{team.nloses}}
-                                </td>
-                                <td class="center">
-                                    {{team.ngoals}}
-                                </td>
-                                <td class="center">
-                                    {{team.nmisses}}
-                                </td>
-                                <td class="center">
-                                    {{team.npoints}}
-                                </td>
-                            </tr>
-                        {% endfor %}-->
                         
                         {% for division_stat in gamedivision.teams_stats.all|order_by:"-season__start_datetime" %}
                             {% if forloop.counter == 1 %}
                                 {% for team in division_stat.team2stat.all %}
+                                    {% if not team.teamstat.is_playoff_team %}
                                     <tr>
                                         <td class="right" >
                                             <a href="{% url team-detail pk=team.team.id %}">
@@ -93,6 +64,7 @@
                                             {{team.teamstat.teamstat_regular.npoints}}
                                         </td>
                                     </tr>
+                                    {% endif %}
                                 {% endfor %}
                             {% endif %}
                         {% endfor %}
@@ -180,8 +152,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for p2t in gamedivision.get_p2t|dictsort:"safety_factor" %}
-                        {% if p2t.safety_factor != None %}
+                    {% for p2t_stat in gamedivision.get_some_p2t_goalkeeper_new|dictsort:'safety_factor'  %}
+                        {% for p2t in p2t_stat.player2team_set.all %}
+                            {% with player=p2t.player %}
+                            {% if player and p2t.safety_factor != None  %}
+                            {% if forloop.counter == 1 %}
                             <tr>
                                 <td title="Игрок" class="players-table-detail-text">
                                     <a href="{% url player-detail pk=p2t.player.id %}">
@@ -206,18 +181,18 @@
 
                                 </td>
                                 <td title="Игры"  class="players-table-detail-number">
-                                    {{p2t.ngames}}
+                                    {{p2t_stat.ngames}}
                                 </td>
 
                                 <td title="Пропущенных голов"  class="players-table-detail-number visible-lg visible-md">
-                                    {{p2t.nmisses}}
+                                    {{p2t_stat.nmisses}}
                                 </td>
 
                                 <td title="Минут" class="players-table-detail-number visible-lg visible-md">
-                                    {{p2t.goalminutes}}
+                                    {{p2t_stat.goalminutes}}
                                 </td>
                                 <td title="Фактор надежности"  class="players-table-detail-number visible-lg visible-md">
-                                    {{p2t.safety_factor|div:100|stringformat:"2.2f" }}
+                                    {{p2t_stat.safety_factor|div:100|stringformat:"2.2f" }}
                                 </td>
 
                                 <td title="Команда" class="players-table-detail-text">
@@ -243,8 +218,11 @@
 
                                 </td>
 
-                            {% endif%}
                         </tr>
+                            {% endif %}
+                            {% endif %}
+                            {% endwith %}
+                        {% endfor %}
                     {% endfor %}
                 </tbody>
             </table>
@@ -355,83 +333,7 @@
                         {% endwith %}
                     {% endfor %}
                     {% endfor %}
-                
-                
-                <!--
-                    {% for p2t in gamedivision.get_p2t|dictsortreversed:"ngoals"|slice:":5" %}
-                        <tr>
-                            <td title="Игрок" class="players-table-detail-text">
-                                <a href="{% url player-detail pk=p2t.player.id %}">
-                                    {{p2t.game_number}},
-                                    {{p2t.player.second_name}}
-                                    {{p2t.player.first_name}}
-                                </a>
-                                <div>
-                                {% if p2t.image %}
-                                    <a href="{% url player-detail pk=p2t.player.id %}">
-                                        <img  class="img-thumbnail" src="{% thumbnail p2t.image 48x48  crop %}"
-                                            {% if player.image.alt %}
-                                                alt="{{ p2t.image.alt }}"
-                                            {% endif %}
-                                        />
-                                    </a>
-                                {% else %}
-                                    <div class="img-null-{{"123456"|make_list|random}} p48x48 img-thumbnail">
-                                    </div>
-                                {% endif %}
-                                </div>
-
-                            </td>
-                            <td title="Игры"  class="players-table-detail-number">
-                                {{p2t.ngames}}
-                            </td>
-
-                            <td title="Голы"  class="players-table-detail-number">
-                                {{p2t.ngoals}}
-                            </td>
-                            <td title="Передачи"  class="players-table-detail-number">
-                                {{p2t.ntrans}}
-                            </td>
-
-
-                            <td title="Голы и передачи"  class="players-table-detail-number visible-lg">
-                                {{p2t.ngoalsntrans}}
-                            </td>
-
-
-                            <td title="Амплуа" class="players-table-detail-text" >
-                                {{p2t.role}}
-                            </td>
-
-                            <td title="Команда" class="players-table-detail-text">
-                                {% with team=p2t.team %}
-                                    <a href="{% url team-detail pk=team.id %}">
-                                        <div>
-                                            {{team.name}}
-                                        </div>
-                                        <div>
-                                            {% if team.image %}
-                                                <img  class="img-thumbnail" src="{% thumbnail team.image 48x48 %}"
-                                                    {% if team.image.alt %}
-                                                        alt="{{ team.image.alt }}"
-                                                    {% endif %}
-                                                />
-                                            {% else %}
-                                                <div class="img-null p48x48 img-thumbnail">
-                                                </div>
-                                            {% endif %}
-                                        </div>
-                                    </a>
-                                {% endwith %}
-
-                            </td>
-
-                        </tr>
-                    {% endfor %}-->
-                    
-                    
-                    
-                </tbody>
+                  </tbody>
             </table>
         </div>
     </div>
@@ -541,78 +443,6 @@
                         {% endwith %}
                     {% endfor %}
                     {% endfor %}
-                
-                <!--
-                    {% for p2t in gamedivision.get_p2t|dictsortreversed:"ntrans"|slice:":5" %}
-                        <tr>
-                            <td title="Игрок" class="players-table-detail-text">
-                                <a href="{% url player-detail pk=p2t.player.id %}">
-                                    {{p2t.game_number}},
-                                    {{p2t.player.second_name}}
-                                    {{p2t.player.first_name}}
-                                </a>
-                                <div>
-                                {% if p2t.image %}
-                                    <a href="{% url player-detail pk=p2t.player.id %}">
-                                        <img  class="img-thumbnail" src="{% thumbnail p2t.image 48x48  crop %}"
-                                            {% if player.image.alt %}
-                                                alt="{{ p2t.image.alt }}"
-                                            {% endif %}
-                                        />
-                                    </a>
-                                {% else %}
-                                    <div class="img-null-{{"123456"|make_list|random}} p48x48 img-thumbnail">
-                                    </div>
-                                {% endif %}
-                                </div>
-
-                            </td>
-                            <td title="Игры"  class="players-table-detail-number">
-                                {{p2t.ngames}}
-                            </td>
-
-                            <td title="Голы"  class="players-table-detail-number">
-                                {{p2t.ngoals}}
-                            </td>
-                            <td title="Передачи"  class="players-table-detail-number">
-                                {{p2t.ntrans}}
-                            </td>
-
-
-                            <td title="Голы и передачи"  class="players-table-detail-number visible-lg">
-                                {{p2t.ngoalsntrans}}
-                            </td>
-
-
-                            <td title="Амплуа" class="players-table-detail-text" >
-                                {{p2t.role}}
-                            </td>
-
-                            <td title="Команда" class="players-table-detail-text">
-                                {% with team=p2t.team %}
-                                    <a href="{% url team-detail pk=team.id %}">
-                                        <div>
-                                            {{team.name}}
-                                        </div>
-                                        <div>
-                                            {% if team.image %}
-                                                <img  class="img-thumbnail" src="{% thumbnail team.image 48x48 %}"
-                                                    {% if team.image.alt %}
-                                                        alt="{{ team.image.alt }}"
-                                                    {% endif %}
-                                                />
-                                            {% else %}
-                                                <div class="img-null p48x48 img-thumbnail">
-                                                </div>
-                                            {% endif %}
-                                        </div>
-                                    </a>
-                                {% endwith %}
-
-                            </td>
-
-                        </tr>
-                    {% endfor %}-->
                 </tbody>
             </table>
         </div>
@@ -723,79 +553,6 @@
                         {% endwith %}
                     {% endfor %}
                     {% endfor %}
-                
-                
-                <!--
-                    {% for p2t in gamedivision.get_p2t|dictsortreversed:"ngoalsntrans"|slice:":5" %}
-                        <tr>
-                            <td title="Игрок" class="players-table-detail-text">
-                                <a href="{% url player-detail pk=p2t.player.id %}">
-                                    {{p2t.game_number}},
-                                    {{p2t.player.second_name}}
-                                    {{p2t.player.first_name}}
-                                </a>
-                                <div>
-                                {% if p2t.image %}
-                                    <a href="{% url player-detail pk=p2t.player.id %}">
-                                        <img  class="img-thumbnail" src="{% thumbnail p2t.image 48x48  crop %}"
-                                            {% if player.image.alt %}
-                                                alt="{{ p2t.image.alt }}"
-                                            {% endif %}
-                                        />
-                                    </a>
-                                {% else %}
-                                    <div class="img-null-{{"123456"|make_list|random}} p48x48 img-thumbnail">
-                                    </div>
-                                {% endif %}
-                                </div>
-
-                            </td>
-                            <td title="Игры"  class="players-table-detail-number">
-                                {{p2t.ngames}}
-                            </td>
-
-                            <td title="Голы"  class="players-table-detail-number">
-                                {{p2t.ngoals}}
-                            </td>
-                            <td title="Передачи"  class="players-table-detail-number">
-                                {{p2t.ntrans}}
-                            </td>
-
-
-                            <td title="Голы и передачи"  class="players-table-detail-number visible-lg">
-                                {{p2t.ngoalsntrans}}
-                            </td>
-
-
-                            <td title="Амплуа" class="players-table-detail-text" >
-                                {{p2t.role}}
-                            </td>
-
-                            <td title="Команда" class="players-table-detail-text">
-                                {% with team=p2t.team %}
-                                    <a href="{% url team-detail pk=team.id %}">
-                                        <div>
-                                            {{team.name}}
-                                        </div>
-                                        <div>
-                                            {% if team.image %}
-                                                <img  class="img-thumbnail" src="{% thumbnail team.image 48x48 %}"
-                                                    {% if team.image.alt %}
-                                                        alt="{{ team.image.alt }}"
-                                                    {% endif %}
-                                                />
-                                            {% else %}
-                                                <div class="img-null p48x48 img-thumbnail">
-                                                </div>
-                                            {% endif %}
-                                        </div>
-                                    </a>
-                                {% endwith %}
-
-                            </td>
-
-                        </tr>
-                    {% endfor %}-->
                 </tbody>
             </table>
         </div>
@@ -942,101 +699,6 @@
                         {% endwith %}
                     {% endfor %}
                     {% endfor %}
-                
-                
-                
-                <!--
-                    {% for p2t in gamedivision.get_p2t %}
-                        <tr>
-                            <td title="Игрок" class="players-table-detail-text">
-                                <a href="{% url player-detail pk=p2t.player.id %}">
-                                    {{p2t.game_number}},
-                                    {{p2t.player.second_name}}
-                                    {{p2t.player.first_name}}
-                                </a>
-                                <div>
-                                {% if p2t.image %}
-                                    <a href="{% url player-detail pk=p2t.player.id %}">
-                                        <img  class="img-thumbnail" src="{% thumbnail p2t.image 48x48  crop %}"
-                                            {% if player.image.alt %}
-                                                alt="{{ p2t.image.alt }}"
-                                            {% endif %}
-                                        />
-                                    </a>
-                                {% else %}
-                                    <div class="img-null-{{"123456"|make_list|random}} p48x48 img-thumbnail">
-                                    </div>
-                                {% endif %}
-                                </div>
-
-                            </td>
-                            <td title="Игры"  class="players-table-detail-number">
-                                {{p2t.ngames}}
-                            </td>
-
-                            <td title="Голы"  class="players-table-detail-number">
-                                {{p2t.ngoals}}
-                            </td>
-                            <td title="Передачи"  class="players-table-detail-number">
-                                {{p2t.ntrans}}
-                            </td>
-
-
-                            <td title="Голы и передачи"  class="players-table-detail-number visible-lg">
-                                {{p2t.ngoalsntrans}}
-                            </td>
-
-
-                            <!--
-                            <td title="Пропущенных голов"  class="players-table-detail-number visible-lg visible-md">
-                                {% if p2t.safety_factor != None %}
-                                    {{p2t.nmisses}}
-                                {% endif%}
-                            </td>
-
-                            <td title="Минут" class="players-table-detail-number visible-lg visible-md">
-                                {% if p2t.safety_factor != None %}
-                                    {{p2t.goalminutes}}
-                                {% endif%}
-                            </td>
-                            <td title="Фактор надежности"  class="players-table-detail-number visible-lg visible-md">
-                                {{p2t.safety_factor|default_if_none:""}}
-                            </td>
-                            -->
-
-                         <!--   <td title="Удалений" class="players-table-detail-number visible-lg">
-                                {{p2t.nfines}}
-                            </td>
-
-                            <td title="Амплуа" class="players-table-detail-text" >
-                                {{p2t.role}}
-                            </td>
-
-                            <td title="Команда" class="players-table-detail-text">
-                                {% with team=p2t.team %}
-                                    <a href="{% url team-detail pk=team.id %}">
-                                        <div>
-                                            {{team.name}}
-                                        </div>
-                                        <div>
-                                            {% if team.image %}
-                                                <img  class="img-thumbnail" src="{% thumbnail team.image 48x48 %}"
-                                                    {% if team.image.alt %}
-                                                        alt="{{ team.image.alt }}"
-                                                    {% endif %}
-                                                />
-                                            {% else %}
-                                                <div class="img-null p48x48 img-thumbnail">
-                                                </div>
-                                            {% endif %}
-                                        </div>
-                                    </a>
-                                {% endwith %}
-
-                            </td>
-
-                        </tr>
-                    {% endfor %}-->
                 </tbody>
             </table>
         </div>

@@ -36,6 +36,7 @@
                                 {% for division_stat in gamedivision.teams_stats.all|order_by:"-season__start_datetime" %}
                                     {% if forloop.counter == 1 %}
                                         {% for team in division_stat.team2stat.all %}
+                                            {% if not team.teamstat.is_playoff_team %}
                                             <tr>
                                                 <td class="right" >
                                                     <a href="{% url team-detail pk=team.team.id %}">
@@ -64,6 +65,7 @@
                                                     {{team.teamstat.teamstat_all.npoints}}
                                                 </td>
                                             </tr>
+                                            {% endif %}
                                         {% endfor %}
                                     {% endif %}
                                 {% endfor %}

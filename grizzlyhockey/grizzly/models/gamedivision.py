@@ -270,11 +270,11 @@ class GameDivision(AbsGameObj):
         last_season = last_season[0].season
         players = list()
         
-        for x in Player2Team.objects.filter(team__in = self.teams.all(), stats__season=last_season, player__role = "Вратарь").exclude(stats__safety_factor = None).exclude(stats__ngames = 0).order_by(*args):
+        for x in Player2Team.objects.filter(team__in = self.teams.all(), stats__season=last_season, player__role = "Вратарь").exclude(stats__safety_factor = None).order_by(*args):
             stats = x.stats.filter(season=last_season)
             if len(stats) > 0:
                 for stat in stats:
-                    if stat.ngames != 0 and stat.safety_factor is not None:
+                    if stat.safety_factor is not None:
                         players.append(stat)
                         break
         return players
