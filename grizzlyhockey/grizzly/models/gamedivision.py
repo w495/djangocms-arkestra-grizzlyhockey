@@ -277,6 +277,7 @@ class GameDivision(AbsGameObj):
                     if stat.safety_factor is not None:
                         players.append(stat)
                         break
+        print players
         return players
  
     def get_p2t(self):
