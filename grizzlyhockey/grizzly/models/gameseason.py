@@ -42,23 +42,15 @@ class GameSeason (AbsGameObj):
     
     def post_save_action(self):
         for tour in self.regulars.all():
-            #print "AHAHAHAHAHHAHAHAHAHAHAH START CREATE DIVISION before"
             for division in tour.gamedivisions.all():
-                #print "AHAHAHAHAHHAHAHAHAHAHAH START CREATE DIVISION"
-                #print "AHAHAHAHAHHAHAHAHAHAHAH START CREATE DIVISION"
-                #print "AHAHAHAHAHHAHAHAHAHAHAH START CREATE DIVISION"
-                division.create_season(self, tour)
+                division.create_season(self, tour, False)
             for team in tour.teams.all():
-                #print "\n\n\n\n\n TEAM NAME POST SAVE\n\n"
-                #print team.name
                 if len(Team2Stat.objects.filter(team=team, teamstat__season=self)) == 0:
-                    #print "try to create team to stat"
                     teamstat = TeamStat(season=self)
                     teamstat.save()
                     
                     team2stat = Team2Stat(team=team, teamstat=teamstat)
                     team2stat.save()
-                #print "try to create team to stat 2"
                 for player in team.player2team_set.all():
                     if len(Player2Stat.objects.filter(player2team=player, playerstat__season=self)) != 0:
                         continue
@@ -70,7 +62,7 @@ class GameSeason (AbsGameObj):
         
         for tour in self.playoff.all():
             for division in tour.gamedivisions.all():
-                division.create_season(self, tour)
+                division.create_season(self, tour, True)
             for team in tour.teams.all():
                 if len(Team2Stat.objects.filter(team=team, teamstat__season=self)) == 0:
                     teamstat = TeamStat(season=self)
@@ -87,7 +79,6 @@ class GameSeason (AbsGameObj):
                     player2stat = Player2Stat(player2team=player, playerstat=stat)
                     player2stat.save()
                 team.resave()
-
     class Meta:
         ordering = ('ctime',)
         app_label = "grizzly"
@@ -157,6 +148,12 @@ class TeamStat(AbsObj):
         null = True,
         verbose_name = u"TeamStatPlayoff",
         related_name='playoffstat'
+    )
+    
+    #  alter table grizzly_teamstat add is_playoff_team bool NOT NULL;
+    is_playoff_team = models.BooleanField(
+        default=False,
+        verbose_name = u'команда плей-оффа'
     )
     
     class Meta:
@@ -384,8 +381,6 @@ class Team(AbsObj):
                 return
         except:
             return
-        #print "\n\n\n\n\n======= Team =======\n\n\n\n\n"
-        #print self.name
         for stat in self.stats.all():
             season = stat.season
             nwins = 0
@@ -393,15 +388,16 @@ class Team(AbsObj):
             ndraws = 0
             ngoals = 0
             nmisses = 0
-            
+            if stat is None:
+                continue
             regular_score = stat.teamstat_regular
             playoff_score = stat.teamstat_playoff
             sum_score = stat.teamstat_all
-            
+            if regular_score is None or playoff_score is None or sum_score is None:
+                continue
             for regular in season.regulars.all():
                 games = list()
                 games += [ game.id for game in regular.gamematch_set.filter(Q(team_a = self) | Q(team_b = self)).distinct() ]
-                #games += [ game.id for game in regular.gamematch_set.filter(Q(team_b = self)).distinct() ]
                 
                 nwins += self.gamematch_a.filter(Q(score_a__gt = models.F('score_b')) & Q(id__in = games) ).distinct().count()
                 nwins += self.gamematch_b.filter(Q(score_b__gt = models.F('score_a')) & Q(id__in = games) ).distinct().count()
@@ -430,7 +426,6 @@ class Team(AbsObj):
             
             ngames = nwins + nloses + ndraws
             npoints = nwins * 2 + ndraws
-            
             regular_score.nwins = nwins
             regular_score.nloses = nloses
             regular_score.ndraws = ndraws

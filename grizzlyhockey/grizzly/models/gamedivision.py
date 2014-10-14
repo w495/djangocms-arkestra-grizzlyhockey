@@ -36,11 +36,9 @@ class Division2Stat(AbsObj):
     
     def recompute_stat(self):
         for team2stat in self.team2stat.all():
-
             regular_score = team2stat.teamstat.teamstat_regular
             playoff_score = team2stat.teamstat.teamstat_playoff
             sum_score = team2stat.teamstat.teamstat_all
-            
             team = team2stat.team
             nwins = 0
             nloses = 0
@@ -189,59 +187,38 @@ class GameDivision(AbsGameObj):
         verbose_name=u"play-off"
     )
     
-    def create_season(self, season, tour):
+    def create_season(self, season, tour, is_playoff):
+        
         if (tour in self.gametournamentregulars.all() or tour in self.gametournamentplayoffs.all()) and len(self.teams_stats.filter(season=season)) > 0:
-            return
             division2stat = self.teams_stats.get(season=season)
-            for team in self.teams.all():
-                if len(division2stat.team2stat.filter(team=team)):
-                    print "AHahahah"
-                else:
-                    print "Ooops"
-                    print team.name
-                    team_stats = TeamStat.objects.filter(season=season)
-                    #if len(team_stats) > 0 and len(Team2Stat.objects.filter(team=team, teamstat__in=team_stats)) > 0:
-                    #    continue
-                    
-                    all_stat = TeamStatEntry()
-                    regular_stat = TeamStatEntry()
-                    playoff_stat = TeamStatEntry()
-                    
-                    all_stat.save()
-                    regular_stat.save()
-                    playoff_stat.save()
-                    
-                    team_stat = TeamStat(season=season,
-                                         teamstat_all=all_stat,
-                                         teamstat_regular=regular_stat,
-                                         teamstat_playoff=playoff_stat)
-                    
-                    team_stat.save()
-                    team2stat = Team2Stat(team=team, teamstat=team_stat)
-                    team2stat.save()
-                    division2stat.save()
-                    division2stat.team2stat.add(team2stat)
-            division2stat.save()
-            division2stat.recompute_stat()
-            #print "Skip it"
-            #print season.id
-            #print tour in self.gametournamentregulars.all()
-            #print tour in self.gametournamentplayoffs.all()
             
+            full_team_list = set(tour.teams.all())
+            existed_team_list = set([ x.team for x in division2stat.team2stat.all() ])
+            new_commands = full_team_list - existed_team_list
+            for team in new_commands:
+                all_stat = TeamStatEntry()
+                regular_stat = TeamStatEntry()
+                playoff_stat = TeamStatEntry()
+                
+                all_stat.save()
+                regular_stat.save()
+                playoff_stat.save()
+                team_stat = TeamStat(season=season,
+                                     teamstat_all=all_stat,
+                                     teamstat_regular=regular_stat,
+                                     teamstat_playoff=playoff_stat,
+                                     is_playoff_team=is_playoff)
+                team_stat.save()
+                team2stat = Team2Stat(team=team, teamstat=team_stat)
+                team2stat.save()
+                division2stat.save()
+                division2stat.team2stat.add(team2stat)
             return
         division2stat = Division2Stat(season=season)
-        for team in self.teams.all():
-            #print dir(team.stats)
-            #return
-            
-            team_stats = TeamStat.objects.filter(season=season)
-            #if len(team_stats) > 0 and len(Team2Stat.objects.filter(team=team, teamstat__in=team_stats)) > 0:
-            #    continue
-            
+        for team in tour.teams.all():
             all_stat = TeamStatEntry()
             regular_stat = TeamStatEntry()
             playoff_stat = TeamStatEntry()
-            
             all_stat.save()
             regular_stat.save()
             playoff_stat.save()
@@ -249,8 +226,8 @@ class GameDivision(AbsGameObj):
             team_stat = TeamStat(season=season,
                                  teamstat_all=all_stat,
                                  teamstat_regular=regular_stat,
-                                 teamstat_playoff=playoff_stat)
-            
+                                 teamstat_playoff=playoff_stat,
+                                 is_playoff_team=is_playoff)
             team_stat.save()
             team2stat = Team2Stat(team=team, teamstat=team_stat)
             team2stat.save()
@@ -295,20 +272,12 @@ class GameDivision(AbsGameObj):
         
         for x in Player2Team.objects.filter(team__in = self.teams.all(), stats__season=last_season, player__role = "Вратарь").exclude(stats__safety_factor = None).exclude(stats__ngames = 0).order_by(*args):
             stats = x.stats.filter(season=last_season)
-            #print "\n\n\n\n\n\n\n=========================================AHahahhaha\n\n\n\n\n\n\n"
             if len(stats) > 0:
                 for stat in stats:
                     if stat.ngames != 0 and stat.safety_factor is not None:
                         players.append(stat)
-                        #print " safety_factor"  
-                        #print stat.safety_factor
                         break
         return players
-        #division2stat = last_season[0]
-        #last_season = last_season[0].season
-        #teams = division2stat.team2stat.all()
-        #objs = [x for x in Player2Stat.objects.filter(playerstat__season_id = last_season.id, player2team__player__role = "Вратарь" ).exclude(playerstat__safety_factor = None).order_by(*args)]
-        #return objs 
  
     def get_p2t(self):
         objs = self.get_some_p2t('-ngoalsntrans')
@@ -385,8 +354,8 @@ class GameDivision(AbsGameObj):
         return None
 
     def post_save_action(self):
-        [team.async_resave() for team in self.team_set.all()]
-        [stat.save() for stat in self.teams_stats.all()]
+        #[team.async_resave() for team in self.team_set.all()]
+        [stat.recompute_stat() for stat in self.teams_stats.all()]
 
     class Meta:
         ordering = ('ctime',)
