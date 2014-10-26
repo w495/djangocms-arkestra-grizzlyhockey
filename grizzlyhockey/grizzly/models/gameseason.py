@@ -70,9 +70,13 @@ class GameSeason (AbsGameObj):
                     
                     team2stat = Team2Stat(team=team, teamstat=teamstat)
                     team2stat.save()
-                
+                print team.name
                 for player in team.player2team_set.all():
+                    print player.player.second_name + " " + player.player.first_name
                     if len(Player2Stat.objects.filter(player2team=player, playerstat__season=self)) != 0:
+                        print "Exist"
+                        print player.id
+                        print player.stats
                         continue
                     stat = PlayerStat(season=self)
                     stat.save()
@@ -375,6 +379,12 @@ class Team(AbsObj):
         res = self.nwins * 2 + self.ndraws
         return res
 
+    def get_not_disqualified_players(self):
+        return self.player2team_set.filter(is_disqualified=False)
+    
+    def get_disqualified_players(self):
+        return self.player2team_set.filter(is_disqualified=True)
+    
     def pre_save_action(self):
         try:
             if self.stats is None:
@@ -854,13 +864,18 @@ class Player2Team(AbsObj):
     
     def get_safety_factor(self, playerstat, season):
         teamstat = Team2Stat.objects.filter(team=self.team, teamstat__season = season)
+        print "Hahah 1"
         if len(teamstat) == 0:
             return None
         teamstat = teamstat[0]
+        print "Hahah 2"
         if(not playerstat.goalminutes or teamstat.teamstat.teamstat_all.ngames == 0):
             return None
-
+        print "Hahah 3"
         mins = teamstat.teamstat.teamstat_all.ngames * 60
+        print 1.0 * playerstat.goalminutes / mins < 1.0 / 3
+        print 1.0 * playerstat.goalminutes / mins
+        print mins
         if(1.0 * playerstat.goalminutes / mins < 1.0 / 3):
             return None
 
@@ -945,6 +960,7 @@ class Player2Team(AbsObj):
             stat.ntrans = ntrans
             stat.goalminutes = goalminutes
             stat.ngoalsntrans = stat.ngoals + stat.ntrans
+            print self.player.second_name + " " + self.player.first_name
             stat.safety_factor = self.get_safety_factor(stat, season)
             stat.save()
         pass

@@ -111,9 +111,9 @@ body {
     {% endif %}
         </div>
         <table style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif;  font-size: 14px; line-height: 1.42857; color: #333;">
-        {% for player2team in team.player2team_set.all|order_by_game_number:"" %}
+        {% for player2team in team.get_not_disqualified_players|order_by_game_number:"" %}
             {% with player2team.player as player  %}
-                {% if player and not player.is_disqualified %}
+                {% if player and not player2team.is_disqualified %}
                       
                       {% if forloop.counter == 1 %}
                          <tr >
@@ -164,9 +164,9 @@ body {
 
       <h3>Дисквалифицированы:</h3>
         <table style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif;  font-size: 14px; line-height: 1.42857; color: #333;">
-        {% for player2team in team.player2team_set.all|dictsort:"role" %}
+        {% for player2team in team.get_disqualified_players|dictsort:"role" %}
             {% with player2team.player as player  %}
-                {% if player and  player.is_disqualified %}
+                {% if player and  player2team.is_disqualified %}
                       
                       {% if forloop.counter == 1 %}
                          <tr >

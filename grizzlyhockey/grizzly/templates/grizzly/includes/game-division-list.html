@@ -33,7 +33,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for division_stat in gamedivision.teams_stats.all|order_by:"-season__start_datetime" %}
+                                {% for division_stat in gamedivision.teams_stats.all|order_by:"-season__start_datetime"|slice:":1" %}
                                     {% if forloop.counter == 1 %}
                                         {% for team in division_stat.team2stat.all %}
                                             {% if not team.teamstat.is_playoff_team %}
@@ -82,7 +82,7 @@
                                 <p class="center">
                                     <i>Лучший бомбардир</i>
                                     {% for item in gamedivision.get_max_ngoalsntrans_p2t_new %}
-                                    {% for player2team in item.player2team_set.all %}
+                                    {% for player2team in item.player2team_set.all|slice:":1" %}
                                         {% with player=player2team.player %}
                                         {% if player %}
                                         {% if forloop.counter == 1 %}
@@ -186,7 +186,7 @@
                               <p class="center">
                                 <i>Лучший снайпер</i>
                                 {% for item in gamedivision.get_max_ngoals_p2t_new %}
-                                    {% for player2team in item.player2team_set.all %}
+                                    {% for player2team in item.player2team_set.all|slice:":1" %}
                                         {% with player=player2team.player %}
                                         {% if player %}
                                         {% if forloop.counter == 1 %}
@@ -297,7 +297,7 @@
 
 
                                     {% for item in gamedivision.get_max_ntrans_p2t_new %}
-                                    {% for player2team in item.player2team_set.all %}
+                                    {% for player2team in item.player2team_set.all|slice:":1" %}
                                         {% with player=player2team.player %}
                                         {% if player %}
                                         {% if forloop.counter == 1 %}
@@ -404,7 +404,7 @@
                                         <i>Лучший вратарь</i>
 
                                 {% for item in gamedivision.get_min_nmisses_p2t_new %}
-                                    {% for player2team in item.player2team_set.all %}
+                                    {% for player2team in item.player2team_set.all|slice:":1" %}
                                         {% with player=player2team.player %}
                                         {% if player %}
                                         {% if forloop.counter == 1 %}
@@ -465,7 +465,7 @@
                                 {%endif%}
                                         <tr>
                                         <td class="center">
-                                           {{ forloop.counter }}
+                                           {{ forloop.parentloop.counter }}
                                         </td>
                                         <td class="left" >
                                             {{player.game_number}}
@@ -487,7 +487,7 @@
                                             {{item.nmisses}}
                                         </td>
                                         <td class="center">
-                                            <b>{{item.safety_factor}}</b>
+                                            <b>{{item.safety_factor }}</b>
                                         </td>
                                         <td class="center">
                                             {{item.goalminutes}}
