@@ -93,22 +93,25 @@ body {
 </div>
 
     <div class="center">
-    <h{{IN_BODY_HEADING_LEVEL}}>«{{ team.name }}»</h{{IN_BODY_HEADING_LEVEL}}>
-
     <!-- Проверка, чтобы не было ссылок на текущий элемент -->
     {% url team-detail pk=team.id as thisurl %}
 
-    <!-- Проверка, чтобы не было ссылок на текущий элемент -->
-    {% if team.image %}
-            <img  src="{% thumbnail team.image 150x150 %}"
-                       {% if team.image.alt %}
-                          alt="{{ team.image.alt }}"
-                       {% endif %}
-            />
-    {% else %}
-        <div class="img-null p150x150 img-thumbnail">
-        </div>
-    {% endif %}
+    <h{{IN_BODY_HEADING_LEVEL}}>
+        «{{ team.name }}»
+            <!-- Проверка, чтобы не было ссылок на текущий элемент -->
+        {% if team.image %}
+                <img  src="{% thumbnail team.image 150x150 %}"
+                           {% if team.image.alt %}
+                              alt="{{ team.image.alt }}"
+                           {% endif %}
+                />
+        {% else %}
+            <div class="img-null p150x150 img-thumbnail">
+            </div>
+        {% endif %}
+    </h{{IN_BODY_HEADING_LEVEL}}>
+
+
         </div>
         <table style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif;  font-size: 14px; line-height: 1.42857; color: #333;">
         {% for player2team in team.get_not_disqualified_players|order_by_game_number:"" %}
