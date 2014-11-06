@@ -2,13 +2,13 @@
 {% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
 {% load order_by %}
 
-    {% if role_header != "" %}<div class="well">{{ role_header }}</div>{% endif %}
+    {% if role_header != "" %}<div class="well row">{{ role_header }}</div>{% endif %}
     <ul class="media-list team-player-list">
         {% for player2team in team.player2team_set.all|order_by:"player__second_name" %}
             {% if player2team.role == role %}
             {% with player2team.player as player  %}
                 {% if player %}
-                    <li class="media">
+                    <li class="media row">
                         <div class="pull-left" href="#">
                             <a href="{% url player-detail pk=player.id %}">
                                 {% if player2team.image %}
@@ -186,6 +186,7 @@
                                     <!-- Tab panes -->
                                     <div class="tab-content">
                                         {% for stat in player2team.stats.all|order_by:"-season__start_datetime" %}
+                                          <p>{{player2team.id}}</p>
                                           {% if forloop.counter == 1 %}
                                             <div class="tab-pane active" id="tab{{ forloop.counter }}-{{player2team.id}}">
                                           {% else %}
