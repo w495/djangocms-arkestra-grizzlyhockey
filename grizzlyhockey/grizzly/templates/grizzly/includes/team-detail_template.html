@@ -186,7 +186,6 @@
                                     <!-- Tab panes -->
                                     <div class="tab-content">
                                         {% for stat in player2team.stats.all|order_by:"-season__start_datetime" %}
-                                          <p>{{player2team.id}}</p>
                                           {% if forloop.counter == 1 %}
                                             <div class="tab-pane active" id="tab{{ forloop.counter }}-{{player2team.id}}">
                                           {% else %}
