@@ -114,6 +114,18 @@ class GameMatchGoal (AbsObj):
         verbose_name = u"игровая ситуация"
     )
     
+    #  alter table grizzly_gamematchgoal add is_power_play bool default 0;
+    is_power_play = models.BooleanField(
+        default=False,
+        verbose_name = u'в большинстве'
+    )
+    
+    #  alter table grizzly_gamematchgoal add is_short_handed bool default 0;
+    is_short_handed = models.BooleanField(
+        default=False,
+        verbose_name = u'в меньшинстве'
+    )
+    
     def resave_goalkeeper(self, *args, **kwargs):
         if self.goal_keeper:
             #print self.goal_keeper.first_name
