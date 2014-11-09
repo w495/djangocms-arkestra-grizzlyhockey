@@ -6,13 +6,13 @@
 
 <ul class="media-list">
     {% for newsarticle in newsarticles %}
-        <li class="media">
+        <li class="media row">
             {% thumbnail newsarticle.image.file 128x128 subject_location=newsarticle.image.subject_location crop as image %}
 
             {% url news slug=newsarticle.slug as thisurl %}
 
 
-
+            
             <div class="pull-left" href="#">
                 <div>
                     {% if image %}
@@ -43,7 +43,6 @@
 
 
             </div>
-
 <!--
 
 

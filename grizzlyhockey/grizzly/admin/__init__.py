@@ -292,6 +292,14 @@ class GameMatchGoalAdminInline(AbsObjTabularInline):
         'trans_players': {
             'fields': ('game_number', 'second_name', 'first_name', 'patronymic',),
             'format': u"%s, %s %s %s"
+        },
+        'rink_players_a': {
+            'fields': ('game_number', 'second_name', 'first_name', 'patronymic',),
+            'format': u"%s, %s %s %s"
+        },
+        'rink_players_b': {
+            'fields': ('game_number', 'second_name', 'first_name', 'patronymic',),
+            'format': u"%s, %s %s %s"
         }
     }
 
@@ -315,7 +323,22 @@ class GameMatchGoalAdminInline(AbsObjTabularInline):
                     teams__in = (request._obj_.team_a, request._obj_.team_b)
                 )
         return field
-
+    
+    def formfield_for_manytomany(self, db_field, request, **kwargs):
+        field = super(GameMatchGoalAdminInline, self).formfield_for_manytomany(
+            db_field,
+            request,
+            **kwargs
+        )
+        if request._obj_ and request._obj_.team_a :
+            if db_field.name == 'rink_players_a':
+                pids = [p.id for p in request._obj_.team_a.player2team_set.all()]
+                field.queryset = field.queryset.filter(player2team__in = pids)
+        if request._obj_ and request._obj_.team_b :
+            if db_field.name == 'rink_players_b':
+                pids = [p.id for p in request._obj_.team_b.player2team_set.all()]
+                field.queryset = field.queryset.filter(player2team__in = pids)
+        return field
 
 
 

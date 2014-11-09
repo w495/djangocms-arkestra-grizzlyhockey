@@ -106,7 +106,29 @@ class GameMatchGoal (AbsObj):
         verbose_name=u"ассистент 2",
         related_name="gamematchgoal_assistant_2"
     )
-
+    
+    ##
+    ## Игроки команды А, находившиеся на площадке
+    ##
+    rink_players_a = models.ManyToManyField(
+        'Player',
+        blank=True,
+        null=True,
+        verbose_name=u"игроки команды A на площадке",
+        related_name="gamematchgoal_rink_players_a"
+    )
+    
+    ##
+    ## Игроки команды Б, находившиеся на площадке
+    ##
+    rink_players_b = models.ManyToManyField(
+        'Player',
+        blank=True,
+        null=True,
+        verbose_name=u"игроки команды B на площадке",
+        related_name="gamematchgoal_rink_players_b"
+    )
+    
     game_situation = models.CharField(
         blank = True,
         null = True,
@@ -117,13 +139,19 @@ class GameMatchGoal (AbsObj):
     #  alter table grizzly_gamematchgoal add is_power_play bool default 0;
     is_power_play = models.BooleanField(
         default=False,
-        verbose_name = u'в большинстве'
+        verbose_name = u'гол в большинстве'
     )
     
     #  alter table grizzly_gamematchgoal add is_short_handed bool default 0;
     is_short_handed = models.BooleanField(
         default=False,
-        verbose_name = u'в меньшинстве'
+        verbose_name = u'гол в меньшинстве'
+    )
+    
+    #  alter table grizzly_gamematchgoal add is_win_goal bool default 0;
+    is_win_goal = models.BooleanField(
+        default=False,
+        verbose_name = u'победный гол'
     )
     
     def resave_goalkeeper(self, *args, **kwargs):
