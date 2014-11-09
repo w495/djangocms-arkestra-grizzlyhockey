@@ -248,7 +248,17 @@
                                                 {{stat.nfines_minutes}}
                                             </dd>
                                             {% endif %}
+                                            <dt class="text-muted">
+                                                Пропущено:&nbsp;
+                                            </dt>
                                             <dd>
+                                                {{stat.nmisses}}
+                                            </dd>
+                                            <dt class="text-muted">
+                                                Фактор надежности:&nbsp;
+                                            </dt>
+                                            <dd>
+                                              {{stat.safety_factor }}
                                             </dd>
                                         </dl>
                                     </div>

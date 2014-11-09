@@ -58,7 +58,6 @@ class GameSeason (AbsGameObj):
                     stat.save()
                     player2stat = Player2Stat(player2team=player, playerstat=stat)
                     player2stat.save()
-                team.resave()
         
         for tour in self.playoff.all():
             for division in tour.gamedivisions.all():
@@ -70,19 +69,13 @@ class GameSeason (AbsGameObj):
                     
                     team2stat = Team2Stat(team=team, teamstat=teamstat)
                     team2stat.save()
-                print team.name
                 for player in team.player2team_set.all():
-                    print player.player.second_name + " " + player.player.first_name
                     if len(Player2Stat.objects.filter(player2team=player, playerstat__season=self)) != 0:
-                        print "Exist"
-                        print player.id
-                        print player.stats
                         continue
                     stat = PlayerStat(season=self)
                     stat.save()
                     player2stat = Player2Stat(player2team=player, playerstat=stat)
                     player2stat.save()
-                team.resave()
     class Meta:
         ordering = ('ctime',)
         app_label = "grizzly"
@@ -314,22 +307,6 @@ class Team(AbsObj):
         verbose_name = u"статистика",
         related_name='team_stat_set'
     )
-
-    def get_last_season(self):
-        seasons = GameSeason.objects.filter().order_by('-start_datetime')
-        if len(seasons) > 0:
-            return seasons[0]
-        return None
-    
-    def get_division_query(self):
-        season = self.get_last_season()
-        if season == None:
-            return None
-        divisions = self.gamedivisions.filter(gameseasons = season)
-        q = Q()
-        for division in divisions:
-            q |= Q(gametournamentregular__gamedivisions=division)
-        return q
 
     def get_nwins(self):
         wa = self.gamematch_a.filter(Q(score_a__gt = models.F('score_b')) & self.query_set).distinct().count()
@@ -639,6 +616,14 @@ class PlayerStat(AbsObj):
         default=0
     )
     
+    # alter table grizzly_playerstat add rating double precision default 0.0;
+    #rating = models.FloatField(
+        #verbose_name=u"Рейтинг",
+        #blank=True,
+        #null=True,
+        #default=0.0
+    #)
+    
     class Meta:
         app_label = "grizzly"
         verbose_name = "статистика"
@@ -783,23 +768,6 @@ class Player2Team(AbsObj):
         through='Player2Stat',
         verbose_name = u"статистика"
     )
-    
-    def get_last_season(self):
-        #seasons = GameSeason.objects.filter().order_by('-start_datetime')
-        #if len(seasons) > 0:
-        #    return seasons[0]
-        return None
-    
-    def get_division_query(self):
-        season = self.get_last_season()
-        if season == None:
-            return None
-        divisions = season.gamedivisions.all()
-        q = Q()
-        for division in divisions:
-            q |= Q(gametournamentregular__gamedivisions=division)
-            q |= Q(gametournamentplayoff__gamedivisions=division)
-        return q
 
     def get_ngames(self):
         if (self.player):
@@ -864,18 +832,12 @@ class Player2Team(AbsObj):
     
     def get_safety_factor(self, playerstat, season):
         teamstat = Team2Stat.objects.filter(team=self.team, teamstat__season = season)
-        print "Hahah 1"
         if len(teamstat) == 0:
             return None
         teamstat = teamstat[0]
-        print "Hahah 2"
         if(not playerstat.goalminutes or teamstat.teamstat.teamstat_all.ngames == 0):
             return None
-        print "Hahah 3"
         mins = teamstat.teamstat.teamstat_all.ngames * 60
-        print 1.0 * playerstat.goalminutes / mins < 1.0 / 3
-        print 1.0 * playerstat.goalminutes / mins
-        print mins
         if(1.0 * playerstat.goalminutes / mins < 1.0 / 3):
             return None
 
@@ -887,6 +849,24 @@ class Player2Team(AbsObj):
         ngames += tournament.gamematch_set.filter(Q(team_b = self.team) & Q(players_b__id = self.player.id) ).distinct().count()
         return ngames
     
+    def get_nwingames(self, tournament):
+        ngames = 0
+        ngames += tournament.gamematch_set.filter(Q(team_a = self.team) & Q(players_a__id = self.player.id) & Q(score_a__gt = models.F('score_b') )).distinct().count()
+        ngames += tournament.gamematch_set.filter(Q(team_b = self.team) & Q(players_b__id = self.player.id) & Q(score_b__gt = models.F('score_a') )).distinct().count()
+        return ngames
+    
+    def get_nlosegames(self, tournament):
+        ngames = 0
+        ngames += tournament.gamematch_set.filter(Q(team_a = self.team) & Q(players_a__id = self.player.id) & Q(score_b__gt = models.F('score_a') )).distinct().count()
+        ngames += tournament.gamematch_set.filter(Q(team_b = self.team) & Q(players_b__id = self.player.id) & Q(score_a__gt = models.F('score_b'))).distinct().count()
+        return ngames
+    
+    def get_ndrawsgames(self, tournament):
+        ngames = 0
+        ngames += tournament.gamematch_set.filter(Q(team_a = self.team) & Q(players_a__id = self.player.id) & Q(score_b = models.F('score_a') )).distinct().count()
+        ngames += tournament.gamematch_set.filter(Q(team_b = self.team) & Q(players_b__id = self.player.id) & Q(score_a = models.F('score_b'))).distinct().count()
+        return ngames
+    
     def get_matches(self, tournament):
         games = list()
         games += tournament.gamematch_set.filter(Q(team_a = self.team)).distinct()
@@ -895,6 +875,7 @@ class Player2Team(AbsObj):
         return games
     
     def pre_save_action(self):
+        self.player.update_rating()
         try:
             if self.stats is None:
                 return
@@ -910,14 +891,28 @@ class Player2Team(AbsObj):
             ntrans = 0
             goalminutes = 0
             ngoals = 0
+            nwinsgames = 0
+            nlosegames = 0
+            ndrawsgames = 0
+            fines_map = dict()
             for regular in season.regulars.all():
                 ngames += self.get_ngames(regular)
                 
                 games = self.get_matches(regular)
                 
+                nwinsgames = self.get_nwingames(regular)
+                nlosegames = self.get_nlosegames(regular)
+                ndrawsgames = self.get_ndrawsgames(regular)
+                
                 nmiss += self.player.gamematchgoal_miss.filter(gamematch__in = games).count()
                 nfines += self.player.gamematchfine_set.filter(team = self.team, gamematch__in = games).count()
-                fines += sum(fine.minutes for fine in self.player.gamematchfine_set.filter(team = self.team, gamematch__in = games))
+                #fines += sum(fine.minutes for fine in self.player.gamematchfine_set.filter(team = self.team, gamematch__in = games))
+                for fine in self.player.gamematchfine_set.filter(team = self.team, gamematch__in = games):
+                    fines += fine.minutes
+                    if fines_map.has_key(fine.minutes):
+                        fines_map[fine.minutes] += 1
+                    else:
+                        fines_map[fine.minutes] = 1
                 
                 assistant_count = len(GameMatchGoal.objects.filter(Q(assistant_1 = self.player) | Q(assistant_2 = self.player), gamematch__in = games).distinct())
                 # there isn't two same assistant
@@ -936,10 +931,21 @@ class Player2Team(AbsObj):
                 
                 games = self.get_matches(regular)
                 
+                nwinsgames += self.get_nwingames(regular)
+                nlosegames += self.get_nlosegames(regular)
+                ndrawsgames += self.get_ndrawsgames(regular)
+                
                 nmiss += self.player.gamematchgoal_miss.filter(gamematch__in = games).count()
                 
                 nfines += self.player.gamematchfine_set.filter(team = self.team, gamematch__in = games).count()
-                fines += sum(fine.minutes for fine in self.player.gamematchfine_set.filter(team = self.team, gamematch__in = games))
+                
+                for fine in self.player.gamematchfine_set.filter(team = self.team, gamematch__in = games):
+                    fines += fine.minutes
+                    if fines_map.has_key(fine.minutes):
+                        fines_map[fine.minutes] += 1
+                    else:
+                        fines_map[fine.minutes] = 1
+                #fines += sum(fine.minutes for fine in self.player.gamematchfine_set.filter(team = self.team, gamematch__in = games))
                 
                 assistant_count = len(GameMatchGoal.objects.filter(Q(assistant_1 = self.player) | Q(assistant_2 = self.player), gamematch__in = games).distinct())
                 # there isn't two same assistant
@@ -960,8 +966,7 @@ class Player2Team(AbsObj):
             stat.ntrans = ntrans
             stat.goalminutes = goalminutes
             stat.ngoalsntrans = stat.ngoals + stat.ntrans
-            print self.player.second_name + " " + self.player.first_name
-            stat.safety_factor = self.get_safety_factor(stat, season)
+            stat.safety_factor = self.get_safety_factor(stat, season) 
             stat.save()
         pass
     

@@ -155,6 +155,8 @@ class GameMatchGoal (AbsObj):
     )
     
     def resave_goalkeeper(self, *args, **kwargs):
+        for gtime in self.gamematch.gamematchgtime_set.all():
+            gtime.save()
         if self.goal_keeper:
             #print self.goal_keeper.first_name
             #print self.goal_keeper.second_name
@@ -164,16 +166,16 @@ class GameMatchGoal (AbsObj):
                 gtimes = [
                     gtime
                     for gtime in self.gamematch.gamematchgtime_set.filter(
-                        start_minute__lt = self.minute,
-                        stop_minute__gte = self.minute,
+                        start_minute__lt = self.minute+1,
+                        stop_minute__gte = self.minute+1,
                     ).exclude(team = self.team)
                 ]
             else:
                 gtimes = [
                     gtime
                     for gtime in self.gamematch.gamematchgtime_set.filter(
-                        start_minute__lt = self.minute,
-                        stop_minute__gte = self.minute,
+                        start_minute__lt = self.minute+1,
+                        stop_minute__gte = self.minute+1,
                     )
                 ]
             if gtimes:
@@ -182,7 +184,6 @@ class GameMatchGoal (AbsObj):
                 self.save()
     
     def pre_save_action(self, *args, **kwargs):
-
         if(self.minute):
             if(self.team):
                 gtimes = [
@@ -205,8 +206,8 @@ class GameMatchGoal (AbsObj):
 
 
     def async_save_action(self, *args, **kwargs):
-        if(self.team):
-            self.team.async_resave()
+        #if(self.team):
+        #    self.team.async_resave()
 
         if(self.goal_player):
             self.goal_player.resave_player2team_set()

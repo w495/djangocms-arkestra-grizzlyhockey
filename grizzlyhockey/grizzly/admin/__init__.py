@@ -216,7 +216,7 @@ class TrainingAdmin(AbsObjAdmin):
     )
 
 
-class GameSeasonAdmin(AbsObjAdmin):
+class GameSeasonAdmin(AbsButtonableModelAdmin, AbsObjAdmin):
     list_display = (
         'id',
         'name',
@@ -232,6 +232,17 @@ class GameSeasonAdmin(AbsObjAdmin):
     filter_horizontal = (
         'gamedivisions',
     )
+    
+    buttons = [
+        ('refresh_stat', "Пересчитать статистику")
+    ]
+    
+    def refresh_stat(self, request, season):
+        for tour in season.regulars.all():
+            [ team.resave() for team in tour.teams.all() ]
+        for tour in season.playoff.all():
+            [ team.resave() for team in tour.teams.all() ]
+        pass
 
 
 class GameDivisionAdmin(AbsObjAdmin):
@@ -431,7 +442,7 @@ class GameMatchPenaltyAdminInline(AbsObjTabularInline):
         return field
 
 
-class GameMatchAdmin(AbsObjAdmin):
+class GameMatchAdmin(AbsButtonableModelAdmin, AbsObjAdmin):
     list_display = (
         'id',
         'name',
@@ -462,7 +473,16 @@ class GameMatchAdmin(AbsObjAdmin):
         GameMatchPenaltyAdminInline
     ]
 
-
+    buttons = [
+        ('refresh_goalkeeper_stat', "Пересчитать статистику вратарей")
+    ]
+    
+    def refresh_goalkeeper_stat(self, request, match):
+        print "\n\n\n\n ==================== \n\n\n\n"
+        print dir(match)
+        [ goal.resave_goalkeeper() for goal in match.gamematchgoal_set.all() ]
+        pass
+    
     def get_form(self, request, obj=None, **kwargs):
         # just save obj reference for future processing in Inline
         request._obj_ = obj

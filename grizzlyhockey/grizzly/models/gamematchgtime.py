@@ -58,6 +58,7 @@ class GameMatchGTime (AbsObj):
         )]
 
         if(res):
+            print res
             return res[0]
 
         obj = lambda:None
