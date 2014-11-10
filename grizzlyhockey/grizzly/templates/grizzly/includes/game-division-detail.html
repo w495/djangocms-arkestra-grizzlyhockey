@@ -249,6 +249,7 @@
                         <th class="center visible-lg" >Голы и Передачи</th>
 
                         <th class="center">Амплуа</th>
+                        <th class="center">Рейтинг</th>
                         <th class="center" >Команда</th>
                     </tr>
                 </thead>
@@ -302,6 +303,10 @@
 
                             <td title="Амплуа" class="players-table-detail-text" >
                                 {{p2t.role}}
+                            </td>
+                            
+                            <td title="Рейтинг" class="players-table-detail-number" >
+                                {{player.rating}}
                             </td>
 
                             <td title="Команда" class="players-table-detail-text">
@@ -359,6 +364,7 @@
                         <th class="center visible-lg" >Голы и Передачи</th>
 
                         <th class="center">Амплуа</th>
+                        <th class="center">Рейтинг</th>
                         <th class="center" >Команда</th>
                     </tr>
                 </thead>
@@ -413,7 +419,11 @@
                             <td title="Амплуа" class="players-table-detail-text" >
                                 {{p2t.role}}
                             </td>
-
+                            
+                            <td title="Рейтинг" class="players-table-detail-number" >
+                                {{player.rating}}
+                            </td>
+                            
                             <td title="Команда" class="players-table-detail-text">
                                 {% with team=p2t.team %}
                                     <a href="{% url team-detail pk=team.id %}">
@@ -469,6 +479,7 @@
                         <th class="center visible-lg" >Голы и Передачи</th>
 
                         <th class="center">Амплуа</th>
+                        <th class="center">Рейтинг</th>
                         <th class="center" >Команда</th>
                     </tr>
                 </thead>
@@ -523,7 +534,11 @@
                             <td title="Амплуа" class="players-table-detail-text" >
                                 {{p2t.role}}
                             </td>
-
+                            
+                            <td title="Рейтинг" class="players-table-detail-number" >
+                                {{player.rating}}
+                            </td>
+                            
                             <td title="Команда" class="players-table-detail-text">
                                 {% with team=p2t.team %}
                                     <a href="{% url team-detail pk=team.id %}">
@@ -593,6 +608,7 @@
 
                         <th class="center visible-lg" >Удаления</th>
                         <th class="center">Амплуа</th>
+                        <th class="center">Рейтинг</th>
                         <th class="center" >Команда</th>
                     </tr>
                 </thead>
@@ -666,7 +682,11 @@
                             </td>
 
                             <td title="Амплуа" class="players-table-detail-text" >
-                                {{p2t_stat.role}}
+                                {{p2t.role}}
+                            </td>
+                            
+                            <td title="Рейтинг" class="players-table-detail-number" >
+                                {{player.rating}}
                             </td>
 
                             <td title="Команда" class="players-table-detail-text">

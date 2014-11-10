@@ -76,7 +76,7 @@ class Player(AbsPers):
         verbose_name=u"игроки, сделавшие результативную передачу"
     )
     
-    # alter table grizzly_playerstat add rating double precision default 0.0;
+    # alter table grizzly_player add rating double precision default 0.0;
     rating = models.FloatField(
         verbose_name=u"Рейтинг",
         blank=True,
@@ -211,7 +211,6 @@ class Player(AbsPers):
                 goal_games += 1
         
         nwingoal = self.get_win_goals()
-        
         self.rating = 0.5 * ngoals + 0.3 * ntrans + 0.25 * ngoals_power_play + 0.15 * ntrans_power_play + \
                       0.1 * nwingoal + 0.75 * ngoals_short_handed + 0.4 * ntrans_short_handed + 0.5 * nwinsgames + \
                       + 0.25 * ndrawsgames - 0.3 * nlosegames + \
