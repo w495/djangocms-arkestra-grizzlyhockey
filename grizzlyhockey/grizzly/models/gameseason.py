@@ -307,6 +307,14 @@ class Team(AbsObj):
         verbose_name = u"статистика",
         related_name='team_stat_set'
     )
+    
+    # alter table grizzly_team add team_rating double precision default 0.0;
+    team_rating = models.FloatField(
+        verbose_name=u"Рейтинг",
+        blank=True,
+        null=True,
+        default=0.0
+    )
 
     def get_nwins(self):
         wa = self.gamematch_a.filter(Q(score_a__gt = models.F('score_b')) & self.query_set).distinct().count()
@@ -362,7 +370,22 @@ class Team(AbsObj):
     def get_disqualified_players(self):
         return self.player2team_set.filter(is_disqualified=True)
     
+    def get_team_rating(self):
+        rating = 0.0
+        players_with_rating = self.player2team_set.filter( ~Q(player__ngames = 0) & ~Q(role = "Вратарь") )
+        players_count = players_with_rating.count()
+        if players_count == 0:
+            return rating
+        sum_rating = sum( [ p2t.player.rating for p2t in players_with_rating ] )
+        rating += sum_rating / float(players_count)
+        
+        #print "\n\n\n\n\n\n\n TEAM RATING \n\n\n\n\n"
+        #print self.name
+        #print rating, sum_rating, players_count
+        return rating
+    
     def pre_save_action(self):
+        self.team_rating = self.get_team_rating()
         try:
             if self.stats is None:
                 return
@@ -484,6 +507,7 @@ class Team(AbsObj):
 
     def async_save_action(self):
         [p2t.async_resave() for p2t in self.player2team_set.all()]
+        self.team_rating = self.get_team_rating()
 
 
     class Meta:

@@ -88,6 +88,14 @@ class Team(AbsObj):
         blank=True,
         null=True,
     )
+    
+    # alter table grizzly_team add team_rating double precision default 0.0;
+    team_rating = models.FloatField(
+        verbose_name=u"Рейтинг",
+        blank=True,
+        null=True,
+        default=0.0
+    )
 
     def get_last_season(self):
         seasons = GameSeason.objects.filter().order_by('-start_datetime')
@@ -152,22 +160,24 @@ class Team(AbsObj):
     def get_npoints(self):
         res = self.nwins * 2 + self.ndraws
         return res
-
+    
+    def get_team_rating(self):
+        rating = 0.0
+        players_with_rating = self.players.filter(player.ngames != 0)
+        rating += sum( [ player.rating in players_with_rating ] ) / float(players_with_rating.count())
+        #print "\n\n\n\n\n\n\n TEAM RATING \n\n\n\n\n"
+        #print rating
+        return rating
+    
     def pre_save_action(self):
-        #self.query_set = self.get_division_query()
-        #self.nwins  = self.get_nwins()
-        #self.nloses = self.get_nloses()
-        #self.ndraws = self.get_ndraws()
-        #self.ngames = self.get_ngames()
-        #self.npoints = self.get_npoints()
-        #self.nmisses = self.get_nmisses()
-        #self.ngoals = self.get_ngoals()
         [ division.resave() for division in self.gamedivisions.all() ]
         [ p2t.resave() for p2t in self.player2team_set.all() ]
+        self.team_rating = self.get_team_rating()
 
     def async_save_action(self):
         [ division.resave() for division in self.gamedivisions.all() ]
-        [p2t.async_resave() for p2t in self.player2team_set.all()]
+        [ p2t.async_resave() for p2t in self.player2team_set.all() ]
+        self.team_rating = self.get_team_rating()
 
 
     class Meta:

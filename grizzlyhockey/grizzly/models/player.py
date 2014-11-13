@@ -84,11 +84,24 @@ class Player(AbsPers):
         default=0.0
     )
     
+    # alter table grizzly_player add ngames int(11) default 0;
+    ngames = models.IntegerField(
+        verbose_name=u"Игры",
+        blank=True,
+        null=True,
+    )
+    
     def post_save(self):
         self.update_rating()
     
     def resave_player2team_set(self):
         [p2t.async_resave() for p2t in self.player2team_set.all()]
+    
+    def get_ngames(self):
+        ngames = 0
+        ngames += self.gamematch_a.all().distinct().count()
+        ngames += self.gamematch_b.all().distinct().count()
+        return ngames
     
     def get_nwingames(self):
         ngames = 0
@@ -169,6 +182,10 @@ class Player(AbsPers):
         lose_games_power_play = 0
         lose_games_short_handed = 0
         for goal in self.gamematchgoal_rink_players_a.all():
+            # если игрок забил гол или был одним из ассистентов, то не будем рассматривать этот гол, так 
+            # этот игрок уже получил очки
+            if goal.goal_player == self or goal.assistant_1 == self or goal.assistant_2 == self:
+                continue
             team = goal.team
             team_winner = False
             team_loser = False
@@ -190,6 +207,10 @@ class Player(AbsPers):
                 goal_games += 1
         
         for goal in self.gamematchgoal_rink_players_b.all():
+            # если игрок забил гол или был одним из ассистентов, то не будем рассматривать этот гол, так 
+            # этот игрок уже получил очки
+            if goal.goal_player == self or goal.assistant_1 == self or goal.assistant_2 == self:
+                continue
             team = goal.team
             team_winner = False
             team_loser = False
@@ -211,6 +232,7 @@ class Player(AbsPers):
                 goal_games += 1
         
         nwingoal = self.get_win_goals()
+        self.ngames = self.get_ngames()
         self.rating = 0.5 * ngoals + 0.3 * ntrans + 0.25 * ngoals_power_play + 0.15 * ntrans_power_play + \
                       0.1 * nwingoal + 0.75 * ngoals_short_handed + 0.4 * ntrans_short_handed + 0.5 * nwinsgames + \
                       + 0.25 * ndrawsgames - 0.3 * nlosegames + \

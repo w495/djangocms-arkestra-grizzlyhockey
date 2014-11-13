@@ -478,8 +478,6 @@ class GameMatchAdmin(AbsButtonableModelAdmin, AbsObjAdmin):
     ]
     
     def refresh_goalkeeper_stat(self, request, match):
-        print "\n\n\n\n ==================== \n\n\n\n"
-        print dir(match)
         [ goal.resave_goalkeeper() for goal in match.gamematchgoal_set.all() ]
         pass
     

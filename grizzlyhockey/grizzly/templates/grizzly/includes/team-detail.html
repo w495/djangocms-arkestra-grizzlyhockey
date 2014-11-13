@@ -64,6 +64,9 @@
                 </div>
             {% endblock team_description %}
         </div>
+        <span title="Рейтинг команды">
+            Рейтинг команды: {{team.team_rating}}
+        </span>
     </div>
     
     {% include "grizzly/includes/team-detail_template.html" with team=team role="Вратарь" role_header="Вратари" %}
