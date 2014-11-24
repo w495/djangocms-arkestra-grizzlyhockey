@@ -121,14 +121,8 @@ class Player(AbsPers):
         ngames += self.gamematch_b.filter( Q(score_b = models.F('score_a')) ).distinct().count()
         return ngames
     
-    def get_ngoals(self, is_power_play, is_short_handed):
-        return len(self.gamematchgoal_goal.filter(is_power_play = is_power_play, is_short_handed = is_short_handed))
-    
     def get_win_goals(self):
         return len(self.gamematchgoal_goal.filter(is_win_goal = 1))
-    
-    def get_ntrans(self, is_power_play, is_short_handed):
-        return len(self.gamematchgoal_assistant_1.filter(is_power_play = is_power_play, is_short_handed = is_short_handed)) + len(self.gamematchgoal_assistant_2.filter(is_power_play = is_power_play, is_short_handed = is_short_handed))
     
     def update_rating(self):
         """(!) Игрок забил гол    0,5
@@ -155,6 +149,12 @@ class Player(AbsPers):
         
         fines_map = dict()
         fines = 0
+        ngoals = 0
+        ngoals_power_play = 0
+        ngoals_short_handed = 0
+        ntrans = 0
+        ntrans_power_play = 0
+        ntrans_short_handed = 0
         for fine in self.gamematchfine_set.all():
             fines += fine.minutes
             if fines_map.has_key(fine.minutes):
@@ -162,14 +162,93 @@ class Player(AbsPers):
             else:
                 fines_map[fine.minutes] = 1
         
-        ntrans = self.get_ntrans(0, 0)
-        ngoals = self.get_ngoals(0, 0)
+        rink_players_a = self.gamematchgoal_rink_players_a.all()
+        rink_players_b = self.gamematchgoal_rink_players_b.all()
         
-        ntrans_power_play = self.get_ntrans(1, 0)
-        ngoals_power_play = self.get_ngoals(1, 0)
+        # пробегаемся по всем голам
+        for goal in self.gamematchgoal_goal.all():
+            team = goal.team
+            # игрок находится в команде А
+            is_team_a = self in goal.rink_players_a.all()
+            # игрок находится в команде Б
+            is_team_b = self in goal.rink_players_b.all()
+            
+            count_players_a = goal.rink_players_a.count()
+            count_players_b = goal.rink_players_b.count()
+            # если игрок находится в команде А
+            if is_team_a:
+                # гол в большинстве
+                if count_players_a > count_players_b:
+                    ngoals_power_play += 1
+                # гол в меньшинстве
+                elif count_players_a < count_players_b:
+                    ngoals_short_handed += 1
+                # равные составы
+                else:
+                    ngoals += 1
+            # если игрок находится в команде Б
+            elif is_team_b:
+                # гол в большинстве
+                if count_players_b > count_players_a:
+                    ngoals_power_play += 1
+                # гол в меньшинстве
+                elif count_players_b < count_players_a:
+                    ngoals_short_handed += 1
+                # равные составы
+                else:
+                    ngoals += 1
         
-        ntrans_short_handed = self.get_ntrans(0, 1)
-        ngoals_short_handed = self.get_ngoals(0, 1)
+        for goal in self.gamematchgoal_assistant_1.all():
+            team = goal.team
+            
+            # игрок находится в команде А
+            is_team_a = self in goal.rink_players_a.all()
+            # игрок находится в команде Б
+            is_team_b = self in goal.rink_players_b.all()
+            
+            count_players_a = goal.rink_players_a.count()
+            count_players_b = goal.rink_players_b.count()
+            
+            if is_team_a:
+                if count_players_a > count_players_b:
+                    ntrans_power_play += 1
+                elif count_players_a < count_players_b:
+                    ntrans_short_handed += 1
+                else:
+                    ntrans += 1
+            elif is_team_b:
+                if count_players_b > count_players_a:
+                    ntrans_power_play += 1
+                elif count_players_b < count_players_a:
+                    ntrans_short_handed += 1
+                else:
+                    ntrans += 1
+        
+        for goal in self.gamematchgoal_assistant_2.all():
+            team = goal.team
+            
+            # игрок находится в команде А
+            is_team_a = self in goal.rink_players_a.all()
+            # игрок находится в команде Б
+            is_team_b = self in goal.rink_players_b.all()
+            
+            count_players_a = goal.rink_players_a.count()
+            count_players_b = goal.rink_players_b.count()
+            
+            if is_team_a:
+                if count_players_a > count_players_b:
+                    ntrans_power_play += 1
+                elif count_players_a < count_players_b:
+                    ntrans_short_handed += 1
+                else:
+                    ntrans += 1
+            elif is_team_b:
+                if count_players_b > count_players_a:
+                    ntrans_power_play += 1
+                elif count_players_b < count_players_a:
+                    ntrans_short_handed += 1
+                else:
+                    ntrans += 1
         
         nwinsgames = self.get_nwingames()
         nlosegames = self.get_nlosegames()

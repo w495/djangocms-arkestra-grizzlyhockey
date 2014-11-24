@@ -376,7 +376,7 @@ class Team(AbsObj):
         players_count = players_with_rating.count()
         if players_count == 0:
             return rating
-        sum_rating = sum( [ p2t.player.rating for p2t in players_with_rating ] )
+        sum_rating = sum( [ p2t.player.rating / p2t.player.ngames for p2t in players_with_rating ] )
         rating += sum_rating / float(players_count)
         
         #print "\n\n\n\n\n\n\n TEAM RATING \n\n\n\n\n"
