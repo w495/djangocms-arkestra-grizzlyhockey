@@ -180,7 +180,7 @@ class GameMatchGoal (AbsObj):
                 ]
             if gtimes:
                 self.goal_keeper = gtimes[0].player
-                self.goal_keeper.resave_player2team_set()
+                #self.goal_keeper.resave_player2team_set()
                 self.save()
     
     def pre_save_action(self, *args, **kwargs):

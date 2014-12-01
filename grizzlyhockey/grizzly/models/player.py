@@ -4,6 +4,7 @@ from django.db import models
 from abspers import AbsPers
 from gamematchgoal import GameMatchGoal
 from django.db.models import Q
+import timeit
 
 class Player(AbsPers):
 
@@ -97,32 +98,38 @@ class Player(AbsPers):
     def resave_player2team_set(self):
         [p2t.async_resave() for p2t in self.player2team_set.all()]
     
-    def get_ngames(self):
-        ngames = 0
-        ngames += self.gamematch_a.all().distinct().count()
-        ngames += self.gamematch_b.all().distinct().count()
-        return ngames
+    def get_gamematch_a_query_set(self):
+        return self.gamematch_a.all().distinct()
     
-    def get_nwingames(self):
-        ngames = 0
-        ngames += self.gamematch_a.filter( Q(score_a__gt = models.F('score_b')) ).distinct().count()
-        ngames += self.gamematch_b.filter( Q(score_b__gt = models.F('score_a')) ).distinct().count()
-        return ngames
-    
-    def get_nlosegames(self):
-        ngames = 0
-        ngames += self.gamematch_a.filter( Q(score_b__gt = models.F('score_a')) ).distinct().count()
-        ngames += self.gamematch_b.filter( Q(score_a__gt = models.F('score_b')) ).distinct().count()
-        return ngames
-    
-    def get_ndrawsgames(self):
-        ngames = 0
-        ngames += self.gamematch_a.filter( Q(score_a = models.F('score_b')) ).distinct().count()
-        ngames += self.gamematch_b.filter( Q(score_b = models.F('score_a')) ).distinct().count()
-        return ngames
+    def get_gamematch_b_query_set(self):
+        return self.gamematch_b.all().distinct()
     
     def get_win_goals(self):
-        return len(self.gamematchgoal_goal.filter(is_win_goal = 1))
+        return self.gamematchgoal_goal.filter(is_win_goal = 1).count()
+    
+    def my_count(self, gamematch_a_query_set, gamematch_b_query_set):
+        nwinsgames = 0
+        nlosegames = 0
+        ndrawsgames = 0
+        ngames = 0
+        for game in gamematch_a_query_set.all():
+            ngames += 1
+            
+            if game.score_a > game.score_b:
+                nwinsgames += 1
+            elif game.score_a < game.score_b:
+                nlosegames += 1
+            elif game.score_a == game.score_b:
+                ndrawsgames += 1
+        for game in gamematch_b_query_set.all():
+            ngames += 1
+            if game.score_a < game.score_b:
+                nwinsgames += 1
+            elif game.score_a > game.score_b:
+                nlosegames += 1
+            elif game.score_a == game.score_b:
+                ndrawsgames += 1
+        return nwinsgames, nlosegames, ndrawsgames, ngames
     
     def update_rating(self):
         """(!) Игрок забил гол    0,5
@@ -147,6 +154,7 @@ class Player(AbsPers):
            (!) Удаление  5+20  -0,35
            (!) Удаление 25 мин -0,4"""
         
+        start_time_2 = timeit.default_timer()
         fines_map = dict()
         fines = 0
         ngoals = 0
@@ -155,6 +163,7 @@ class Player(AbsPers):
         ntrans = 0
         ntrans_power_play = 0
         ntrans_short_handed = 0
+        start_time = timeit.default_timer()
         for fine in self.gamematchfine_set.all():
             fines += fine.minutes
             if fines_map.has_key(fine.minutes):
@@ -197,6 +206,7 @@ class Player(AbsPers):
                 # равные составы
                 else:
                     ngoals += 1
+        
         
         for goal in self.gamematchgoal_assistant_1.all():
             team = goal.team
@@ -250,16 +260,16 @@ class Player(AbsPers):
                 else:
                     ntrans += 1
         
-        nwinsgames = self.get_nwingames()
-        nlosegames = self.get_nlosegames()
-        ndrawsgames = self.get_ndrawsgames()
+        gamematch_a_query_set = self.get_gamematch_a_query_set()
+        gamematch_b_query_set = self.get_gamematch_b_query_set()
         
-        #goal_in_rink = len(self.gamematchgoal_rink_players_a.all()) + len(self.gamematchgoal_rink_players_b.all())
+        nwinsgames, nlosegames, ndrawsgames, ngames = self.my_count(gamematch_a_query_set, gamematch_b_query_set)
         
         goal_games = 0
         lose_games = 0
         lose_games_power_play = 0
         lose_games_short_handed = 0
+        
         for goal in self.gamematchgoal_rink_players_a.all():
             # если игрок забил гол или был одним из ассистентов, то не будем рассматривать этот гол, так 
             # этот игрок уже получил очки
@@ -311,7 +321,8 @@ class Player(AbsPers):
                 goal_games += 1
         
         nwingoal = self.get_win_goals()
-        self.ngames = self.get_ngames()
+        self.ngames = ngames
+        
         self.rating = 0.5 * ngoals + 0.3 * ntrans + 0.25 * ngoals_power_play + 0.15 * ntrans_power_play + \
                       0.1 * nwingoal + 0.75 * ngoals_short_handed + 0.4 * ntrans_short_handed + 0.5 * nwinsgames + \
                       + 0.25 * ndrawsgames - 0.3 * nlosegames + \

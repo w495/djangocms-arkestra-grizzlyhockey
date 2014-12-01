@@ -50,6 +50,8 @@ from abspersadmin import AbsPersAdmin
 
 from absobjadmin import AbsObjTabularInline
 
+import timeit
+
 class FinalTypeAdmin(AbsObjAdmin):
     pass
 
@@ -238,10 +240,19 @@ class GameSeasonAdmin(AbsButtonableModelAdmin, AbsObjAdmin):
     ]
     
     def refresh_stat(self, request, season):
+        start_time = timeit.default_timer()
+        team_list = list()
         for tour in season.regulars.all():
-            [ team.resave() for team in tour.teams.all() ]
+            for team in tour.teams.all():
+                if team not in team_list:
+                    team.resave()
+                    team_list.append(team)
+        total_time_a = timeit.default_timer() - start_time
         for tour in season.playoff.all():
-            [ team.resave() for team in tour.teams.all() ]
+            for team in tour.teams.all():
+                if team not in team_list:
+                    team.resave()
+                    team_list.append(team)
         pass
 
 

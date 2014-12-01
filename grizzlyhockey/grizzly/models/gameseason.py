@@ -12,6 +12,7 @@ from gamematchgtime import GameMatchGTime
 from gamematch import GameMatch
 from django.db.models import Q
 import time
+import timeit
 
 from django_cached_functions import cached_function
 
@@ -379,10 +380,43 @@ class Team(AbsObj):
         sum_rating = sum( [ p2t.player.rating / p2t.player.ngames for p2t in players_with_rating ] )
         rating += sum_rating / float(players_count)
         
-        #print "\n\n\n\n\n\n\n TEAM RATING \n\n\n\n\n"
-        #print self.name
-        #print rating, sum_rating, players_count
         return rating
+    
+    def get_wins_lose_draws(self, query_set_a, query_set_b):
+        nwins = 0
+        nloses = 0
+        ndraws = 0
+        wa = 0
+        wb = 0
+        la = 0
+        lb = 0
+        for game in query_set_a.all():
+            if not game.score_a or not game.score_b:
+                continue
+            
+            wa += game.score_a
+            la += game.score_b
+            
+            if game.score_a > game.score_b:
+                nwins += 1
+            elif game.score_a < game.score_b:
+                nloses += 1
+            elif game.score_a == game.score_b:
+                ndraws += 1
+        for game in query_set_b.all():
+            if not game.score_a or not game.score_b:
+                continue
+            
+            wb += game.score_b
+            lb += game.score_a
+            
+            if game.score_a < game.score_b:
+                nwins += 1
+            elif game.score_a > game.score_b:
+                nloses += 1
+            elif game.score_a == game.score_b:
+                ndraws += 1
+        return nwins, nloses, ndraws, wa, wb, la, lb
     
     def pre_save_action(self):
         self.team_rating = self.get_team_rating()
@@ -398,6 +432,7 @@ class Team(AbsObj):
             ndraws = 0
             ngoals = 0
             nmisses = 0
+            
             if stat is None:
                 continue
             regular_score = stat.teamstat_regular
@@ -409,29 +444,15 @@ class Team(AbsObj):
                 games = list()
                 games += [ game.id for game in regular.gamematch_set.filter(Q(team_a = self) | Q(team_b = self)).distinct() ]
                 
-                nwins += self.gamematch_a.filter(Q(score_a__gt = models.F('score_b')) & Q(id__in = games) ).distinct().count()
-                nwins += self.gamematch_b.filter(Q(score_b__gt = models.F('score_a')) & Q(id__in = games) ).distinct().count()
+                if len(games) == 0:
+                    continue
                 
-                nloses += self.gamematch_a.filter(Q(score_b__gt = models.F('score_a')) & Q(id__in = games) ).distinct().count()
-                nloses += self.gamematch_b.filter(Q(score_a__gt = models.F('score_b')) & Q(id__in = games) ).distinct().count()
+                query_set_a = self.gamematch_a.filter( Q(id__in = games) ).distinct()
+                query_set_b = self.gamematch_b.filter( Q(id__in = games) ).distinct()
                 
-                ndraws += self.gamematch_a.filter(Q(score_b = models.F('score_a')) & Q(id__in = games) ).distinct().count()
-                ndraws += self.gamematch_b.filter(Q(score_a = models.F('score_b')) & Q(id__in = games) ).distinct().count()
+                nwins, nloses, ndraws, wa, wb, la, lb = self.get_wins_lose_draws(query_set_a, query_set_b)
                 
-                wa =  sum( x.score_a for x in self.gamematch_a.filter(id__in = games).distinct().exclude(score_a__isnull=True))
-                wb =  sum( x.score_b for x in self.gamematch_b.filter(id__in = games).distinct().exclude(score_b__isnull=True))
-                if(not wa):
-                    wa = 0
-                if(not wb):
-                    wb = 0
-                ngoals += (wa + wb);
-                
-                la =  sum( x.score_b for x in self.gamematch_a.filter(id__in = games).exclude(score_b__isnull=True).distinct())
-                lb =  sum( x.score_a for x in self.gamematch_b.filter(id__in = games).exclude(score_a__isnull=True).distinct())
-                if(not la):
-                    la = 0
-                if(not lb):
-                    lb = 0
+                ngoals += (wa + wb)
                 nmisses += (la + lb)
             
             ngames = nwins + nloses + ndraws
@@ -454,34 +475,15 @@ class Team(AbsObj):
             for regular in season.playoff.all():
                 
                 games = list()
-                games += [ game.id for game in regular.gamematch_set.filter(Q(team_a = self)).distinct() ]
-                games += [ game.id for game in regular.gamematch_set.filter(Q(team_b = self)).distinct() ]
+                games += [ game.id for game in regular.gamematch_set.filter(Q(team_a = self) | Q(team_b = self)).distinct() ]
                 
-                nwins += self.gamematch_a.filter(Q(score_a__gt = models.F('score_b')) & Q(id__in = games) ).distinct().count()
-                nwins += self.gamematch_b.filter(Q(score_b__gt = models.F('score_a')) & Q(id__in = games) ).distinct().count()
+                query_set_a = self.gamematch_a.filter( Q(id__in = games) ).distinct()
+                query_set_b = self.gamematch_b.filter( Q(id__in = games) ).distinct()
                 
-                nloses += self.gamematch_a.filter(Q(score_b__gt = models.F('score_a')) & Q(id__in = games) ).distinct().count()
-                nloses += self.gamematch_b.filter(Q(score_a__gt = models.F('score_b')) & Q(id__in = games) ).distinct().count()
+                nwins, nloses, ndraws, wa, wb, la, lb = self.get_wins_lose_draws(query_set_a, query_set_b)
                 
-                ndraws += self.gamematch_a.filter(Q(score_b = models.F('score_a')) & Q(id__in = games) ).distinct().count()
-                ndraws += self.gamematch_b.filter(Q(score_a = models.F('score_b')) & Q(id__in = games) ).distinct().count()
-                
-                wa =  sum( x.score_a for x in self.gamematch_a.filter(id__in = games).distinct().exclude(score_a__isnull=True))
-                wb =  sum( x.score_b for x in self.gamematch_b.filter(id__in = games).distinct().exclude(score_b__isnull=True))
-                if(not wa):
-                    wa = 0
-                if(not wb):
-                    wb = 0
                 ngoals += (wa + wb)
-                
-                la =  sum( x.score_b for x in self.gamematch_a.filter(id__in = games).exclude(score_b__isnull=True).distinct())
-                lb =  sum( x.score_a for x in self.gamematch_b.filter(id__in = games).exclude(score_a__isnull=True).distinct())
-                if(not la):
-                    la = 0
-                if(not lb):
-                    lb = 0
                 nmisses += (la + lb)
-        
             
             ngames = nwins + nloses + ndraws
             npoints = nwins * 2 + ndraws
@@ -507,8 +509,6 @@ class Team(AbsObj):
 
     def async_save_action(self):
         [p2t.async_resave() for p2t in self.player2team_set.all()]
-        self.team_rating = self.get_team_rating()
-
 
     class Meta:
         ordering = [
@@ -866,29 +866,32 @@ class Player2Team(AbsObj):
             return None
 
         return (playerstat.nmisses * 6000 / playerstat.goalminutes)
-
-    def get_ngames(self, tournament):
+    
+    def get_query_set(self, tournament):
+        return tournament.gamematch_set.filter(Q(team_a = self.team) | Q(team_b = self.team))
+    
+    def get_ngames_new(self, query_set):
         ngames = 0
-        ngames += tournament.gamematch_set.filter(Q(team_a = self.team) & Q(players_a__id = self.player.id) ).distinct().count()
-        ngames += tournament.gamematch_set.filter(Q(team_b = self.team) & Q(players_b__id = self.player.id) ).distinct().count()
+        ngames += query_set.filter(Q(team_a = self.team) & Q(players_a__id = self.player.id) ).distinct().count()
+        ngames += query_set.filter(Q(team_b = self.team) & Q(players_b__id = self.player.id) ).distinct().count()
         return ngames
     
-    def get_nwingames(self, tournament):
+    def get_nwingames_new(self, query_set):
         ngames = 0
-        ngames += tournament.gamematch_set.filter(Q(team_a = self.team) & Q(players_a__id = self.player.id) & Q(score_a__gt = models.F('score_b') )).distinct().count()
-        ngames += tournament.gamematch_set.filter(Q(team_b = self.team) & Q(players_b__id = self.player.id) & Q(score_b__gt = models.F('score_a') )).distinct().count()
+        ngames += query_set.filter(Q(team_a = self.team) & Q(players_a__id = self.player.id) & Q(score_a__gt = models.F('score_b') )).distinct().count()
+        ngames += query_set.filter(Q(team_b = self.team) & Q(players_b__id = self.player.id) & Q(score_b__gt = models.F('score_a') )).distinct().count()
         return ngames
     
-    def get_nlosegames(self, tournament):
+    def get_nlosegames_new(self, query_set):
         ngames = 0
-        ngames += tournament.gamematch_set.filter(Q(team_a = self.team) & Q(players_a__id = self.player.id) & Q(score_b__gt = models.F('score_a') )).distinct().count()
-        ngames += tournament.gamematch_set.filter(Q(team_b = self.team) & Q(players_b__id = self.player.id) & Q(score_a__gt = models.F('score_b'))).distinct().count()
+        ngames += query_set.filter(Q(team_a = self.team) & Q(players_a__id = self.player.id) & Q(score_b__gt = models.F('score_a') )).distinct().count()
+        ngames += query_set.filter(Q(team_b = self.team) & Q(players_b__id = self.player.id) & Q(score_a__gt = models.F('score_b'))).distinct().count()
         return ngames
     
-    def get_ndrawsgames(self, tournament):
+    def get_ndrawsgames_new(self, query_set):
         ngames = 0
-        ngames += tournament.gamematch_set.filter(Q(team_a = self.team) & Q(players_a__id = self.player.id) & Q(score_b = models.F('score_a') )).distinct().count()
-        ngames += tournament.gamematch_set.filter(Q(team_b = self.team) & Q(players_b__id = self.player.id) & Q(score_a = models.F('score_b'))).distinct().count()
+        ngames += query_set.filter(Q(team_a = self.team) & Q(players_a__id = self.player.id) & Q(score_b = models.F('score_a') )).distinct().count()
+        ngames += query_set.filter(Q(team_b = self.team) & Q(players_b__id = self.player.id) & Q(score_a = models.F('score_b'))).distinct().count()
         return ngames
     
     def get_matches(self, tournament):
@@ -898,6 +901,12 @@ class Player2Team(AbsObj):
         
         return games
     
+    def get_matches_new(self, query_set):
+        games = list()
+        games += query_set.distinct()
+                
+        return games
+    
     def pre_save_action(self):
         self.player.update_rating()
         try:
@@ -905,6 +914,9 @@ class Player2Team(AbsObj):
                 return
         except:
             return
+        
+        total_time_a = 0
+        total_time_b = 0
         for stat in self.stats.all():
             season = stat.season
             ngames = 0
@@ -917,71 +929,78 @@ class Player2Team(AbsObj):
             ngoals = 0
             nwinsgames = 0
             nlosegames = 0
-            ndrawsgames = 0
-            fines_map = dict()
+            ndrawsgames = 0            
             for regular in season.regulars.all():
-                ngames += self.get_ngames(regular)
                 
-                games = self.get_matches(regular)
+                tournament_query_set = self.get_query_set(regular)
                 
-                nwinsgames = self.get_nwingames(regular)
-                nlosegames = self.get_nlosegames(regular)
-                ndrawsgames = self.get_ndrawsgames(regular)
+                if tournament_query_set.count() == 0:
+                    continue
+                
+                games = self.get_matches_new(tournament_query_set)
+                
+                ngames = self.get_ngames_new(tournament_query_set)
+                nwinsgames = self.get_nwingames_new(tournament_query_set)
+                nlosegames = self.get_nlosegames_new(tournament_query_set)
+                ndrawsgames = self.get_ndrawsgames_new(tournament_query_set)
                 
                 nmiss += self.player.gamematchgoal_miss.filter(gamematch__in = games).count()
-                nfines += self.player.gamematchfine_set.filter(team = self.team, gamematch__in = games).count()
-                #fines += sum(fine.minutes for fine in self.player.gamematchfine_set.filter(team = self.team, gamematch__in = games))
-                for fine in self.player.gamematchfine_set.filter(team = self.team, gamematch__in = games):
-                    fines += fine.minutes
-                    if fines_map.has_key(fine.minutes):
-                        fines_map[fine.minutes] += 1
-                    else:
-                        fines_map[fine.minutes] = 1
                 
-                assistant_count = len(GameMatchGoal.objects.filter(Q(assistant_1 = self.player) | Q(assistant_2 = self.player), gamematch__in = games).distinct())
+                fines_query_set = self.player.gamematchfine_set.filter(team = self.team, gamematch__in = games)
+                nfines += fines_query_set.count()
+                fines += sum(fine.minutes for fine in fines_query_set)
+                
+                goal_query_set = self.player.gamematchgoal_goal.filter(gamematch__in = games).distinct()
+                
+                assistant_count = self.player.gamematchgoal_assistant_1.filter(gamematch__in = games).distinct().count()
+                assistant_count += self.player.gamematchgoal_assistant_2.filter(gamematch__in = games).distinct().count()
+                
                 # there isn't two same assistant
                 ntrans += assistant_count
-                #ntrans += self.player.gamematchgoal_trans.filter(team = self.team, gamematch__in = games).count()
                 
                 goalminutes += sum([ gtime.get_diff_minute()
                     for gtime in self.player.gamematchgtime_set.filter(player=self.player, gamematch__in = games).distinct()
                 ]) / 2
                 
-                ngoals += GameMatchGoal.objects.filter(goal_player=self.player, gamematch__in = games).distinct().count()
                 
+                ngoals += goal_query_set.count()
+            
             for regular in season.playoff.all():
                 
-                ngames += self.get_ngames(regular)
+                tournament_query_set = self.get_query_set(regular)
                 
-                games = self.get_matches(regular)
+                if tournament_query_set.count() == 0:
+                    continue
                 
-                nwinsgames += self.get_nwingames(regular)
-                nlosegames += self.get_nlosegames(regular)
-                ndrawsgames += self.get_ndrawsgames(regular)
+                games = self.get_matches_new(tournament_query_set)
+                
+                ngames += self.get_ngames_new(tournament_query_set)
+                nwinsgames += self.get_nwingames_new(tournament_query_set)
+                nlosegames += self.get_nlosegames_new(tournament_query_set)
+                ndrawsgames += self.get_ndrawsgames_new(tournament_query_set)
                 
                 nmiss += self.player.gamematchgoal_miss.filter(gamematch__in = games).count()
                 
-                nfines += self.player.gamematchfine_set.filter(team = self.team, gamematch__in = games).count()
+                fines_query_set = self.player.gamematchfine_set.filter(team = self.team, gamematch__in = games)
                 
-                for fine in self.player.gamematchfine_set.filter(team = self.team, gamematch__in = games):
-                    fines += fine.minutes
-                    if fines_map.has_key(fine.minutes):
-                        fines_map[fine.minutes] += 1
-                    else:
-                        fines_map[fine.minutes] = 1
-                #fines += sum(fine.minutes for fine in self.player.gamematchfine_set.filter(team = self.team, gamematch__in = games))
+                nfines += fines_query_set.count()
                 
-                assistant_count = len(GameMatchGoal.objects.filter(Q(assistant_1 = self.player) | Q(assistant_2 = self.player), gamematch__in = games).distinct())
+                fines += sum(fine.minutes for fine in fines_query_set)
+                
+                goal_query_set = self.player.gamematchgoal_goal.filter(gamematch__in = games).distinct()
+                
+                assistant_count = self.player.gamematchgoal_assistant_1.filter(gamematch__in = games).distinct().count()
+                assistant_count += self.player.gamematchgoal_assistant_2.filter(gamematch__in = games).distinct().count()
+                
                 # there isn't two same assistant
                 ntrans += assistant_count
-                #ntrans += self.player.gamematchgoal_trans.filter(team = self.team, gamematch__in = games).count()
                 
                 goalminutes += sum([ gtime.get_diff_minute()
                     for gtime in self.player.gamematchgtime_set.filter(player=self.player, gamematch__in = games).distinct()
                 ]) / 2
                 
-                ngoals += GameMatchGoal.objects.filter(goal_player=self.player, gamematch__in = games).distinct().count()
-            
+                
+                ngoals += goal_query_set.count()
             stat.ngames = ngames
             stat.ngoals = ngoals
             stat.nmisses = nmiss

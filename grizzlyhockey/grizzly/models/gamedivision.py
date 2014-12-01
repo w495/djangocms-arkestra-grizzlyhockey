@@ -251,7 +251,8 @@ class GameDivision(AbsGameObj):
         division2stat = last_season[0]
         last_season = last_season[0].season
         players = list()
-        for x in Player2Team.objects.filter(team__in = self.teams.all(), stats__season=last_season).order_by(*args):
+        players_ = Player2Team.objects.filter(stats__season=last_season, team__in = self.teams.all()).order_by(*args)
+        for x in players_:
             stats = x.stats.filter(season=last_season)
             if len(stats) > 0:
                 players.append(stats[0])
@@ -269,15 +270,14 @@ class GameDivision(AbsGameObj):
         division2stat = last_season[0]
         last_season = last_season[0].season
         players = list()
-        
-        for x in Player2Team.objects.filter(team__in = self.teams.all(), stats__season=last_season, player__role = "Вратарь").exclude(stats__safety_factor = None).order_by(*args):
+        players_ = Player2Team.objects.filter(stats__season=last_season, player__role = "Вратарь", team__in = self.teams.all()).exclude(stats__safety_factor = None).order_by(*args)
+        for x in players_:
             stats = x.stats.filter(season=last_season)
             if len(stats) > 0:
                 for stat in stats:
                     if stat.safety_factor is not None:
                         players.append(stat)
                         break
-        print players
         return players
  
     def get_p2t(self):
