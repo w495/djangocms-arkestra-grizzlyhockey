@@ -391,7 +391,7 @@ class Team(AbsObj):
         la = 0
         lb = 0
         for game in query_set_a.all():
-            if not game.score_a or not game.score_b:
+            if game.score_a is None or game.score_b is None:
                 continue
             
             wa += game.score_a
@@ -404,7 +404,7 @@ class Team(AbsObj):
             elif game.score_a == game.score_b:
                 ndraws += 1
         for game in query_set_b.all():
-            if not game.score_a or not game.score_b:
+            if game.score_a is None or game.score_b  is None:
                 continue
             
             wb += game.score_b
@@ -450,8 +450,10 @@ class Team(AbsObj):
                 query_set_a = self.gamematch_a.filter( Q(id__in = games) ).distinct()
                 query_set_b = self.gamematch_b.filter( Q(id__in = games) ).distinct()
                 
-                nwins, nloses, ndraws, wa, wb, la, lb = self.get_wins_lose_draws(query_set_a, query_set_b)
-                
+                nwins_new, nloses_new, ndraws_new, wa, wb, la, lb = self.get_wins_lose_draws(query_set_a, query_set_b)
+                nwins += nwins_new
+                nloses += nloses_new
+                ndraws += ndraws_new
                 ngoals += (wa + wb)
                 nmisses += (la + lb)
             
@@ -465,7 +467,6 @@ class Team(AbsObj):
             regular_score.ngoals = ngoals
             regular_score.nmisses = nmisses
             regular_score.save()
-            
             nwins = 0
             nloses = 0
             ndraws = 0
@@ -480,7 +481,10 @@ class Team(AbsObj):
                 query_set_a = self.gamematch_a.filter( Q(id__in = games) ).distinct()
                 query_set_b = self.gamematch_b.filter( Q(id__in = games) ).distinct()
                 
-                nwins, nloses, ndraws, wa, wb, la, lb = self.get_wins_lose_draws(query_set_a, query_set_b)
+                nwins_new, nloses_new, ndraws_new, wa, wb, la, lb = self.get_wins_lose_draws(query_set_a, query_set_b)
+                nwins += nwins_new
+                nloses += nloses_new
+                ndraws += ndraws_new
                 
                 ngoals += (wa + wb)
                 nmisses += (la + lb)
@@ -939,7 +943,7 @@ class Player2Team(AbsObj):
                 
                 games = self.get_matches_new(tournament_query_set)
                 
-                ngames = self.get_ngames_new(tournament_query_set)
+                ngames += self.get_ngames_new(tournament_query_set)
                 nwinsgames = self.get_nwingames_new(tournament_query_set)
                 nlosegames = self.get_nlosegames_new(tournament_query_set)
                 ndrawsgames = self.get_ndrawsgames_new(tournament_query_set)
@@ -952,7 +956,7 @@ class Player2Team(AbsObj):
                 
                 goal_query_set = self.player.gamematchgoal_goal.filter(gamematch__in = games).distinct()
                 
-                assistant_count = self.player.gamematchgoal_assistant_1.filter(gamematch__in = games).distinct().count()
+                assistant_count += self.player.gamematchgoal_assistant_1.filter(gamematch__in = games).distinct().count()
                 assistant_count += self.player.gamematchgoal_assistant_2.filter(gamematch__in = games).distinct().count()
                 
                 # there isn't two same assistant
@@ -989,7 +993,7 @@ class Player2Team(AbsObj):
                 
                 goal_query_set = self.player.gamematchgoal_goal.filter(gamematch__in = games).distinct()
                 
-                assistant_count = self.player.gamematchgoal_assistant_1.filter(gamematch__in = games).distinct().count()
+                assistant_count += self.player.gamematchgoal_assistant_1.filter(gamematch__in = games).distinct().count()
                 assistant_count += self.player.gamematchgoal_assistant_2.filter(gamematch__in = games).distinct().count()
                 
                 # there isn't two same assistant

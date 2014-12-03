@@ -122,8 +122,8 @@ class GameMatch (AbsGameObj):
     
     def async_save_action(self):
         [ gtime.resave() for gtime in GameMatchGTime.objects.filter(gamematch = self) ]
-        self.team_a.resave()
-        self.team_b.resave()
+        self.team_a.save()
+        self.team_b.save()
         pass
 
 
