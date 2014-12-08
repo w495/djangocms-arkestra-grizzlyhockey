@@ -265,17 +265,20 @@ class GameDivision(AbsGameObj):
     
     def get_some_p2t_goalkeeper_new(self, *args):
         last_season = self.teams_stats.all().order_by("-season__start_datetime")
+        
         if len(last_season) == 0:
             return None
         division2stat = last_season[0]
+        
         last_season = last_season[0].season
         players = list()
-        players_ = Player2Team.objects.filter(stats__season=last_season, player__role = "Вратарь", team__in = self.teams.all()).exclude(stats__safety_factor = None).order_by(*args)
+        players_ = Player2Team.objects.filter(stats__season=last_season, player__role = "Вратарь", team__in = self.teams.all()).order_by(*args)
+        print players_
         for x in players_:
             stats = x.stats.filter(season=last_season)
             if len(stats) > 0:
                 for stat in stats:
-                    if stat.safety_factor is not None:
+                    if stat is not None and stat.safety_factor is not None:
                         players.append(stat)
                         break
         return players

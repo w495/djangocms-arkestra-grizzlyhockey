@@ -937,7 +937,6 @@ class Player2Team(AbsObj):
             for regular in season.regulars.all():
                 
                 tournament_query_set = self.get_query_set(regular)
-                
                 if tournament_query_set.count() == 0:
                     continue
                 
@@ -958,10 +957,9 @@ class Player2Team(AbsObj):
                 
                 assistant_count += self.player.gamematchgoal_assistant_1.filter(gamematch__in = games).distinct().count()
                 assistant_count += self.player.gamematchgoal_assistant_2.filter(gamematch__in = games).distinct().count()
-                
                 # there isn't two same assistant
                 ntrans += assistant_count
-                
+                assistant_count = 0
                 goalminutes += sum([ gtime.get_diff_minute()
                     for gtime in self.player.gamematchgtime_set.filter(player=self.player, gamematch__in = games).distinct()
                 ]) / 2
@@ -998,7 +996,7 @@ class Player2Team(AbsObj):
                 
                 # there isn't two same assistant
                 ntrans += assistant_count
-                
+                assistant_count = 0
                 goalminutes += sum([ gtime.get_diff_minute()
                     for gtime in self.player.gamematchgtime_set.filter(player=self.player, gamematch__in = games).distinct()
                 ]) / 2
@@ -1013,7 +1011,7 @@ class Player2Team(AbsObj):
             stat.ntrans = ntrans
             stat.goalminutes = goalminutes
             stat.ngoalsntrans = stat.ngoals + stat.ntrans
-            stat.safety_factor = self.get_safety_factor(stat, season) 
+            stat.safety_factor = self.get_safety_factor(stat, season)
             stat.save()
         pass
     
