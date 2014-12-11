@@ -1,0 +1,29 @@
+{% load thumbnail %}
+{% load arkestra_date_tags typogrify_tags humanize thumbnail placeholder_tags %}
+{% load mathfilters %}
+{% load order_by %}
+
+{% with banners=instance.banners.banners %}
+
+<aside class="hidden-sm hidden-xs">
+    <header>
+        <h4>{{instance.name}}</h4>
+    </header>
+    <hr/>
+    <section class="row">
+        <ul>
+            {% for banner in banners.all|order_by:"-priority" %}
+            <li class="col-lg-12 center ">
+                <div class="center" >
+                {% if banner.image %}
+                    <a href="{{banner.url}}" title="{{banner.name}}">
+                        <img  class="img-thumbnail" alt="{{banner.name}}" src="{% thumbnail banner.image banner.size %}"/>
+                    </a>
+                {% endif %}
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+</aside>
+{% endwith %}

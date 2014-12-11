@@ -30,7 +30,8 @@ from grizzly.models import GameMatch
 
 from grizzly.models import Player
 
-
+from grizzly.models import Banner
+from grizzly.models import BannersPlugin as BannersPluginModel
 
 from django.utils.translation import ugettext as _
 
@@ -248,6 +249,36 @@ class VKPlugin(CMSPluginBase):
         context.update({'vk_instance' : my_instance})
         return context
 
+class YoutubePlugin(CMSPluginBase):
+    name = _(u"Youtube")
+    render_template = "grizzly/plugins/youtube.html"
+
+    def render(self, context, instance, placeholder):
+        api_key = "AIzaSyAVwtnbo6GQY6-dIQmFXYwOBp3ZAwYDSyw"
+        max_results = "10"
+        playlist_id = "UUN21zKuol2253UKlXA_2UUg"
+        #playlist_id = "UU55LbnVNxtcgZNkfeSui8YQ"
+        response = urllib2.urlopen('https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails&maxResults=%s&playlistId=%s&fields=items&key=%s' % (max_results, playlist_id, api_key))
+        youtube_json = json.load(response)
+        #print youtube_json
+        for item in youtube_json['items']:
+            video_id = item['contentDetails']['videoId']
+            video_url = "https://www.googleapis.com/youtube/v3/videos?id=%s&part=snippet&key=%s" % (video_id, api_key)
+            #print video_url
+        return context
+
+class BannerPlugin(CMSPluginBase):
+    model = BannersPluginModel  #
+    name = _(u"Гризли: баннер") #
+    render_template = "grizzly/plugins/banner.html"
+    
+    def render(self, context, instance, placeholder):
+        context.update({'instance':instance})
+        return context
+
+    def render(self, context, instance, placeholder):
+        context['instance'] = instance
+        return context
 
 plugin_pool.register_plugin(PlayerBirthdayPlugin)
 plugin_pool.register_plugin(TeamPlugin)
@@ -269,3 +300,5 @@ plugin_pool.register_plugin(GameMatchSchedulePlugin)
 plugin_pool.register_plugin(GameMatchPluginMany)
 
 plugin_pool.register_plugin(VKPlugin)
+plugin_pool.register_plugin(YoutubePlugin)
+plugin_pool.register_plugin(BannerPlugin)

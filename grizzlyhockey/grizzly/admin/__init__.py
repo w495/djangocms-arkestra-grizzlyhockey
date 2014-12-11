@@ -41,6 +41,9 @@ from grizzly.models import GameMatchPenalty
 
 from grizzly.models import FinalType
 
+from grizzly.models import Banner
+from grizzly.models import BannerBlock
+
 
 from absbuttonablemodeladmin import AbsButtonableModelAdmin
 
@@ -246,6 +249,7 @@ class GameSeasonAdmin(AbsButtonableModelAdmin, AbsObjAdmin):
             for team in tour.teams.all():
                 if team not in team_list:
                     team.resave()
+                    #return
                     team_list.append(team)
         total_time_a = timeit.default_timer() - start_time
         for tour in season.playoff.all():
@@ -918,6 +922,12 @@ class Player2TeamAdminFiltered(Player2TeamAdmin):
         return self.model.objects.filter(is_disqualified = True)
 
 
+class BannerAdmin(AbsObjAdmin):
+    pass
+
+class BannerBlockAdmin(AbsObjAdmin):
+    pass
+
 admin.site.register(FinalType, FinalTypeAdmin)
 admin.site.register(JudgeType, JudgeTypeAdmin)
 admin.site.register(Judge, JudgeAdmin)
@@ -968,6 +978,10 @@ admin.site.register(GameFineType,       GameFineTypeAdmin)
 admin.site.register(GameMatchFine,      GameMatchFineAdmin)
 admin.site.register(GameMatchGTime,     GameMatchGTimeAdmin)
 admin.site.register(GameMatchPenalty,   GameMatchPenaltyAdmin)
+
+admin.site.register(Banner,        BannerAdmin)
+admin.site.register(BannerBlock,   BannerBlockAdmin)
+
 
 
 

@@ -86,7 +86,9 @@ from gamematchfine          import GameMatchFine
 from gamematchgtime         import GameMatchGTime
 from gamematchpenalty       import GameMatchPenalty
 
-
+from banners import Banner
+from banners import BannerBlock
+from bannersplugin import BannersPlugin
 
 from gametournamentregularplugin import GameTournamentRegularPlugin
 
