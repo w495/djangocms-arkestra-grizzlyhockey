@@ -76,7 +76,17 @@ class GameDivisionPlugin(CMSPluginBase):
     name = _(u"Гризли: дивизион") #
     render_template = "grizzly/plugins/gamedivision.html"
     def render(self, context, instance, placeholder):
-        context.update({'instance':instance})
+        division = instance.gamedivision
+        query_set = division.get_queryset()
+        
+        max_ngoalsntrans_p2t = division.get_max_ngoalsntrans_p2t(query_set)
+        max_ngoals_p2t = division.get_max_ngoals_p2t(query_set)
+        max_ntrans_p2t = division.get_max_ntrans_p2t(query_set)
+        min_nmisses_p2t = division.get_min_nmisses_p2t(query_set)
+        
+        context.update({ 'instance' : instance, 'max_ngoalsntrans_p2t' : max_ngoalsntrans_p2t,
+                         'max_ngoals_p2t' : max_ngoals_p2t, 'max_ntrans_p2t' : max_ntrans_p2t,
+                         'min_nmisses_p2t' : min_nmisses_p2t })
         return context
 
 class GameDivisionPluginMany(CMSPluginBase):
@@ -221,7 +231,6 @@ class VKPlugin(CMSPluginBase):
                     album_thumb_m = size[u'src']
                 if size[u'type'] == 'y':
                     album_thumb_y = size[u'src']
-                print size
             
             if album_thumb_y != "":
                 vk = CarouselItemVK(album_title, album_thumb_y, (album_thumb_m, album_thumb_y), album_url)
@@ -234,7 +243,6 @@ class VKPlugin(CMSPluginBase):
                     break
                 image_src = ""
                 if not photo.has_key(u'width') or not photo.has_key(u'height') or (float(photo[u'width']) / float(photo[u'height']) < 1.3):
-                    print float(photo[u'width']) / float(photo[u'height'])
                     continue
                 
                 if photo.has_key(u'photo_1280'):

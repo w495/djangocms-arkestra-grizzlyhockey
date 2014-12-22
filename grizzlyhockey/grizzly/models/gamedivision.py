@@ -239,10 +239,27 @@ class GameDivision(AbsGameObj):
         self.save()
             
     
-    def get_some_p2t(self, *args):
-        teams = [team for team  in self.teams.all()]
-        objs = [x for x in Player2Team.objects.filter(team__in = teams).order_by(*args)]
-        return objs
+    def get_queryset(self):
+        last_season = self.teams_stats.all().order_by("-season__start_datetime")
+        if len(last_season) == 0:
+            return None
+        division2stat = last_season[0]
+        last_season = last_season[0].season
+        return Player2Team.objects.filter(stats__season=last_season, team__in = self.teams.all())
+    
+    def get_some_p2t(self, query_set, *args):
+        last_season = self.teams_stats.all().order_by("-season__start_datetime")
+        if len(last_season) == 0:
+            return None
+        division2stat = last_season[0]
+        last_season = last_season[0].season
+        players = list()
+        players_ = query_set.order_by(*args)
+        for x in players_:
+            stats = x.stats.filter(season=last_season)
+            if len(stats) > 0:
+                players.append(stats[0])
+        return players
     
     def get_some_p2t_new(self, *args):
         last_season = self.teams_stats.all().order_by("-season__start_datetime")
@@ -258,10 +275,25 @@ class GameDivision(AbsGameObj):
                 players.append(stats[0])
         return players
     
-    def get_some_p2t_goalkeeper(self, *args):
-        teams = [team for team  in self.teams.all()]
-        objs = [x for x in Player2Team.objects.filter(team__in = teams, player__role = "Вратарь").exclude(safety_factor = None).order_by(*args)]
-        return objs
+    def get_some_p2t_goalkeeper(self, query_set, *args):
+        last_season = self.teams_stats.all().order_by("-season__start_datetime")
+        
+        if len(last_season) == 0:
+            return None
+        division2stat = last_season[0]
+        
+        last_season = last_season[0].season
+        players = list()
+        players_ = query_set.filter( player__role = "Вратарь" ).order_by(*args)
+        
+        for x in players_:
+            stats = x.stats.filter(season=last_season)
+            if len(stats) > 0:
+                for stat in stats:
+                    if stat is not None and stat.safety_factor is not None:
+                        players.append(stat)
+                        break
+        return players
     
     def get_some_p2t_goalkeeper_new(self, *args):
         last_season = self.teams_stats.all().order_by("-season__start_datetime")
@@ -273,7 +305,7 @@ class GameDivision(AbsGameObj):
         last_season = last_season[0].season
         players = list()
         players_ = Player2Team.objects.filter(stats__season=last_season, player__role = "Вратарь", team__in = self.teams.all()).order_by(*args)
-        print players_
+        
         for x in players_:
             stats = x.stats.filter(season=last_season)
             if len(stats) > 0:
@@ -284,15 +316,15 @@ class GameDivision(AbsGameObj):
         return players
  
     def get_p2t(self):
-        objs = self.get_some_p2t('-ngoalsntrans')
+        objs = self.get_some_p2t(query_set, '-ngoalsntrans')
         return objs
     
     def get_p2t_new(self):
         objs = self.get_some_p2t_new('-stats__ngoalsntrans')
         return objs
     
-    def get_max_some_p2t(self, *args):
-        objs = self.get_some_p2t(*args)
+    def get_max_some_p2t(self, query_set, *args):
+        objs = self.get_some_p2t(query_set, *args)
         if(objs):
             return objs[0:4]
             return objs[0]
@@ -305,8 +337,8 @@ class GameDivision(AbsGameObj):
             return objs[0]
         return None
     
-    def get_max_some_p2t_goalkeeper(self, *args):
-        objs = self.get_some_p2t_goalkeeper(*args)
+    def get_max_some_p2t_goalkeeper(self, query_set, *args):
+        objs = self.get_some_p2t_goalkeeper(query_set, *args)
         if(objs):
             return objs[0:4]
             return objs[0]
@@ -319,26 +351,26 @@ class GameDivision(AbsGameObj):
             return objs[0]
         return None
     
-    def get_max_ngoalsntrans_p2t(self):
-        return self.get_max_some_p2t('-ngoalsntrans')
+    def get_max_ngoalsntrans_p2t(self, query_set):
+        return self.get_max_some_p2t(query_set, '-stats__ngoalsntrans')
     
     def get_max_ngoalsntrans_p2t_new(self):
         return self.get_max_some_p2t_new('-stats__ngoalsntrans')
 
-    def get_max_ngoals_p2t(self):
-        return self.get_max_some_p2t('-ngoals')
+    def get_max_ngoals_p2t(self, query_set):
+        return self.get_max_some_p2t(query_set, '-stats__ngoals')
     
     def get_max_ngoals_p2t_new(self):
         return self.get_max_some_p2t_new('-stats__ngoals')
 
-    def get_max_ntrans_p2t(self):
-        return self.get_max_some_p2t('-ntrans')
+    def get_max_ntrans_p2t(self, query_set):
+        return self.get_max_some_p2t(query_set, '-stats__ntrans','-stats__ngoalsntrans')
     
     def get_max_ntrans_p2t_new(self):
         return self.get_max_some_p2t_new('-stats__ntrans','-stats__ngoalsntrans')
     
-    def get_min_nmisses_p2t(self):
-        return self.get_max_some_p2t_goalkeeper('safety_factor', '-ngames')
+    def get_min_nmisses_p2t(self, query_set):
+        return self.get_max_some_p2t_goalkeeper(query_set, 'stats__safety_factor', '-stats__ngames')
 
     def get_min_nmisses_p2t_new(self):
         return self.get_max_some_p2t_goalkeeper_new('stats__safety_factor', '-stats__ngames')
